@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 const links = [
@@ -15,56 +15,86 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    window.addEventListener("scroll", onScroll);
+    const onScroll = () => {
+      const y = window.scrollY;
+
+      setScrolled(y > 12);
+
+      // Don't hide the bar while the mobile menu is open, or right at the top
+      if (open || y < 80) {
+        setHidden(false);
+      } else if (y > lastY.current) {
+        // scrolling down -> slide out of view
+        setHidden(true);
+      } else if (y < lastY.current) {
+        // scrolling up -> slide back in
+        setHidden(false);
+      }
+
+      lastY.current = y;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [open]);
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-colors duration-300 ${
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ease-out ${
+        hidden ? "-translate-y-full" : "translate-y-0"
+      } ${
         scrolled
-          ? "bg-valley-forest/95 backdrop-blur border-b border-valley-gold/20"
+          ? "bg-valley-forest backdrop-blur border-b border-valley-gold/20 shadow-sm"
           : "bg-transparent"
       }`}
     >
-      <nav className="max-w-6xl mx-auto flex items-center justify-between px-5 md:px-8 py-4">
-        <NavLink to="/" className="font-display text-xl md:text-2xl text-valley-ivory tracking-tight">
-          Green Valley
+      <nav className="w-full flex items-center justify-between px-6 md:px-10 py-5 md:py-6">
+        <NavLink to="/" className="flex items-center shrink-0">
+          <img
+            src="/images/logo.png"
+            alt="Green Valley"
+            width={80}
+            height={80}
+            className="h-16 w-16 md:h-20 md:w-20 object-contain"
+          />
         </NavLink>
 
-        <ul className="hidden md:flex items-center gap-7 font-mono text-[13px] uppercase tracking-wide">
-          {links.map((l) => (
-            <li key={l.to}>
-              <NavLink
-                to={l.to}
-                className={() => {
-                  const isExact = location.pathname === l.to;
-                  const isMenuNested = l.to === "/menu" && location.pathname.startsWith("/menu");
-                  const active = isExact || isMenuNested;
+        <div className="hidden md:flex items-center gap-10">
+          <ul className="flex items-center gap-8 font-mono text-sm uppercase tracking-wide">
+            {links.map((l) => (
+              <li key={l.to}>
+                <NavLink
+                  to={l.to}
+                  className={() => {
+                    const isExact = location.pathname === l.to;
+                    const isMenuNested = l.to === "/menu" && location.pathname.startsWith("/menu");
+                    const active = isExact || isMenuNested;
 
-                  return `pb-1 border-b transition-colors ${
-                    active
-                      ? "text-valley-gold border-valley-gold"
-                      : "text-valley-ivory/80 border-transparent hover:text-valley-gold hover:border-valley-gold/50"
-                  }`;
-                }}
-              >
-                {l.label}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+                    return `pb-1 border-b transition-colors ${
+                      active
+                        ? "text-valley-gold border-valley-gold"
+                        : "text-valley-ivory/80 border-transparent hover:text-valley-gold hover:border-valley-gold/50"
+                    }`;
+                  }}
+                >
+                  {l.label}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
 
-        <NavLink
-          to="/reservation"
-          className="hidden md:inline-block bg-valley-gold text-valley-ink font-mono text-[13px] uppercase tracking-wide px-4 py-2 rounded-sm hover:bg-valley-ivory transition-colors"
-        >
-          Reserve a table
-        </NavLink>
+          <NavLink
+            to="/reservation"
+            className="inline-block bg-valley-gold text-valley-ink font-mono text-sm uppercase tracking-wide px-5 py-2.5 rounded-sm hover:bg-valley-ivory transition-colors"
+          >
+            Reserve a table
+          </NavLink>
+        </div>
 
         <button
           className="md:hidden text-valley-ivory"
@@ -72,7 +102,7 @@ export default function Navbar() {
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
             {open ? (
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             ) : (
@@ -83,8 +113,8 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="md:hidden bg-valley-forest border-t border-valley-gold/20 px-5 py-4">
-          <ul className="flex flex-col gap-4 font-mono text-sm uppercase tracking-wide">
+        <div className="md:hidden bg-valley-forest backdrop-blur-md border-t border-valley-gold/20 px-6 py-5">
+          <ul className="flex flex-col gap-4 font-mono text-base uppercase tracking-wide">
             {links.map((l) => (
               <li key={l.to}>
                 <NavLink
@@ -104,7 +134,7 @@ export default function Navbar() {
               <NavLink
                 to="/reservation"
                 onClick={() => setOpen(false)}
-                className="inline-block bg-valley-gold text-valley-ink px-4 py-2 rounded-sm mt-2"
+                className="inline-block bg-valley-gold text-valley-ink px-5 py-2.5 rounded-sm mt-2"
               >
                 Reserve a table
               </NavLink>
