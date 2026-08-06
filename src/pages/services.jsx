@@ -12,6 +12,7 @@ import {
   Flame,
   Leaf,
   MapPin,
+  MessageCircle,
   Package,
   Phone,
   ShieldCheck,
@@ -21,6 +22,16 @@ import {
   Truck,
   UtensilsCrossed,
 } from "lucide-react";
+
+const PHONE_NUMBER = "9866255533";
+const DISPLAY_PHONE = "98662 55533";
+const COUNTRY_CODE = "91";
+
+const PHONE_LINK = `tel:+${COUNTRY_CODE}${PHONE_NUMBER}`;
+
+const WHATSAPP_LINK = `https://wa.me/${COUNTRY_CODE}${PHONE_NUMBER}?text=${encodeURIComponent(
+  "Hello Green Valley Food One, I would like to know more."
+)}`;
 
 const EXPERIENCES = {
   restaurant: {
@@ -123,9 +134,6 @@ const SERVICES = [
   },
 ];
 
-/* What guests can't always see on a menu, but notice every visit:
-   skill, hygiene, how they're treated, and the logistics around
-   delivery and parking. */
 const STANDARDS = [
   {
     icon: Award,
@@ -155,12 +163,14 @@ const STANDARDS = [
   {
     icon: Package,
     title: "Secure, Careful Packing",
-    copy: "Leak-proof, sealed packaging so food travels the way it left the kitchen.",
+    copy:
+      "Leak-proof, sealed packaging so food travels the way it left the kitchen.",
   },
   {
     icon: Smile,
     title: "Respectful Hospitality",
-    copy: "Every guest greeted, heard, and served with patience and courtesy.",
+    copy:
+      "Every guest greeted, heard, and served with patience and courtesy.",
   },
   {
     icon: Car,
@@ -224,9 +234,7 @@ function HeroSlider() {
   const dotsRef = useRef([]);
 
   const goTo = useCallback((slideIndex) => {
-    setIndex(
-      (slideIndex + HERO_SLIDES.length) % HERO_SLIDES.length
-    );
+    setIndex((slideIndex + HERO_SLIDES.length) % HERO_SLIDES.length);
   }, []);
 
   const next = useCallback(() => {
@@ -255,10 +263,7 @@ function HeroSlider() {
     document.addEventListener("visibilitychange", handleVisibility);
 
     return () => {
-      document.removeEventListener(
-        "visibilitychange",
-        handleVisibility
-      );
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, []);
 
@@ -447,28 +452,14 @@ export default function GreenValleyServices() {
       `}</style>
 
       {/* Navigation */}
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 md:px-10">
+      <nav className="mx-auto flex max-w-6xl items-center px-6 py-6 md:px-10">
         <a
           href="/"
           className="font-display text-xl"
           style={{ color: "#1F3A2A" }}
         >
           Green Valley
-          <span className="block font-sans text-[9px] uppercase tracking-[0.3em] text-[#C7A339]">
-            Food One
-          </span>
         </a>
-
-        <div
-          className="hidden items-center gap-8 text-sm md:flex"
-          style={{ color: "rgba(32,36,31,0.7)" }}
-        >
-          <a href="#restaurant">Restaurant</a>
-          <a href="#cafe">Café</a>
-          <a href="#standards">Standards</a>
-          <a href="#services">Services</a>
-          <a href="#gallery">Gallery</a>
-        </div>
       </nav>
 
       {/* Hero */}
@@ -514,8 +505,7 @@ export default function GreenValleyServices() {
         <HeroSlider />
       </header>
 
-      {/* Standards — the things guests notice but a menu can't show:
-          skill, hygiene, service, delivery care, respect, parking */}
+      {/* Standards */}
       <section
         id="standards"
         className="mx-auto max-w-6xl border-t px-6 py-16 md:px-10 md:py-20"
@@ -719,63 +709,60 @@ export default function GreenValleyServices() {
           </h2>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map(
-              ({ icon: Icon, title, copy, img }) => (
-                <div
-                  key={title}
-                  className="service-card overflow-hidden rounded-xl"
-                  style={{
-                    background: "rgba(246,241,231,0.06)",
-                    border:
-                      "1px solid rgba(246,241,231,0.12)",
-                  }}
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={img}
-                      alt={title}
-                      className="service-image h-full w-full object-cover"
-                      loading="lazy"
+            {SERVICES.map(({ icon: Icon, title, copy, img }) => (
+              <div
+                key={title}
+                className="service-card overflow-hidden rounded-xl"
+                style={{
+                  background: "rgba(246,241,231,0.06)",
+                  border: "1px solid rgba(246,241,231,0.12)",
+                }}
+              >
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={img}
+                    alt={title}
+                    className="service-image h-full w-full object-cover"
+                    loading="lazy"
+                  />
+
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(to top, rgba(31,58,42,0.85), transparent)",
+                    }}
+                  />
+
+                  <div
+                    className="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-full"
+                    style={{ background: "#C7A339" }}
+                  >
+                    <Icon
+                      size={18}
+                      strokeWidth={1.75}
+                      color="#1F3A2A"
                     />
-
-                    <div
-                      className="absolute inset-0"
-                      style={{
-                        background:
-                          "linear-gradient(to top, rgba(31,58,42,0.85), transparent)",
-                      }}
-                    />
-
-                    <div
-                      className="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-full"
-                      style={{ background: "#C7A339" }}
-                    >
-                      <Icon
-                        size={18}
-                        strokeWidth={1.75}
-                        color="#1F3A2A"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="p-6">
-                    <h3
-                      className="font-display mb-2 text-lg"
-                      style={{ color: "#F6F1E7" }}
-                    >
-                      {title}
-                    </h3>
-
-                    <p
-                      className="text-sm leading-relaxed"
-                      style={{ color: "rgba(246,241,231,0.65)" }}
-                    >
-                      {copy}
-                    </p>
                   </div>
                 </div>
-              )
-            )}
+
+                <div className="p-6">
+                  <h3
+                    className="font-display mb-2 text-lg"
+                    style={{ color: "#F6F1E7" }}
+                  >
+                    {title}
+                  </h3>
+
+                  <p
+                    className="text-sm leading-relaxed"
+                    style={{ color: "rgba(246,241,231,0.65)" }}
+                  >
+                    {copy}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -839,17 +826,37 @@ export default function GreenValleyServices() {
             </p>
           </div>
 
-          <div
-            className="flex items-center gap-2 text-sm"
-            style={{ color: "#F6F1E7" }}
-          >
-            <Phone size={16} />
-            98662 55533
+          <div className="flex flex-wrap items-center gap-4 text-sm">
+            <a
+              href={PHONE_LINK}
+              className="flex items-center gap-2 transition-opacity hover:opacity-75"
+              style={{ color: "#F6F1E7" }}
+              aria-label={`Call Green Valley Food One at ${DISPLAY_PHONE}`}
+            >
+              <Phone size={16} />
+              {DISPLAY_PHONE}
+            </a>
+
+            <a
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-full px-4 py-2 transition-opacity hover:opacity-80"
+              style={{
+                background: "#25D366",
+                color: "#FFFFFF",
+              }}
+              aria-label="Contact Green Valley Food One on WhatsApp"
+            >
+              <MessageCircle size={16} />
+              WhatsApp
+            </a>
           </div>
         </div>
 
         <div className="mx-auto mt-10 flex max-w-6xl items-center gap-2 px-6 text-sm md:px-10">
           <MapPin size={16} color="#C7A339" />
+
           <span style={{ color: "rgba(246,241,231,0.6)" }}>
             Santhamaguluru, Andhra Pradesh
           </span>

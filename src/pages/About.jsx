@@ -254,7 +254,7 @@ export default function About() {
             Mr. Venkateshwarlu
           </h2>
           <p className="text-valley-ink/75 leading-relaxed mb-4">
-            Mr. Venkateshwarlu is the proud founder and guiding force behind
+            Mr. Sri Gadipudi Venkateswara Rao is the proud founder and guiding force behind
             Green Valley Food One. With a deep passion for hospitality and a
             strong commitment to quality, he envisioned a place where people
             could enjoy excellent food in a comfortable and welcoming

@@ -29,10 +29,10 @@ export default function Navbar() {
       if (open || y < 80) {
         setHidden(false);
       } else if (y > lastY.current) {
-        // scrolling down -> slide out of view
+        // Scrolling down -> slide out of view
         setHidden(true);
       } else if (y < lastY.current) {
-        // scrolling up -> slide back in
+        // Scrolling up -> slide back in
         setHidden(false);
       }
 
@@ -40,7 +40,10 @@ export default function Navbar() {
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
   }, [open]);
 
   return (
@@ -53,14 +56,14 @@ export default function Navbar() {
           : "bg-transparent"
       }`}
     >
-      <nav className="w-full flex items-center justify-between px-6 md:px-10 py-5 md:py-6">
+      <nav className="w-full flex items-center justify-between px-6 md:px-10 py-3 md:py-4">
         <NavLink to="/" className="flex items-center shrink-0">
           <img
             src="/images/logo.png"
-            alt="Green Valley"
-            width={80}
-            height={80}
-            className="h-16 w-16 md:h-20 md:w-20 object-contain"
+            alt="Green Valley Food One"
+            width={96}
+            height={96}
+            className="h-24 w-24 md:h-32 md:w-32 object-contain"
           />
         </NavLink>
 
@@ -72,7 +75,11 @@ export default function Navbar() {
                   to={l.to}
                   className={() => {
                     const isExact = location.pathname === l.to;
-                    const isMenuNested = l.to === "/menu" && location.pathname.startsWith("/menu");
+
+                    const isMenuNested =
+                      l.to === "/menu" &&
+                      location.pathname.startsWith("/menu");
+
                     const active = isExact || isMenuNested;
 
                     return `pb-1 border-b transition-colors ${
@@ -100,13 +107,23 @@ export default function Navbar() {
           className="md:hidden text-valley-ivory"
           aria-label="Toggle menu"
           aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setOpen((value) => !value)}
         >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
             {open ? (
-              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path
+                d="M6 6l12 12M18 6L6 18"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             ) : (
-              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <path
+                d="M4 7h16M4 12h16M4 17h16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
             )}
           </svg>
         </button>
@@ -122,14 +139,21 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className={() => {
                     const isExact = location.pathname === l.to;
-                    const isMenuNested = l.to === "/menu" && location.pathname.startsWith("/menu");
-                    return isExact || isMenuNested ? "text-valley-gold" : "text-valley-ivory/80";
+
+                    const isMenuNested =
+                      l.to === "/menu" &&
+                      location.pathname.startsWith("/menu");
+
+                    return isExact || isMenuNested
+                      ? "text-valley-gold"
+                      : "text-valley-ivory/80";
                   }}
                 >
                   {l.label}
                 </NavLink>
               </li>
             ))}
+
             <li>
               <NavLink
                 to="/reservation"
