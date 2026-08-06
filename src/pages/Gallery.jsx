@@ -1,3 +1,6 @@
+import { useState } from "react";
+import Loader4 from "../components/Loader4";
+
 const images = [
   { src: "/images/gallery-1.jpg", alt: "Filter coffee being poured" },
   { src: "/images/gallery-2.jpg", alt: "Andhra thali spread on a banana leaf" },
@@ -8,9 +11,14 @@ const images = [
 ];
 
 export default function Gallery() {
+  const [loading, setLoading] = useState(true);
+
   return (
-    <div>
-      <section className="max-w-6xl mx-auto px-5 md:px-8 py-16 md:py-20">
+    <>
+      {loading && <Loader4 onComplete={() => setLoading(false)} />}
+      {!loading && (
+        <div>
+          <section className="max-w-6xl mx-auto px-5 md:px-8 py-16 md:py-20">
         <p className="font-mono text-xs uppercase tracking-widest text-valley-clay mb-4">Gallery</p>
         <h1 className="font-display text-4xl md:text-5xl mb-10">A look inside Green Valley.</h1>
 
@@ -30,6 +38,8 @@ export default function Gallery() {
           Replace these with real photos of your food, cafe and restaurant space.
         </p>
       </section>
-    </div>
+        </div>
+      )}
+    </>
   );
 }

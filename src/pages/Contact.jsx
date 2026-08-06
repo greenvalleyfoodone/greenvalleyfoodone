@@ -1,6 +1,14 @@
+import { useState } from "react";
+import Loader6 from "../components/Loader6";
+
 export default function Contact() {
+  const [loading, setLoading] = useState(true);
+
   return (
-    <div className="max-w-6xl mx-auto px-5 md:px-8 py-16 md:py-24 grid md:grid-cols-2 gap-12">
+    <>
+      {loading && <Loader6 onComplete={() => setLoading(false)} />}
+      {!loading && (
+        <div className="max-w-6xl mx-auto px-5 md:px-8 py-16 md:py-24 grid md:grid-cols-2 gap-12">
       <div>
         <p className="font-mono text-xs uppercase tracking-widest text-valley-clay mb-4">
           Contact
@@ -72,6 +80,8 @@ export default function Contact() {
           loading="lazy"
         />
       </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }

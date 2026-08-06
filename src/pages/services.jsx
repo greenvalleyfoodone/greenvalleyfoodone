@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Loader3 from "../components/Loader3";
 import {
   Award,
   Car,
@@ -234,7 +235,9 @@ function HeroSlider() {
   const dotsRef = useRef([]);
 
   const goTo = useCallback((slideIndex) => {
-    setIndex((slideIndex + HERO_SLIDES.length) % HERO_SLIDES.length);
+    setIndex(
+      (slideIndex + HERO_SLIDES.length) % HERO_SLIDES.length
+    );
   }, []);
 
   const next = useCallback(() => {
@@ -260,10 +263,16 @@ function HeroSlider() {
       setPaused(document.hidden);
     };
 
-    document.addEventListener("visibilitychange", handleVisibility);
+    document.addEventListener(
+      "visibilitychange",
+      handleVisibility
+    );
 
     return () => {
-      document.removeEventListener("visibilitychange", handleVisibility);
+      document.removeEventListener(
+        "visibilitychange",
+        handleVisibility
+      );
     };
   }, []);
 
@@ -271,7 +280,8 @@ function HeroSlider() {
     if (event.key === "ArrowRight") {
       event.preventDefault();
 
-      const nextIndex = (currentIndex + 1) % HERO_SLIDES.length;
+      const nextIndex =
+        (currentIndex + 1) % HERO_SLIDES.length;
 
       goTo(nextIndex);
       dotsRef.current[nextIndex]?.focus();
@@ -281,7 +291,8 @@ function HeroSlider() {
       event.preventDefault();
 
       const previousIndex =
-        (currentIndex - 1 + HERO_SLIDES.length) % HERO_SLIDES.length;
+        (currentIndex - 1 + HERO_SLIDES.length) %
+        HERO_SLIDES.length;
 
       goTo(previousIndex);
       dotsRef.current[previousIndex]?.focus();
@@ -314,7 +325,9 @@ function HeroSlider() {
               alt={slide.alt}
               className="h-full w-full flex-shrink-0 object-cover"
               loading={slideIndex === 0 ? "eager" : "lazy"}
-              fetchPriority={slideIndex === 0 ? "high" : "auto"}
+              fetchPriority={
+                slideIndex === 0 ? "high" : "auto"
+              }
               decoding="async"
             />
           ))}
@@ -380,363 +393,182 @@ function HeroSlider() {
 }
 
 export default function GreenValleyServices() {
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("restaurant");
   const activeExperience = EXPERIENCES[activeTab];
 
   return (
-    <main
-      className="min-h-screen w-full overflow-hidden"
-      style={{
-        background: "#F6F1E7",
-        color: "#20241F",
-        fontFamily: "'Work Sans', sans-serif",
-      }}
-    >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap');
+    <>
+      {loading && (
+        <Loader3 onComplete={() => setLoading(false)} />
+      )}
 
-        .font-display {
-          font-family: 'Fraunces', serif;
-        }
-
-        .eyebrow {
-          letter-spacing: 0.2em;
-        }
-
-        .tab-btn,
-        .service-card,
-        .service-image,
-        .gallery-image,
-        .standard-card,
-        .standard-icon {
-          transition: all 0.35s ease;
-        }
-
-        .service-card:hover {
-          transform: translateY(-6px);
-          border-color: #C7A339 !important;
-        }
-
-        .service-card:hover .service-image {
-          transform: scale(1.06);
-        }
-
-        .gallery-item:hover .gallery-image {
-          transform: scale(1.06);
-        }
-
-        .standard-card:hover {
-          transform: translateY(-4px);
-          border-color: #C7A339 !important;
-          box-shadow: 0 12px 24px rgba(31,58,42,0.08);
-        }
-
-        .standard-card:hover .standard-icon {
-          background: #1F3A2A !important;
-        }
-
-        .standard-card:hover .standard-icon svg {
-          color: #F6F1E7 !important;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .tab-btn,
-          .service-card,
-          .service-image,
-          .gallery-image,
-          .standard-card,
-          .standard-icon {
-            transition: none !important;
-          }
-        }
-      `}</style>
-
-      {/* Navigation */}
-      <nav className="mx-auto flex max-w-6xl items-center px-6 py-6 md:px-10">
-        <a
-          href="/"
-          className="font-display text-xl"
-          style={{ color: "#1F3A2A" }}
+      {!loading && (
+        <main
+          className="min-h-screen w-full overflow-hidden"
+          style={{
+            background: "#F6F1E7",
+            color: "#20241F",
+            fontFamily: "'Work Sans', sans-serif",
+          }}
         >
-          Green Valley
-        </a>
-      </nav>
+          <style>{`
+            @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@300;400;500;600&display=swap');
 
-      {/* Hero */}
-      <header className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-8 md:grid-cols-[1.1fr_0.9fr] md:px-10 md:pb-24 md:pt-12">
-        <div>
-          <p
-            className="eyebrow mb-5 text-xs uppercase"
-            style={{ color: "#C7A339" }}
-          >
-            Fresh flavours · Warm hospitality
-          </p>
+            .font-display {
+              font-family: 'Fraunces', serif;
+            }
 
-          <h1
-            className="font-display mb-6 text-5xl leading-[1.05] md:text-7xl"
-            style={{ color: "#1F3A2A" }}
-          >
-            A place for
-            <br />
-            <span className="italic">great taste.</span>
-          </h1>
+            .eyebrow {
+              letter-spacing: 0.2em;
+            }
 
-          <p
-            className="mb-8 max-w-md text-base leading-relaxed"
-            style={{ color: "rgba(32,36,31,0.7)" }}
-          >
-            Welcome to Green Valley Food One — a welcoming restaurant and café
-            serving authentic food, freshly brewed coffee, and memorable
-            experiences in Santhamaguluru.
-          </p>
+            .tab-btn,
+            .service-card,
+            .service-image,
+            .gallery-image,
+            .standard-card,
+            .standard-icon {
+              transition: all 0.35s ease;
+            }
 
-          <div
-            className="flex items-center gap-2 text-sm"
-            style={{ color: "rgba(32,36,31,0.65)" }}
-          >
-            <Star size={15} color="#C7A339" fill="#C7A339" />
-            4.8 guest rating
-            <span style={{ color: "rgba(32,36,31,0.3)" }}>·</span>
-            <Clock size={15} />
-            Open today
-          </div>
-        </div>
+            .service-card:hover {
+              transform: translateY(-6px);
+              border-color: #C7A339 !important;
+            }
 
-        <HeroSlider />
-      </header>
+            .service-card:hover .service-image {
+              transform: scale(1.06);
+            }
 
-      {/* Standards */}
-      <section
-        id="standards"
-        className="mx-auto max-w-6xl border-t px-6 py-16 md:px-10 md:py-20"
-        style={{ borderColor: "rgba(31,58,42,0.1)" }}
-      >
-        <p
-          className="eyebrow mb-3 text-xs uppercase"
-          style={{ color: "#C7A339" }}
-        >
-          Beyond the menu
-        </p>
+            .gallery-item:hover .gallery-image {
+              transform: scale(1.06);
+            }
 
-        <h2
-          className="font-display mb-2 text-3xl md:text-4xl"
-          style={{ color: "#1F3A2A" }}
-        >
-          Care in every detail.
-        </h2>
+            .standard-card:hover {
+              transform: translateY(-4px);
+              border-color: #C7A339 !important;
+              box-shadow: 0 12px 24px rgba(31,58,42,0.08);
+            }
 
-        <p
-          className="mb-10 max-w-lg text-sm leading-relaxed"
-          style={{ color: "rgba(32,36,31,0.65)" }}
-        >
-          What you notice beyond the food — a trained team, a clean space,
-          careful packing, and someone who treats you well from the door to
-          the parking lot.
-        </p>
+            .standard-card:hover .standard-icon {
+              background: #1F3A2A !important;
+            }
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {STANDARDS.map(({ icon: Icon, title, copy }) => (
-            <div
-              key={title}
-              className="standard-card rounded-xl border p-5"
-              style={{
-                background: "#FFFFFF",
-                borderColor: "rgba(31,58,42,0.1)",
-              }}
-            >
-              <div
-                className="standard-icon mb-4 flex h-10 w-10 items-center justify-center rounded-full"
-                style={{ background: "rgba(199,163,57,0.15)" }}
-              >
-                <Icon size={18} strokeWidth={1.75} color="#1F3A2A" />
-              </div>
+            .standard-card:hover .standard-icon svg {
+              color: #F6F1E7 !important;
+            }
 
-              <h3
-                className="font-display mb-1.5 text-base leading-snug"
-                style={{ color: "#1F3A2A" }}
-              >
-                {title}
-              </h3>
+            @media (prefers-reduced-motion: reduce) {
+              .tab-btn,
+              .service-card,
+              .service-image,
+              .gallery-image,
+              .standard-card,
+              .standard-icon {
+                transition: none !important;
+              }
+            }
+          `}</style>
 
-              <p
-                className="text-xs leading-relaxed"
-                style={{ color: "rgba(32,36,31,0.6)" }}
-              >
-                {copy}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Restaurant and Cafe */}
-      <section
-        id="restaurant"
-        className="mx-auto max-w-6xl border-t px-6 py-16 md:px-10 md:py-20"
-        style={{ borderColor: "rgba(31,58,42,0.1)" }}
-      >
-        <p
-          className="eyebrow mb-3 text-xs uppercase"
-          style={{ color: "#C7A339" }}
-        >
-          Restaurant and café
-        </p>
-
-        <h2
-          className="font-display mb-8 text-3xl md:text-4xl"
-          style={{ color: "#1F3A2A" }}
-        >
-          Choose your experience.
-        </h2>
-
-        <div className="mb-10 flex gap-3">
-          {Object.entries(EXPERIENCES).map(([key, experience]) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setActiveTab(key)}
-              className="tab-btn rounded-full border px-5 py-2.5 text-sm"
-              style={{
-                background:
-                  activeTab === key ? "#1F3A2A" : "transparent",
-                color:
-                  activeTab === key ? "#F6F1E7" : "#1F3A2A",
-                borderColor: "#1F3A2A",
-              }}
-            >
-              {experience.label}
-            </button>
-          ))}
-        </div>
-
-        <div
-          id="cafe"
-          className="grid items-center gap-10 md:grid-cols-[0.9fr_1.1fr]"
-        >
-          <div className="relative">
-            <img
-              src={activeExperience.img}
-              alt={activeExperience.title}
-              className="w-full rounded-2xl object-cover"
-              style={{ aspectRatio: "4/3" }}
-              loading="lazy"
-            />
-
-            <div className="absolute left-4 top-4 flex flex-col gap-2">
-              <span
-                className="rounded-full px-3 py-1.5 text-xs"
-                style={{
-                  background: "rgba(246,241,231,0.95)",
-                  color: "#1F3A2A",
-                }}
-              >
-                {activeExperience.hours}
-              </span>
-
-              <span
-                className="rounded-full px-3 py-1.5 text-xs"
-                style={{
-                  background: "rgba(246,241,231,0.95)",
-                  color: "#1F3A2A",
-                }}
-              >
-                {activeExperience.tag}
-              </span>
-            </div>
-          </div>
-
-          <div>
-            <h3
-              className="font-display mb-3 text-2xl md:text-3xl"
+          {/* Navigation */}
+          <nav className="mx-auto flex max-w-6xl items-center px-6 py-6 md:px-10">
+            <a
+              href="/"
+              className="font-display text-xl"
               style={{ color: "#1F3A2A" }}
             >
-              {activeExperience.title}
-            </h3>
+              Green Valley
+            </a>
+          </nav>
 
+          {/* Hero */}
+          <header className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-8 md:grid-cols-[1.1fr_0.9fr] md:px-10 md:pb-24 md:pt-12">
+            <div>
+              <p
+                className="eyebrow mb-5 text-xs uppercase"
+                style={{ color: "#C7A339" }}
+              >
+                Fresh flavours · Warm hospitality
+              </p>
+
+              <h1
+                className="font-display mb-6 text-5xl leading-[1.05] md:text-7xl"
+                style={{ color: "#1F3A2A" }}
+              >
+                A place for
+                <br />
+                <span className="italic">great taste.</span>
+              </h1>
+
+              <p
+                className="mb-8 max-w-md text-base leading-relaxed"
+                style={{ color: "rgba(32,36,31,0.7)" }}
+              >
+                Welcome to Green Valley Food One — a welcoming restaurant and
+                café serving authentic food, freshly brewed coffee, and
+                memorable experiences in Santhamaguluru.
+              </p>
+
+              <div
+                className="flex items-center gap-2 text-sm"
+                style={{ color: "rgba(32,36,31,0.65)" }}
+              >
+                <Star size={15} color="#C7A339" fill="#C7A339" />
+                4.8 guest rating
+                <span style={{ color: "rgba(32,36,31,0.3)" }}>
+                  ·
+                </span>
+                <Clock size={15} />
+                Open today
+              </div>
+            </div>
+
+            <HeroSlider />
+          </header>
+
+          {/* Standards */}
+          <section
+            id="standards"
+            className="mx-auto max-w-6xl border-t px-6 py-16 md:px-10 md:py-20"
+            style={{ borderColor: "rgba(31,58,42,0.1)" }}
+          >
             <p
-              className="mb-8 text-sm leading-relaxed"
-              style={{ color: "rgba(32,36,31,0.7)" }}
+              className="eyebrow mb-3 text-xs uppercase"
+              style={{ color: "#C7A339" }}
             >
-              {activeExperience.copy}
+              Beyond the menu
             </p>
 
-            <div className="grid grid-cols-3 gap-4">
-              {activeExperience.stats.map((stat) => (
-                <div key={stat.label}>
-                  <p
-                    className="font-display text-2xl"
-                    style={{ color: "#1F3A2A" }}
-                  >
-                    {stat.value}
-                  </p>
+            <h2
+              className="font-display mb-2 text-3xl md:text-4xl"
+              style={{ color: "#1F3A2A" }}
+            >
+              Care in every detail.
+            </h2>
 
-                  <p className="mt-1 text-xs font-medium">
-                    {stat.label}
-                  </p>
+            <p
+              className="mb-10 max-w-lg text-sm leading-relaxed"
+              style={{ color: "rgba(32,36,31,0.65)" }}
+            >
+              What you notice beyond the food — a trained team, a clean space,
+              careful packing, and someone who treats you well from the door to
+              the parking lot.
+            </p>
 
-                  <p
-                    className="mt-0.5 text-xs"
-                    style={{ color: "rgba(32,36,31,0.55)" }}
-                  >
-                    {stat.sub}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section
-        id="services"
-        className="py-16 md:py-20"
-        style={{ background: "#1F3A2A" }}
-      >
-        <div className="mx-auto max-w-6xl px-6 md:px-10">
-          <p
-            className="eyebrow mb-3 text-xs uppercase"
-            style={{ color: "#C7A339" }}
-          >
-            What we offer
-          </p>
-
-          <h2
-            className="font-display mb-10 text-3xl md:text-4xl"
-            style={{ color: "#F6F1E7" }}
-          >
-            Made for food lovers.
-          </h2>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map(({ icon: Icon, title, copy, img }) => (
-              <div
-                key={title}
-                className="service-card overflow-hidden rounded-xl"
-                style={{
-                  background: "rgba(246,241,231,0.06)",
-                  border: "1px solid rgba(246,241,231,0.12)",
-                }}
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={img}
-                    alt={title}
-                    className="service-image h-full w-full object-cover"
-                    loading="lazy"
-                  />
-
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {STANDARDS.map(({ icon: Icon, title, copy }) => (
+                <div
+                  key={title}
+                  className="standard-card rounded-xl border p-5"
+                  style={{
+                    background: "#FFFFFF",
+                    borderColor: "rgba(31,58,42,0.1)",
+                  }}
+                >
                   <div
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "linear-gradient(to top, rgba(31,58,42,0.85), transparent)",
-                    }}
-                  />
-
-                  <div
-                    className="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-full"
-                    style={{ background: "#C7A339" }}
+                    className="standard-icon mb-4 flex h-10 w-10 items-center justify-center rounded-full"
+                    style={{ background: "rgba(199,163,57,0.15)" }}
                   >
                     <Icon
                       size={18}
@@ -744,124 +576,339 @@ export default function GreenValleyServices() {
                       color="#1F3A2A"
                     />
                   </div>
-                </div>
 
-                <div className="p-6">
                   <h3
-                    className="font-display mb-2 text-lg"
-                    style={{ color: "#F6F1E7" }}
+                    className="font-display mb-1.5 text-base leading-snug"
+                    style={{ color: "#1F3A2A" }}
                   >
                     {title}
                   </h3>
 
                   <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: "rgba(246,241,231,0.65)" }}
+                    className="text-xs leading-relaxed"
+                    style={{ color: "rgba(32,36,31,0.6)" }}
                   >
                     {copy}
                   </p>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery */}
-      <section
-        id="gallery"
-        className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20"
-      >
-        <p
-          className="eyebrow mb-3 text-xs uppercase"
-          style={{ color: "#C7A339" }}
-        >
-          A look inside
-        </p>
-
-        <h2
-          className="font-display mb-10 text-3xl md:text-4xl"
-          style={{ color: "#1F3A2A" }}
-        >
-          Around Green Valley.
-        </h2>
-
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-          {AMBIANCE.map((image, index) => (
-            <div
-              key={image}
-              className="gallery-item overflow-hidden rounded-xl"
-              style={{ aspectRatio: "1/1" }}
-            >
-              <img
-                src={image}
-                alt={`Green Valley atmosphere ${index + 1}`}
-                className="gallery-image h-full w-full object-cover"
-                loading="lazy"
-              />
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
 
-      {/* Footer */}
-      <footer
-        className="py-14"
-        style={{ background: "#1F3A2A" }}
-      >
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 md:flex-row md:items-center md:justify-between md:px-10">
-          <div>
-            <h3
-              className="font-display mb-2 text-2xl md:text-3xl"
-              style={{ color: "#F6F1E7" }}
-            >
-              Come enjoy the Green Valley experience.
-            </h3>
-
+          {/* Restaurant and Cafe */}
+          <section
+            id="restaurant"
+            className="mx-auto max-w-6xl border-t px-6 py-16 md:px-10 md:py-20"
+            style={{ borderColor: "rgba(31,58,42,0.1)" }}
+          >
             <p
-              className="text-sm"
-              style={{ color: "rgba(246,241,231,0.6)" }}
+              className="eyebrow mb-3 text-xs uppercase"
+              style={{ color: "#C7A339" }}
             >
-              Fresh food, great coffee, and warm hospitality.
+              Restaurant and café
             </p>
-          </div>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm">
-            <a
-              href={PHONE_LINK}
-              className="flex items-center gap-2 transition-opacity hover:opacity-75"
-              style={{ color: "#F6F1E7" }}
-              aria-label={`Call Green Valley Food One at ${DISPLAY_PHONE}`}
+            <h2
+              className="font-display mb-8 text-3xl md:text-4xl"
+              style={{ color: "#1F3A2A" }}
             >
-              <Phone size={16} />
-              {DISPLAY_PHONE}
-            </a>
+              Choose your experience.
+            </h2>
 
-            <a
-              href={WHATSAPP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-full px-4 py-2 transition-opacity hover:opacity-80"
-              style={{
-                background: "#25D366",
-                color: "#FFFFFF",
-              }}
-              aria-label="Contact Green Valley Food One on WhatsApp"
+            <div className="mb-10 flex gap-3">
+              {Object.entries(EXPERIENCES).map(
+                ([key, experience]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => setActiveTab(key)}
+                    className="tab-btn rounded-full border px-5 py-2.5 text-sm"
+                    style={{
+                      background:
+                        activeTab === key
+                          ? "#1F3A2A"
+                          : "transparent",
+                      color:
+                        activeTab === key
+                          ? "#F6F1E7"
+                          : "#1F3A2A",
+                      borderColor: "#1F3A2A",
+                    }}
+                  >
+                    {experience.label}
+                  </button>
+                )
+              )}
+            </div>
+
+            <div
+              id="cafe"
+              className="grid items-center gap-10 md:grid-cols-[0.9fr_1.1fr]"
             >
-              <MessageCircle size={16} />
-              WhatsApp
-            </a>
-          </div>
-        </div>
+              <div className="relative">
+                <img
+                  src={activeExperience.img}
+                  alt={activeExperience.title}
+                  className="w-full rounded-2xl object-cover"
+                  style={{ aspectRatio: "4/3" }}
+                  loading="lazy"
+                />
 
-        <div className="mx-auto mt-10 flex max-w-6xl items-center gap-2 px-6 text-sm md:px-10">
-          <MapPin size={16} color="#C7A339" />
+                <div className="absolute left-4 top-4 flex flex-col gap-2">
+                  <span
+                    className="rounded-full px-3 py-1.5 text-xs"
+                    style={{
+                      background: "rgba(246,241,231,0.95)",
+                      color: "#1F3A2A",
+                    }}
+                  >
+                    {activeExperience.hours}
+                  </span>
 
-          <span style={{ color: "rgba(246,241,231,0.6)" }}>
-            Santhamaguluru, Andhra Pradesh
-          </span>
-        </div>
-      </footer>
-    </main>
+                  <span
+                    className="rounded-full px-3 py-1.5 text-xs"
+                    style={{
+                      background: "rgba(246,241,231,0.95)",
+                      color: "#1F3A2A",
+                    }}
+                  >
+                    {activeExperience.tag}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <h3
+                  className="font-display mb-3 text-2xl md:text-3xl"
+                  style={{ color: "#1F3A2A" }}
+                >
+                  {activeExperience.title}
+                </h3>
+
+                <p
+                  className="mb-8 text-sm leading-relaxed"
+                  style={{ color: "rgba(32,36,31,0.7)" }}
+                >
+                  {activeExperience.copy}
+                </p>
+
+                <div className="grid grid-cols-3 gap-4">
+                  {activeExperience.stats.map((stat) => (
+                    <div key={stat.label}>
+                      <p
+                        className="font-display text-2xl"
+                        style={{ color: "#1F3A2A" }}
+                      >
+                        {stat.value}
+                      </p>
+
+                      <p className="mt-1 text-xs font-medium">
+                        {stat.label}
+                      </p>
+
+                      <p
+                        className="mt-0.5 text-xs"
+                        style={{
+                          color: "rgba(32,36,31,0.55)",
+                        }}
+                      >
+                        {stat.sub}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Services */}
+          <section
+            id="services"
+            className="py-16 md:py-20"
+            style={{ background: "#1F3A2A" }}
+          >
+            <div className="mx-auto max-w-6xl px-6 md:px-10">
+              <p
+                className="eyebrow mb-3 text-xs uppercase"
+                style={{ color: "#C7A339" }}
+              >
+                What we offer
+              </p>
+
+              <h2
+                className="font-display mb-10 text-3xl md:text-4xl"
+                style={{ color: "#F6F1E7" }}
+              >
+                Made for food lovers.
+              </h2>
+
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {SERVICES.map(
+                  ({ icon: Icon, title, copy, img }) => (
+                    <div
+                      key={title}
+                      className="service-card overflow-hidden rounded-xl"
+                      style={{
+                        background: "rgba(246,241,231,0.06)",
+                        border:
+                          "1px solid rgba(246,241,231,0.12)",
+                      }}
+                    >
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={img}
+                          alt={title}
+                          className="service-image h-full w-full object-cover"
+                          loading="lazy"
+                        />
+
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            background:
+                              "linear-gradient(to top, rgba(31,58,42,0.85), transparent)",
+                          }}
+                        />
+
+                        <div
+                          className="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-full"
+                          style={{ background: "#C7A339" }}
+                        >
+                          <Icon
+                            size={18}
+                            strokeWidth={1.75}
+                            color="#1F3A2A"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="p-6">
+                        <h3
+                          className="font-display mb-2 text-lg"
+                          style={{ color: "#F6F1E7" }}
+                        >
+                          {title}
+                        </h3>
+
+                        <p
+                          className="text-sm leading-relaxed"
+                          style={{
+                            color: "rgba(246,241,231,0.65)",
+                          }}
+                        >
+                          {copy}
+                        </p>
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* Gallery */}
+          <section
+            id="gallery"
+            className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20"
+          >
+            <p
+              className="eyebrow mb-3 text-xs uppercase"
+              style={{ color: "#C7A339" }}
+            >
+              A look inside
+            </p>
+
+            <h2
+              className="font-display mb-10 text-3xl md:text-4xl"
+              style={{ color: "#1F3A2A" }}
+            >
+              Around Green Valley.
+            </h2>
+
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+              {AMBIANCE.map((image, index) => (
+                <div
+                  key={image}
+                  className="gallery-item overflow-hidden rounded-xl"
+                  style={{ aspectRatio: "1/1" }}
+                >
+                  <img
+                    src={image}
+                    alt={`Green Valley atmosphere ${index + 1}`}
+                    className="gallery-image h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Footer */}
+          <footer
+            className="py-14"
+            style={{ background: "#1F3A2A" }}
+          >
+            <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 md:flex-row md:items-center md:justify-between md:px-10">
+              <div>
+                <h3
+                  className="font-display mb-2 text-2xl md:text-3xl"
+                  style={{ color: "#F6F1E7" }}
+                >
+                  Come enjoy the Green Valley experience.
+                </h3>
+
+                <p
+                  className="text-sm"
+                  style={{
+                    color: "rgba(246,241,231,0.6)",
+                  }}
+                >
+                  Fresh food, great coffee, and warm hospitality.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4 text-sm">
+                <a
+                  href={PHONE_LINK}
+                  className="flex items-center gap-2 transition-opacity hover:opacity-75"
+                  style={{ color: "#F6F1E7" }}
+                  aria-label={`Call Green Valley Food One at ${DISPLAY_PHONE}`}
+                >
+                  <Phone size={16} />
+                  {DISPLAY_PHONE}
+                </a>
+
+                <a
+                  href={WHATSAPP_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-full px-4 py-2 transition-opacity hover:opacity-80"
+                  style={{
+                    background: "#25D366",
+                    color: "#FFFFFF",
+                  }}
+                  aria-label="Contact Green Valley Food One on WhatsApp"
+                >
+                  <MessageCircle size={16} />
+                  WhatsApp
+                </a>
+              </div>
+            </div>
+
+            <div className="mx-auto mt-10 flex max-w-6xl items-center gap-2 px-6 text-sm md:px-10">
+              <MapPin size={16} color="#C7A339" />
+
+              <span
+                style={{
+                  color: "rgba(246,241,231,0.6)",
+                }}
+              >
+                Santhamaguluru, Andhra Pradesh
+              </span>
+            </div>
+          </footer>
+        </main>
+      )}
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import Loader1 from "../components/Loader1";
 
 const heroImg =
   "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=1400&auto=format&fit=crop";
@@ -200,8 +201,14 @@ function RestaurantCarousel() {
 }
 
 export default function Restaurant() {
+  const [loading, setLoading] = useState(true);
+
   return (
-    <div className="bg-[#fbf7f1] min-h-screen text-neutral-800 overflow-x-hidden font-body">
+    <>
+      {loading && <Loader1 onComplete={() => setLoading(false)} />}
+
+      {!loading && (
+        <div className="bg-[#fbf7f1] min-h-screen text-neutral-800 overflow-x-hidden font-body">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -381,5 +388,7 @@ export default function Restaurant() {
         </p>
       </section>
     </div>
+      )}
+    </>
   );
 }

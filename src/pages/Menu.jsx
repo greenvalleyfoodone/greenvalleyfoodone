@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Loader2 from '../components/Loader2';
 
 /* ============================================
    Green Valley — Menu Landing Page
@@ -185,7 +186,14 @@ function SectionBlock({ side, data, delayStart }) {
 }
 
 export default function MenuPage() {
-  return <SectionBlock />;
+  const [loading, setLoading] = useState(true);
+
+  return (
+    <>
+      {loading && <Loader2 onComplete={() => setLoading(false)} />}
+      {!loading && <SectionBlock />}
+    </>
+  );
 }
 
 /* ============================================
