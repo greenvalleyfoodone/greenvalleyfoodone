@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  /* Green Valley token system — day/night duality */
+  --color-valley-forest: #17302A;    /* night / deep primary */
+  --color-valley-forest-light: #24473D;
+  --color-valley-ivory: #F2EAD8;      /* day / warm base */
+  --color-valley-paper: #FAF6EC;
+  --color-valley-gold: #C9971C;       /* filter coffee / turmeric accent */
+  --color-valley-gold-dim: #A97F1B;
+  --color-valley-clay: #A6472A;       /* andhra chili accent */
+  --color-valley-ink: #201A12;
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Work Sans", "Helvetica Neue", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-valley-ink);
+  background: var(--color-valley-paper);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Signature: a soft day-to-night gradient sweep used on hero + section dividers */
+.dusk-sweep {
+  background: linear-gradient(
+    100deg,
+    var(--color-valley-ivory) 0%,
+    var(--color-valley-ivory) 38%,
+    var(--color-valley-gold) 52%,
+    var(--color-valley-forest) 68%,
+    var(--color-valley-forest) 100%
+  );
+}
+
+::selection {
+  background: var(--color-valley-gold);
+  color: var(--color-valley-ink);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-valley-gold);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
