@@ -27,13 +27,13 @@ const heroSlides = [
     text: "Filter coffee roasted in-house, Andhra recipes passed down from grandmothers, and a table that's always ready for you.",
   },
   {
-    image: "/images/hero-2.png",
+    image: "/images/hero-3.png",
     title: "Warm evenings,",
     subtitle: "fresh flavors.",
     text: "Relax with coffee, snacks, and a calm dinner atmosphere made for families and friends.",
   },
   {
-    image: "/images/hero-3.png",
+    image: "/images/hero-2.png",
     title: "Traditional taste,",
     subtitle: "modern comfort.",
     text: "Enjoy a space that blends local Andhra dishes with a welcoming cafe experience.",
