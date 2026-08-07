@@ -132,6 +132,22 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+@theme {
+  /* Green Valley token system — day/night duality */
+  --color-valley-forest: #17302a; /* night / deep primary */
+  --color-valley-forest-light: #24473d;
+  --color-valley-ivory: #f2ead8; /* day / warm base */
+  --color-valley-paper: #faf6ec;
+  --color-valley-gold: #c9971c; /* filter coffee / turmeric accent */
+  --color-valley-gold-dim: #a97f1b;
+  --color-valley-clay: #a6472a; /* andhra chili accent */
+  --color-valley-ink: #201a12;
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Work Sans", "Helvetica Neue", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -142,3 +158,54 @@
     color: var(--color-foreground);
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-valley-ink);
+  background: var(--color-valley-paper);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Signature: a soft day-to-night gradient sweep used on hero + section dividers */
+.dusk-sweep {
+  background: linear-gradient(
+    100deg,
+    var(--color-valley-ivory) 0%,
+    var(--color-valley-ivory) 38%,
+    var(--color-valley-gold) 52%,
+    var(--color-valley-forest) 68%,
+    var(--color-valley-forest) 100%
+  );
+}
+
+::selection {
+  background: var(--color-valley-gold);
+  color: var(--color-valley-ink);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-valley-gold);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
