@@ -2,25 +2,32 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Loader3 from "../components/Loader3";
+
 import {
   Award,
+  BadgeCheck,
   Car,
-  Coffee,
+  CheckCircle2,
   ChevronLeft,
   ChevronRight,
-  Clock,
+  Coffee,
   ConciergeBell,
-  Flame,
+  CreditCard,
+  HeartHandshake,
   Leaf,
   MapPin,
   MessageCircle,
-  Package,
+  Navigation,
   Phone,
   ShieldCheck,
   Smile,
   Sparkles,
   Star,
+  Timer,
+  Trash2,
   Truck,
+  Users,
+  Utensils,
   UtensilsCrossed,
 } from "lucide-react";
 
@@ -34,175 +41,346 @@ const WHATSAPP_LINK = `https://wa.me/${COUNTRY_CODE}${PHONE_NUMBER}?text=${encod
   "Hello Green Valley Food One, I would like to know more."
 )}`;
 
-const EXPERIENCES = {
-  restaurant: {
-    label: "Restaurant",
-    hours: "Open 11 AM — 11 PM",
-    tag: "Andhra Cuisine · Family Dining",
-    title: "Green Valley Restaurant",
-    copy:
-      "Enjoy authentic Andhra flavours, traditional meals, biryanis, curries, and delicious dishes prepared fresh for every guest.",
-    img: "/images/restaurant-dining.jpg",
-    stats: [
-      {
-        value: "60+",
-        label: "Dishes",
-        sub: "Traditional and modern flavours.",
-      },
-      {
-        value: "100%",
-        label: "Fresh",
-        sub: "Prepared with quality ingredients.",
-      },
-      {
-        value: "4.8★",
-        label: "Guest Love",
-        sub: "Loved by our customers.",
-      },
-    ],
-  },
-
-  cafe: {
-    label: "Café",
-    hours: "Open 8 AM — 10 PM",
-    tag: "Coffee · Snacks · Conversations",
-    title: "Green Valley Café",
-    copy:
-      "Take a break with freshly brewed coffee, refreshing beverages, desserts, and light snacks in a comfortable atmosphere.",
-    img: "/images/cafe-interior.jpg",
-    stats: [
-      {
-        value: "100%",
-        label: "Fresh Coffee",
-        sub: "Brewed with care every day.",
-      },
-      {
-        value: "25+",
-        label: "Cafe Items",
-        sub: "Coffee, snacks and desserts.",
-      },
-      {
-        value: "4.8★",
-        label: "Guest Love",
-        sub: "A place to relax and connect.",
-      },
-    ],
-  },
+const COLORS = {
+  green: "#1F3A2A",
+  darkGreen: "#14291D",
+  ivory: "#F6F1E7",
+  gold: "#C7A339",
+  clay: "#B9684B",
+  ink: "#20241F",
+  white: "#FFFFFF",
 };
 
-const SERVICES = [
-  {
-    icon: UtensilsCrossed,
-    title: "Authentic Dining",
-    copy:
-      "Enjoy carefully prepared Andhra dishes and restaurant favourites made with traditional flavours.",
-    img: "/images/andhra-meals.jpg",
-  },
-  {
-    icon: Coffee,
-    title: "Freshly Brewed Coffee",
-    copy:
-      "Relax with aromatic coffee prepared from carefully selected beans and served fresh.",
-    img: "/images/filter-coffee.jpg",
-  },
-  {
-    icon: Flame,
-    title: "Freshly Prepared Food",
-    copy:
-      "Every order is prepared with attention to freshness, taste, cleanliness, and quality.",
-    img: "/images/restaurant-kitchen.jpg",
-  },
-  {
-    icon: Leaf,
-    title: "Quality Ingredients",
-    copy:
-      "We choose fresh and reliable ingredients to maintain the flavour and quality of every dish.",
-    img: "/images/fresh-ingredients.jpg",
-  },
-  {
-    icon: Sparkles,
-    title: "Comfortable Ambience",
-    copy:
-      "A clean, calm, and welcoming space for families, friends, conversations, and celebrations.",
-    img: "/images/cafe-seating.jpg",
-  },
-  {
-    icon: Star,
-    title: "Warm Hospitality",
-    copy:
-      "Our team is committed to making every visit comfortable, enjoyable, and memorable.",
-    img: "/images/restaurant-service.jpg",
-  },
-];
+/* -------------------------------------------------------
+   Image data
+-------------------------------------------------------- */
 
-const STANDARDS = [
+const restaurantImages = [
   {
-    icon: Award,
-    title: "Skilled & Experienced Team",
-    copy: "Trained cooks and staff who know the craft — no shortcuts.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Verified Kitchen Hygiene",
-    copy: "Sanitised prep stations and hygiene checks, every single shift.",
-  },
-  {
-    icon: Sparkles,
-    title: "Spotless Dining & Café",
-    copy: "Tables, seating, and counters reset before every guest sits down.",
-  },
-  {
-    icon: ConciergeBell,
-    title: "Attentive Table Service",
-    copy: "Orders taken promptly, and checked on without being asked twice.",
-  },
-  {
-    icon: Truck,
-    title: "On-Time Delivery",
-    copy: "Orders dispatched fast and tracked until they reach your door.",
-  },
-  {
-    icon: Package,
-    title: "Secure, Careful Packing",
-    copy:
-      "Leak-proof, sealed packaging so food travels the way it left the kitchen.",
-  },
-  {
-    icon: Smile,
-    title: "Respectful Hospitality",
-    copy:
-      "Every guest greeted, heard, and served with patience and courtesy.",
-  },
-  {
-    icon: Car,
-    title: "On-Site Parking",
-    copy: "Free, easy parking right outside for two- and four-wheelers.",
-  },
-];
-
-const HERO_SLIDES = [
-  {
-    src: "/images/restaurant-dining.jpg",
+    src: "/images/cafe53.jpg",
     alt: "Green Valley restaurant dining area",
   },
   {
-    src: "/images/cafe-interior.jpg",
-    alt: "Green Valley cafe interior",
+    src: "/images/cafe54.jpg",
+    alt: "Restaurant seating area",
   },
   {
-    src: "/images/coffee-and-dessert.jpg",
-    alt: "Coffee and dessert at Green Valley",
+    src: "/images/cafe55.jpg",
+    alt: "Restaurant dining tables",
+  },
+  {
+    src: "/images/cafe56.jpg",
+    alt: "Green Valley restaurant interior",
+  },
+  {
+    src: "/images/cafe57.jpg",
+    alt: "Restaurant dining experience",
+  },
+  {
+    src: "/images/cafe58.jpg",
+    alt: "Comfortable restaurant seating",
+  },
+  {
+    src: "/images/cafe59.jpg",
+    alt: "Family dining area",
+  },
+  {
+    src: "/images/cafe60.jpg",
+    alt: "Restaurant tables and chairs",
+  },
+  {
+    src: "/images/cafe61.jpg",
+    alt: "Green Valley restaurant atmosphere",
+  },
+  {
+    src: "/images/cafe62.jpg",
+    alt: "Restaurant interior at Green Valley",
+  },
+  {
+    src: "/images/restaurent1.jpg",
+    alt: "Green Valley restaurant",
   },
 ];
 
-const AMBIANCE = [
-  "/images/cafe-seating.jpg",
-  "/images/filter-coffee.jpg",
-  "/images/andhra-meals.jpg",
-  "/images/restaurant-dining.jpg",
+const cafeImages = [
+  {
+    src: "/images/cafe1.jpg",
+    alt: "Green Valley cafe",
+  },
+  {
+    src: "/images/cafe2.jpg",
+    alt: "Cafe seating",
+  },
+  {
+    src: "/images/cafe3.jpg",
+    alt: "Cafe atmosphere",
+  },
+  {
+    src: "/images/cafe4.jpg",
+    alt: "Coffee and cafe interior",
+  },
+  {
+    src: "/images/cafe5.jpg",
+    alt: "Green Valley cafe space",
+  },
+  {
+    src: "/images/cafe6.jpg",
+    alt: "Cafe table and seating",
+  },
+  {
+    src: "/images/cafe7.jpg",
+    alt: "Cafe dining area",
+  },
+  {
+    src: "/images/cafe8.jpg",
+    alt: "Cafe refreshments",
+  },
 ];
 
-const AUTOPLAY_MS = 5000;
+const kitchenImages = [
+  {
+    src: "/images/out1.jpg",
+    alt: "Green Valley kitchen",
+  },
+  {
+    src: "/images/out2.jpg",
+    alt: "Clean food preparation area",
+  },
+  {
+    src: "/images/out3.jpg",
+    alt: "Restaurant washroom",
+  },
+  {
+    src: "/images/out4.jpg",
+    alt: "Clean guest washroom",
+  },
+  {
+    src: "/images/out5.jpg",
+    alt: "Washroom facility",
+  },
+  {
+    src: "/images/out6.jpg",
+    alt: "Hygienic washroom",
+  },
+  {
+    src: "/images/out7.jpg",
+    alt: "Green Valley kitchen operations",
+  },
+];
+
+const serviceImages = [
+  {
+    src: "/images/cafe43.jpg",
+    alt: "Professional Green Valley staff",
+  },
+  {
+    src: "/images/cafe44.jpg",
+    alt: "Friendly restaurant service",
+  },
+  {
+    src: "/images/cafe45.jpg",
+    alt: "Hospitality at Green Valley",
+  },
+  {
+    src: "/images/cafe46.jpg",
+    alt: "Staff serving customers",
+  },
+  {
+    src: "/images/cafe47.jpg",
+    alt: "Green Valley service",
+  },
+  {
+    src: "/images/cafe48.jpg",
+    alt: "Customer service at the restaurant",
+  },
+  {
+    src: "/images/cafe49.jpg",
+    alt: "Restaurant hospitality",
+  },
+  {
+    src: "/images/cafe50.jpg",
+    alt: "Green Valley team service",
+  },
+  {
+    src: "/images/cafe51.jpg",
+    alt: "Friendly dining service",
+  },
+  {
+    src: "/images/cafe52.jpg",
+    alt: "Professional restaurant service",
+  },
+  {
+    src: "/images/service27.jpg",
+    alt: "Green Valley customer service",
+  },
+  {
+    src: "/images/service28.jpg",
+    alt: "Restaurant team member",
+  },
+  {
+    src: "/images/service29.jpg",
+    alt: "Customer assistance",
+  },
+  {
+    src: "/images/service30.jpg",
+    alt: "Warm hospitality",
+  },
+];
+
+const uniformImages = [
+  {
+    src: "/images/cafe42.jpg",
+    alt: "Green Valley staff uniform",
+  },
+  {
+    src: "/images/cafe43.jpg",
+    alt: "Well-groomed restaurant staff",
+  },
+  {
+    src: "/images/cafe47.jpg",
+    alt: "Professional team uniform",
+  },
+];
+
+const customerImages = [
+  {
+    src: "/images/service24.jpg",
+    alt: "Green Valley customers",
+  },
+  {
+    src: "/images/service25.jpg",
+    alt: "Happy customers dining",
+  },
+  {
+    src: "/images/service26.jpg",
+    alt: "Customer experience at Green Valley",
+  },
+];
+
+const heroSlides = [
+  {
+    src: restaurantImages[0].src,
+    alt: restaurantImages[0].alt,
+    label: "Comfortable dining",
+  },
+  {
+    src: cafeImages[1].src,
+    alt: cafeImages[1].alt,
+    label: "Relaxed cafe moments",
+  },
+  {
+    src: kitchenImages[0].src,
+    alt: kitchenImages[0].alt,
+    label: "Clean and careful preparation",
+  },
+  {
+    src: serviceImages[1].src,
+    alt: serviceImages[1].alt,
+    label: "Warm hospitality",
+  },
+];
+
+/* -------------------------------------------------------
+   Page content
+-------------------------------------------------------- */
+
+const services = [
+  {
+    icon: UtensilsCrossed,
+    title: "Quality Dining",
+    text: "Enjoy fresh, tasty and carefully prepared food in a welcoming family-friendly environment.",
+    image: restaurantImages[2].src,
+  },
+  {
+    icon: Coffee,
+    title: "Cafe Experience",
+    text: "Relax with coffee, snacks, desserts and refreshing beverages in a comfortable cafe atmosphere.",
+    image: cafeImages[3].src,
+  },
+  {
+    icon: Timer,
+    title: "Fast Service",
+    text: "Our team takes orders promptly and serves food efficiently without compromising quality.",
+    image: serviceImages[4].src,
+  },
+  {
+    icon: HeartHandshake,
+    title: "Warm Hospitality",
+    text: "Every guest is welcomed with respect, kindness and a genuine smile.",
+    image: serviceImages[1].src,
+  },
+  {
+    icon: ShieldCheck,
+    title: "Hygienic Kitchen",
+    text: "Our kitchen follows careful cleanliness and food preparation practices during every shift.",
+    image: kitchenImages[0].src,
+  },
+  {
+    icon: Sparkles,
+    title: "Clean Dining Space",
+    text: "Tables, chairs, floors and serving areas are cleaned and maintained regularly.",
+    image: restaurantImages[5].src,
+  },
+  {
+    icon: Users,
+    title: "Family Friendly",
+    text: "A peaceful dining space suitable for individuals, families, friends and groups.",
+    image: customerImages[1].src,
+  },
+  {
+    icon: CreditCard,
+    title: "Convenient Billing",
+    text: "Fast and accurate billing with convenient payment options for our guests.",
+    image: serviceImages[7].src,
+  },
+];
+
+const standards = [
+  {
+    icon: Award,
+    title: "Professional Staff",
+    text: "Our staff are well-groomed, properly dressed and committed to professional service.",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Fresh Ingredients",
+    text: "We use fresh and quality ingredients to maintain consistent taste and quality.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Strict Hygiene",
+    text: "We maintain cleanliness during food preparation, serving and restaurant maintenance.",
+  },
+  {
+    icon: ConciergeBell,
+    title: "Polite Communication",
+    text: "Our team communicates courteously and assists customers with menu choices.",
+  },
+  {
+    icon: Smile,
+    title: "Customer Satisfaction",
+    text: "We listen to feedback and continuously improve our services and guest experience.",
+  },
+  {
+    icon: Car,
+    title: "Parking Facility",
+    text: "Convenient parking is available near the restaurant for two-wheelers and cars.",
+  },
+  {
+    icon: Trash2,
+    title: "Clean Washrooms",
+    text: "Guest washrooms are maintained as clean, comfortable and hygienic facilities.",
+  },
+  {
+    icon: Navigation,
+    title: "Easy to Visit",
+    text: "A convenient location for dining, coffee breaks, family meals and celebrations.",
+  },
+];
+
+/* -------------------------------------------------------
+   Helpers
+-------------------------------------------------------- */
 
 function usePrefersReducedMotion() {
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -228,62 +406,65 @@ function usePrefersReducedMotion() {
   return reducedMotion;
 }
 
+/* -------------------------------------------------------
+   Hero slider
+-------------------------------------------------------- */
+
 function HeroSlider() {
-  const [index, setIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
   const dotsRef = useRef([]);
 
-  const goTo = useCallback((slideIndex) => {
-    setIndex(
-      (slideIndex + HERO_SLIDES.length) % HERO_SLIDES.length
+  const goToSlide = useCallback((slideIndex) => {
+    setCurrentIndex(
+      (slideIndex + heroSlides.length) % heroSlides.length
     );
   }, []);
 
-  const next = useCallback(() => {
-    goTo(index + 1);
-  }, [goTo, index]);
+  const goNext = useCallback(() => {
+    goToSlide(currentIndex + 1);
+  }, [currentIndex, goToSlide]);
 
-  const previous = useCallback(() => {
-    goTo(index - 1);
-  }, [goTo, index]);
+  const goPrevious = useCallback(() => {
+    goToSlide(currentIndex - 1);
+  }, [currentIndex, goToSlide]);
 
   useEffect(() => {
     if (paused || reducedMotion) return;
 
     const timer = setInterval(() => {
-      setIndex((current) => (current + 1) % HERO_SLIDES.length);
-    }, AUTOPLAY_MS);
+      setCurrentIndex((current) => (current + 1) % heroSlides.length);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, [paused, reducedMotion]);
 
   useEffect(() => {
-    const handleVisibility = () => {
+    const handleVisibilityChange = () => {
       setPaused(document.hidden);
     };
 
     document.addEventListener(
       "visibilitychange",
-      handleVisibility
+      handleVisibilityChange
     );
 
     return () => {
       document.removeEventListener(
         "visibilitychange",
-        handleVisibility
+        handleVisibilityChange
       );
     };
   }, []);
 
-  const handleDotKeyDown = (event, currentIndex) => {
+  const handleDotKeyDown = (event, index) => {
     if (event.key === "ArrowRight") {
       event.preventDefault();
 
-      const nextIndex =
-        (currentIndex + 1) % HERO_SLIDES.length;
+      const nextIndex = (index + 1) % heroSlides.length;
 
-      goTo(nextIndex);
+      goToSlide(nextIndex);
       dotsRef.current[nextIndex]?.focus();
     }
 
@@ -291,98 +472,112 @@ function HeroSlider() {
       event.preventDefault();
 
       const previousIndex =
-        (currentIndex - 1 + HERO_SLIDES.length) %
-        HERO_SLIDES.length;
+        (index - 1 + heroSlides.length) % heroSlides.length;
 
-      goTo(previousIndex);
+      goToSlide(previousIndex);
       dotsRef.current[previousIndex]?.focus();
     }
   };
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+    >
       <div
-        className="relative w-full overflow-hidden rounded-2xl"
-        style={{ aspectRatio: "4/5" }}
+        className="relative overflow-hidden rounded-[2rem] shadow-2xl"
+        style={{ aspectRatio: "4 / 5" }}
         role="group"
         aria-roledescription="carousel"
-        aria-label="Green Valley restaurant and cafe photos"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onFocus={() => setPaused(true)}
-        onBlur={() => setPaused(false)}
+        aria-label="Green Valley Food One highlights"
       >
         <div
-          className="flex h-full transition-transform duration-[900ms] ease-out"
+          className={`flex h-full ${
+            reducedMotion
+              ? ""
+              : "transition-transform duration-[900ms] ease-out"
+          }`}
           style={{
-            transform: `translateX(-${index * 100}%)`,
+            transform: `translateX(-${currentIndex * 100}%)`,
           }}
         >
-          {HERO_SLIDES.map((slide, slideIndex) => (
-            <img
+          {heroSlides.map((slide, index) => (
+            <div
               key={slide.src}
-              src={slide.src}
-              alt={slide.alt}
-              className="h-full w-full flex-shrink-0 object-cover"
-              loading={slideIndex === 0 ? "eager" : "lazy"}
-              fetchPriority={
-                slideIndex === 0 ? "high" : "auto"
-              }
-              decoding="async"
-            />
+              className="relative h-full w-full shrink-0"
+            >
+              <img
+                src={slide.src}
+                alt={slide.alt}
+                className="h-full w-full object-cover"
+                loading={index === 0 ? "eager" : "lazy"}
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+              <div className="absolute bottom-8 left-7 right-7">
+                <p className="mb-2 text-xs uppercase tracking-[0.25em] text-white/70">
+                  Green Valley Food One
+                </p>
+
+                <p className="font-display text-2xl text-white md:text-3xl">
+                  {slide.label}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
 
         <button
           type="button"
-          onClick={previous}
-          aria-label="Previous photo"
-          className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          onClick={goPrevious}
+          aria-label="Previous image"
+          className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full transition hover:scale-110"
           style={{
             background: "rgba(246,241,231,0.9)",
-            color: "#1F3A2A",
-            outlineColor: "#C7A339",
+            color: COLORS.green,
           }}
         >
-          <ChevronLeft size={18} />
+          <ChevronLeft size={19} />
         </button>
 
         <button
           type="button"
-          onClick={next}
-          aria-label="Next photo"
-          className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          onClick={goNext}
+          aria-label="Next image"
+          className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full transition hover:scale-110"
           style={{
             background: "rgba(246,241,231,0.9)",
-            color: "#1F3A2A",
-            outlineColor: "#C7A339",
+            color: COLORS.green,
           }}
         >
-          <ChevronRight size={18} />
+          <ChevronRight size={19} />
         </button>
 
-        <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-          {HERO_SLIDES.map((slide, slideIndex) => (
+        <div className="absolute bottom-5 right-7 flex gap-2">
+          {heroSlides.map((slide, index) => (
             <button
               key={slide.src}
-              ref={(element) => {
-                dotsRef.current[slideIndex] = element;
-              }}
               type="button"
-              onClick={() => goTo(slideIndex)}
+              ref={(element) => {
+                dotsRef.current[index] = element;
+              }}
+              onClick={() => goToSlide(index)}
               onKeyDown={(event) =>
-                handleDotKeyDown(event, slideIndex)
+                handleDotKeyDown(event, index)
               }
-              aria-label={`Show photo ${slideIndex + 1}`}
-              aria-current={slideIndex === index}
-              className="h-2.5 rounded-full transition-all duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              aria-label={`Show slide ${index + 1}`}
+              aria-current={currentIndex === index}
+              className="h-2.5 rounded-full transition-all duration-300"
               style={{
-                width: slideIndex === index ? 24 : 10,
+                width: currentIndex === index ? 26 : 10,
                 background:
-                  slideIndex === index
-                    ? "#F6F1E7"
+                  currentIndex === index
+                    ? COLORS.ivory
                     : "rgba(246,241,231,0.5)",
-                outlineColor: "#C7A339",
               }}
             />
           ))}
@@ -392,10 +587,44 @@ function HeroSlider() {
   );
 }
 
+/* -------------------------------------------------------
+   Image strip component
+-------------------------------------------------------- */
+
+function ImageStrip({ images, title }) {
+  return (
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      {images.slice(0, 4).map((image, index) => (
+        <div
+          key={image.src}
+          className={`group relative overflow-hidden rounded-2xl ${
+            index === 0 ? "md:row-span-2 md:h-[420px]" : "h-48 md:h-52"
+          }`}
+        >
+          <img
+            src={image.src}
+            alt={image.alt || title}
+            loading="lazy"
+            className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+
+          <p className="absolute bottom-4 left-4 right-4 translate-y-3 text-sm text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+            {image.alt}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* -------------------------------------------------------
+   Main page
+-------------------------------------------------------- */
+
 export default function GreenValleyServices() {
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("restaurant");
-  const activeExperience = EXPERIENCES[activeTab];
 
   return (
     <>
@@ -405,10 +634,10 @@ export default function GreenValleyServices() {
 
       {!loading && (
         <main
-          className="min-h-screen w-full overflow-hidden"
+          className="min-h-screen overflow-hidden"
           style={{
-            background: "#F6F1E7",
-            color: "#20241F",
+            background: COLORS.ivory,
+            color: COLORS.ink,
             fontFamily: "'Work Sans', sans-serif",
           }}
         >
@@ -420,491 +649,781 @@ export default function GreenValleyServices() {
             }
 
             .eyebrow {
-              letter-spacing: 0.2em;
+              letter-spacing: 0.22em;
             }
 
-            .tab-btn,
             .service-card,
-            .service-image,
-            .gallery-image,
             .standard-card,
-            .standard-icon {
-              transition: all 0.35s ease;
+            .image-card,
+            .feature-image {
+              transition: transform 0.4s ease,
+                box-shadow 0.4s ease,
+                border-color 0.4s ease;
             }
 
-            .service-card:hover {
-              transform: translateY(-6px);
-              border-color: #C7A339 !important;
-            }
-
-            .service-card:hover .service-image {
-              transform: scale(1.06);
-            }
-
-            .gallery-item:hover .gallery-image {
-              transform: scale(1.06);
-            }
-
+            .service-card:hover,
             .standard-card:hover {
-              transform: translateY(-4px);
+              transform: translateY(-7px);
+              box-shadow: 0 18px 35px rgba(31, 58, 42, 0.12);
               border-color: #C7A339 !important;
-              box-shadow: 0 12px 24px rgba(31,58,42,0.08);
             }
 
-            .standard-card:hover .standard-icon {
-              background: #1F3A2A !important;
+            .image-card:hover .feature-image {
+              transform: scale(1.08);
             }
 
-            .standard-card:hover .standard-icon svg {
-              color: #F6F1E7 !important;
+            .service-card:hover .service-card-image {
+              transform: scale(1.08);
+            }
+
+            .service-card-image,
+            .feature-image {
+              transition: transform 0.7s ease;
             }
 
             @media (prefers-reduced-motion: reduce) {
-              .tab-btn,
-              .service-card,
-              .service-image,
-              .gallery-image,
-              .standard-card,
-              .standard-icon {
-                transition: none !important;
+              *,
+              *::before,
+              *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
               }
             }
           `}</style>
 
           {/* Navigation */}
-          <nav className="mx-auto flex max-w-6xl items-center px-6 py-6 md:px-10">
+          <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:px-10">
             <a
               href="/"
-              className="font-display text-xl"
-              style={{ color: "#1F3A2A" }}
+              className="font-display text-2xl"
+              style={{ color: COLORS.green }}
             >
               Green Valley
+            </a>
+
+            <a
+              href={PHONE_LINK}
+              className="hidden items-center gap-2 text-sm md:flex"
+              style={{ color: COLORS.green }}
+            >
+              <Phone size={16} />
+              {DISPLAY_PHONE}
             </a>
           </nav>
 
           {/* Hero */}
-          <header className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-8 md:grid-cols-[1.1fr_0.9fr] md:px-10 md:pb-24 md:pt-12">
+          <header className="mx-auto grid max-w-7xl items-center gap-12 px-6 pb-20 pt-10 md:grid-cols-[1fr_0.85fr] md:px-10 md:pb-28 md:pt-16">
             <div>
               <p
                 className="eyebrow mb-5 text-xs uppercase"
-                style={{ color: "#C7A339" }}
+                style={{ color: COLORS.gold }}
               >
-                Fresh flavours · Warm hospitality
+                Fresh flavours · Clean spaces · Warm hospitality
               </p>
 
               <h1
-                className="font-display mb-6 text-5xl leading-[1.05] md:text-7xl"
-                style={{ color: "#1F3A2A" }}
+                className="font-display text-5xl leading-[1.05] md:text-7xl"
+                style={{ color: COLORS.green }}
               >
-                A place for
+                Every visit should
                 <br />
-                <span className="italic">great taste.</span>
+                feel <span className="italic">special.</span>
               </h1>
 
               <p
-                className="mb-8 max-w-md text-base leading-relaxed"
+                className="mt-7 max-w-xl text-base leading-8"
                 style={{ color: "rgba(32,36,31,0.7)" }}
               >
-                Welcome to Green Valley Food One — a welcoming restaurant and
-                café serving authentic food, freshly brewed coffee, and
-                memorable experiences in Santhamaguluru.
+                At Green Valley Food One, we are committed to providing an
+                exceptional dining experience through outstanding hospitality,
+                quality service, fresh food and a clean environment.
               </p>
 
-              <div
-                className="flex items-center gap-2 text-sm"
-                style={{ color: "rgba(32,36,31,0.65)" }}
-              >
-                <Star size={15} color="#C7A339" fill="#C7A339" />
-                4.8 guest rating
-                <span style={{ color: "rgba(32,36,31,0.3)" }}>
-                  ·
-                </span>
-                <Clock size={15} />
-                Open today
-              </div>
-            </div>
-
-            <HeroSlider />
-          </header>
-
-          {/* Standards */}
-          <section
-            id="standards"
-            className="mx-auto max-w-6xl border-t px-6 py-16 md:px-10 md:py-20"
-            style={{ borderColor: "rgba(31,58,42,0.1)" }}
-          >
-            <p
-              className="eyebrow mb-3 text-xs uppercase"
-              style={{ color: "#C7A339" }}
-            >
-              Beyond the menu
-            </p>
-
-            <h2
-              className="font-display mb-2 text-3xl md:text-4xl"
-              style={{ color: "#1F3A2A" }}
-            >
-              Care in every detail.
-            </h2>
-
-            <p
-              className="mb-10 max-w-lg text-sm leading-relaxed"
-              style={{ color: "rgba(32,36,31,0.65)" }}
-            >
-              What you notice beyond the food — a trained team, a clean space,
-              careful packing, and someone who treats you well from the door to
-              the parking lot.
-            </p>
-
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-              {STANDARDS.map(({ icon: Icon, title, copy }) => (
-                <div
-                  key={title}
-                  className="standard-card rounded-xl border p-5"
-                  style={{
-                    background: "#FFFFFF",
-                    borderColor: "rgba(31,58,42,0.1)",
-                  }}
-                >
-                  <div
-                    className="standard-icon mb-4 flex h-10 w-10 items-center justify-center rounded-full"
-                    style={{ background: "rgba(199,163,57,0.15)" }}
-                  >
-                    <Icon
-                      size={18}
-                      strokeWidth={1.75}
-                      color="#1F3A2A"
-                    />
-                  </div>
-
-                  <h3
-                    className="font-display mb-1.5 text-base leading-snug"
-                    style={{ color: "#1F3A2A" }}
-                  >
-                    {title}
-                  </h3>
-
-                  <p
-                    className="text-xs leading-relaxed"
-                    style={{ color: "rgba(32,36,31,0.6)" }}
-                  >
-                    {copy}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Restaurant and Cafe */}
-          <section
-            id="restaurant"
-            className="mx-auto max-w-6xl border-t px-6 py-16 md:px-10 md:py-20"
-            style={{ borderColor: "rgba(31,58,42,0.1)" }}
-          >
-            <p
-              className="eyebrow mb-3 text-xs uppercase"
-              style={{ color: "#C7A339" }}
-            >
-              Restaurant and café
-            </p>
-
-            <h2
-              className="font-display mb-8 text-3xl md:text-4xl"
-              style={{ color: "#1F3A2A" }}
-            >
-              Choose your experience.
-            </h2>
-
-            <div className="mb-10 flex gap-3">
-              {Object.entries(EXPERIENCES).map(
-                ([key, experience]) => (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => setActiveTab(key)}
-                    className="tab-btn rounded-full border px-5 py-2.5 text-sm"
-                    style={{
-                      background:
-                        activeTab === key
-                          ? "#1F3A2A"
-                          : "transparent",
-                      color:
-                        activeTab === key
-                          ? "#F6F1E7"
-                          : "#1F3A2A",
-                      borderColor: "#1F3A2A",
-                    }}
-                  >
-                    {experience.label}
-                  </button>
-                )
-              )}
-            </div>
-
-            <div
-              id="cafe"
-              className="grid items-center gap-10 md:grid-cols-[0.9fr_1.1fr]"
-            >
-              <div className="relative">
-                <img
-                  src={activeExperience.img}
-                  alt={activeExperience.title}
-                  className="w-full rounded-2xl object-cover"
-                  style={{ aspectRatio: "4/3" }}
-                  loading="lazy"
-                />
-
-                <div className="absolute left-4 top-4 flex flex-col gap-2">
-                  <span
-                    className="rounded-full px-3 py-1.5 text-xs"
-                    style={{
-                      background: "rgba(246,241,231,0.95)",
-                      color: "#1F3A2A",
-                    }}
-                  >
-                    {activeExperience.hours}
-                  </span>
-
-                  <span
-                    className="rounded-full px-3 py-1.5 text-xs"
-                    style={{
-                      background: "rgba(246,241,231,0.95)",
-                      color: "#1F3A2A",
-                    }}
-                  >
-                    {activeExperience.tag}
-                  </span>
-                </div>
-              </div>
-
-              <div>
-                <h3
-                  className="font-display mb-3 text-2xl md:text-3xl"
-                  style={{ color: "#1F3A2A" }}
-                >
-                  {activeExperience.title}
-                </h3>
-
-                <p
-                  className="mb-8 text-sm leading-relaxed"
-                  style={{ color: "rgba(32,36,31,0.7)" }}
-                >
-                  {activeExperience.copy}
-                </p>
-
-                <div className="grid grid-cols-3 gap-4">
-                  {activeExperience.stats.map((stat) => (
-                    <div key={stat.label}>
-                      <p
-                        className="font-display text-2xl"
-                        style={{ color: "#1F3A2A" }}
-                      >
-                        {stat.value}
-                      </p>
-
-                      <p className="mt-1 text-xs font-medium">
-                        {stat.label}
-                      </p>
-
-                      <p
-                        className="mt-0.5 text-xs"
-                        style={{
-                          color: "rgba(32,36,31,0.55)",
-                        }}
-                      >
-                        {stat.sub}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Services */}
-          <section
-            id="services"
-            className="py-16 md:py-20"
-            style={{ background: "#1F3A2A" }}
-          >
-            <div className="mx-auto max-w-6xl px-6 md:px-10">
-              <p
-                className="eyebrow mb-3 text-xs uppercase"
-                style={{ color: "#C7A339" }}
-              >
-                What we offer
-              </p>
-
-              <h2
-                className="font-display mb-10 text-3xl md:text-4xl"
-                style={{ color: "#F6F1E7" }}
-              >
-                Made for food lovers.
-              </h2>
-
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {SERVICES.map(
-                  ({ icon: Icon, title, copy, img }) => (
-                    <div
-                      key={title}
-                      className="service-card overflow-hidden rounded-xl"
-                      style={{
-                        background: "rgba(246,241,231,0.06)",
-                        border:
-                          "1px solid rgba(246,241,231,0.12)",
-                      }}
-                    >
-                      <div className="relative h-48 overflow-hidden">
-                        <img
-                          src={img}
-                          alt={title}
-                          className="service-image h-full w-full object-cover"
-                          loading="lazy"
-                        />
-
-                        <div
-                          className="absolute inset-0"
-                          style={{
-                            background:
-                              "linear-gradient(to top, rgba(31,58,42,0.85), transparent)",
-                          }}
-                        />
-
-                        <div
-                          className="absolute bottom-3 left-3 flex h-9 w-9 items-center justify-center rounded-full"
-                          style={{ background: "#C7A339" }}
-                        >
-                          <Icon
-                            size={18}
-                            strokeWidth={1.75}
-                            color="#1F3A2A"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="p-6">
-                        <h3
-                          className="font-display mb-2 text-lg"
-                          style={{ color: "#F6F1E7" }}
-                        >
-                          {title}
-                        </h3>
-
-                        <p
-                          className="text-sm leading-relaxed"
-                          style={{
-                            color: "rgba(246,241,231,0.65)",
-                          }}
-                        >
-                          {copy}
-                        </p>
-                      </div>
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-          </section>
-
-          {/* Gallery */}
-          <section
-            id="gallery"
-            className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-20"
-          >
-            <p
-              className="eyebrow mb-3 text-xs uppercase"
-              style={{ color: "#C7A339" }}
-            >
-              A look inside
-            </p>
-
-            <h2
-              className="font-display mb-10 text-3xl md:text-4xl"
-              style={{ color: "#1F3A2A" }}
-            >
-              Around Green Valley.
-            </h2>
-
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-              {AMBIANCE.map((image, index) => (
-                <div
-                  key={image}
-                  className="gallery-item overflow-hidden rounded-xl"
-                  style={{ aspectRatio: "1/1" }}
-                >
-                  <img
-                    src={image}
-                    alt={`Green Valley atmosphere ${index + 1}`}
-                    className="gallery-image h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Footer */}
-          <footer
-            className="py-14"
-            style={{ background: "#1F3A2A" }}
-          >
-            <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 md:flex-row md:items-center md:justify-between md:px-10">
-              <div>
-                <h3
-                  className="font-display mb-2 text-2xl md:text-3xl"
-                  style={{ color: "#F6F1E7" }}
-                >
-                  Come enjoy the Green Valley experience.
-                </h3>
-
-                <p
-                  className="text-sm"
-                  style={{
-                    color: "rgba(246,241,231,0.6)",
-                  }}
-                >
-                  Fresh food, great coffee, and warm hospitality.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-4 text-sm">
+              <div className="mt-8 flex flex-wrap gap-3">
                 <a
-                  href={PHONE_LINK}
-                  className="flex items-center gap-2 transition-opacity hover:opacity-75"
-                  style={{ color: "#F6F1E7" }}
-                  aria-label={`Call Green Valley Food One at ${DISPLAY_PHONE}`}
+                  href="#services"
+                  className="rounded-full px-6 py-3 text-sm font-medium transition hover:-translate-y-1"
+                  style={{
+                    background: COLORS.green,
+                    color: COLORS.ivory,
+                  }}
                 >
-                  <Phone size={16} />
-                  {DISPLAY_PHONE}
+                  Explore our services
                 </a>
 
                 <a
                   href={WHATSAPP_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 rounded-full px-4 py-2 transition-opacity hover:opacity-80"
+                  className="rounded-full border px-6 py-3 text-sm font-medium transition hover:-translate-y-1"
                   style={{
-                    background: "#25D366",
-                    color: "#FFFFFF",
+                    borderColor: COLORS.green,
+                    color: COLORS.green,
                   }}
-                  aria-label="Contact Green Valley Food One on WhatsApp"
                 >
-                  <MessageCircle size={16} />
-                  WhatsApp
+                  Contact us
                 </a>
+              </div>
+
+              <div className="mt-9 flex flex-wrap gap-5 text-sm text-black/60">
+                <span className="flex items-center gap-2">
+                  <Star size={16} fill={COLORS.gold} color={COLORS.gold} />
+                  Guest-focused service
+                </span>
+
+                <span className="flex items-center gap-2">
+                  <ShieldCheck size={16} color={COLORS.gold} />
+                  Hygiene first
+                </span>
               </div>
             </div>
 
-            <div className="mx-auto mt-10 flex max-w-6xl items-center gap-2 px-6 text-sm md:px-10">
-              <MapPin size={16} color="#C7A339" />
+            <HeroSlider />
+          </header>
 
-              <span
+          {/* Introduction */}
+          <section
+            className="border-y"
+            style={{
+              background: COLORS.green,
+              borderColor: "rgba(246,241,231,0.1)",
+            }}
+          >
+            <div className="mx-auto grid max-w-7xl gap-10 px-6 py-16 md:grid-cols-3 md:px-10 md:py-20">
+              <div>
+                <p
+                  className="eyebrow text-xs uppercase"
+                  style={{ color: COLORS.gold }}
+                >
+                  Our promise
+                </p>
+
+                <h2
+                  className="font-display mt-4 text-3xl md:text-4xl"
+                  style={{ color: COLORS.ivory }}
+                >
+                  Care in every detail.
+                </h2>
+              </div>
+
+              <p
+                className="text-sm leading-8 md:col-span-2 md:max-w-2xl"
+                style={{ color: "rgba(246,241,231,0.72)" }}
+              >
+                From the way our staff welcome you to the way our kitchen is
+                maintained, every detail is designed to make your visit
+                comfortable. We believe good food becomes even better when it
+                is served with care, respect and genuine hospitality.
+              </p>
+            </div>
+          </section>
+
+          {/* Services */}
+          <section
+            id="services"
+            className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28"
+          >
+            <div className="max-w-2xl">
+              <p
+                className="eyebrow mb-3 text-xs uppercase"
+                style={{ color: COLORS.gold }}
+              >
+                What we provide
+              </p>
+
+              <h2
+                className="font-display text-4xl md:text-5xl"
+                style={{ color: COLORS.green }}
+              >
+                More than just a meal.
+              </h2>
+
+              <p className="mt-5 text-sm leading-7 text-black/60">
+                Our services are built around food quality, cleanliness,
+                comfort and a friendly guest experience.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {services.map(
+                ({ icon: Icon, title, text, image }) => (
+                  <article
+                    key={title}
+                    className="service-card overflow-hidden rounded-2xl border bg-white"
+                    style={{ borderColor: "rgba(31,58,42,0.1)" }}
+                  >
+                    <div className="relative h-52 overflow-hidden">
+                      <img
+                        src={image}
+                        alt={title}
+                        loading="lazy"
+                        className="service-card-image h-full w-full object-cover"
+                      />
+
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+
+                      <div
+                        className="absolute bottom-4 left-4 flex h-10 w-10 items-center justify-center rounded-full"
+                        style={{ background: COLORS.gold }}
+                      >
+                        <Icon size={19} color={COLORS.green} />
+                      </div>
+                    </div>
+
+                    <div className="p-6">
+                      <h3
+                        className="font-display text-xl"
+                        style={{ color: COLORS.green }}
+                      >
+                        {title}
+                      </h3>
+
+                      <p className="mt-3 text-sm leading-6 text-black/60">
+                        {text}
+                      </p>
+                    </div>
+                  </article>
+                )
+              )}
+            </div>
+          </section>
+
+          {/* Restaurant dining */}
+          <section
+            className="border-y"
+            style={{
+              background: "#EEE7D8",
+              borderColor: "rgba(31,58,42,0.1)",
+            }}
+          >
+            <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:px-10 md:py-28">
+              <div>
+                <p
+                  className="eyebrow mb-4 text-xs uppercase"
+                  style={{ color: COLORS.gold }}
+                >
+                  Restaurant dining
+                </p>
+
+                <h2
+                  className="font-display text-4xl leading-tight md:text-5xl"
+                  style={{ color: COLORS.green }}
+                >
+                  Comfortable dining for every occasion.
+                </h2>
+
+                <p className="mt-6 text-sm leading-8 text-black/65">
+                  Enjoy authentic Andhra flavours, traditional meals, biryanis,
+                  curries and delicious dishes in a comfortable dining space.
+                  Whether you visit alone, with family or with friends, our
+                  restaurant is designed to make you feel welcome.
+                </p>
+
+                <div className="mt-8 grid grid-cols-2 gap-5">
+                  {[
+                    "Family-friendly atmosphere",
+                    "Comfortable seating",
+                    "Freshly prepared food",
+                    "Polite table service",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-start gap-2 text-sm text-black/70"
+                    >
+                      <CheckCircle2
+                        size={17}
+                        color={COLORS.gold}
+                        className="mt-0.5 shrink-0"
+                      />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <ImageStrip
+                images={restaurantImages}
+                title="Restaurant dining"
+              />
+            </div>
+          </section>
+
+          {/* Cafe */}
+          <section className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
+            <div className="grid items-center gap-12 md:grid-cols-[0.9fr_1.1fr]">
+              <ImageStrip images={cafeImages} title="Cafe experience" />
+
+              <div>
+                <p
+                  className="eyebrow mb-4 text-xs uppercase"
+                  style={{ color: COLORS.gold }}
+                >
+                  Cafe experience
+                </p>
+
+                <h2
+                  className="font-display text-4xl leading-tight md:text-5xl"
+                  style={{ color: COLORS.green }}
+                >
+                  Slow moments. Good coffee.
+                </h2>
+
+                <p className="mt-6 text-sm leading-8 text-black/65">
+                  Take a break with freshly brewed coffee, refreshing
+                  beverages, desserts and light snacks. Our cafe is a relaxed
+                  space for conversations, quick breaks and peaceful evenings.
+                </p>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {[
+                    "Fresh coffee",
+                    "Light snacks",
+                    "Desserts",
+                    "Relaxed atmosphere",
+                  ].map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border px-4 py-2 text-xs"
+                      style={{
+                        borderColor: "rgba(31,58,42,0.2)",
+                        color: COLORS.green,
+                      }}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Kitchen and hygiene */}
+          <section
+            className="border-y"
+            style={{
+              background: COLORS.darkGreen,
+              borderColor: "rgba(246,241,231,0.1)",
+            }}
+          >
+            <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:px-10 md:py-28">
+              <div>
+                <p
+                  className="eyebrow mb-4 text-xs uppercase"
+                  style={{ color: COLORS.gold }}
+                >
+                  Kitchen and hygiene
+                </p>
+
+                <h2
+                  className="font-display text-4xl leading-tight md:text-5xl"
+                  style={{ color: COLORS.ivory }}
+                >
+                  Clean preparation. Consistent quality.
+                </h2>
+
+                <p
+                  className="mt-6 text-sm leading-8"
+                  style={{ color: "rgba(246,241,231,0.7)" }}
+                >
+                  We follow strict cleanliness practices during food
+                  preparation, cooking and serving. Our team pays attention to
+                  kitchen hygiene, fresh ingredients, clean preparation
+                  surfaces and safe food handling.
+                </p>
+
+                <div className="mt-8 space-y-4">
+                  {[
+                    "Clean preparation and serving areas",
+                    "Fresh ingredients used for every dish",
+                    "Regular cleaning during restaurant operations",
+                    "Careful food handling and presentation",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-3 text-sm"
+                      style={{ color: "rgba(246,241,231,0.78)" }}
+                    >
+                      <CheckCircle2 size={17} color={COLORS.gold} />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                {kitchenImages.slice(0, 4).map((image, index) => (
+                  <div
+                    key={image.src}
+                    className={`image-card group relative overflow-hidden rounded-2xl ${
+                      index === 0 ? "row-span-2 h-[430px]" : "h-52"
+                    }`}
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      loading="lazy"
+                      className="feature-image h-full w-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Washrooms */}
+          <section className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
+            <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
+              <ImageStrip
+                images={kitchenImages.slice(2, 6)}
+                title="Clean washrooms"
+              />
+
+              <div>
+                <p
+                  className="eyebrow mb-4 text-xs uppercase"
+                  style={{ color: COLORS.gold }}
+                >
+                  Guest facilities
+                </p>
+
+                <h2
+                  className="font-display text-4xl leading-tight md:text-5xl"
+                  style={{ color: COLORS.green }}
+                >
+                  Clean washrooms for your comfort.
+                </h2>
+
+                <p className="mt-6 text-sm leading-8 text-black/65">
+                  Clean and comfortable washrooms are an important part of a
+                  good dining experience. Our guest facilities are regularly
+                  checked and maintained to provide a hygienic environment for
+                  every visitor.
+                </p>
+
+                <div className="mt-8 flex items-center gap-3 text-sm text-black/70">
+                  <Sparkles size={18} color={COLORS.gold} />
+                  Regularly maintained guest facilities
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Professional staff */}
+          <section
+            className="border-y"
+            style={{
+              background: "#EEE7D8",
+              borderColor: "rgba(31,58,42,0.1)",
+            }}
+          >
+            <div className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:px-10 md:py-28">
+              <div>
+                <p
+                  className="eyebrow mb-4 text-xs uppercase"
+                  style={{ color: COLORS.gold }}
+                >
+                  Professional team
+                </p>
+
+                <h2
+                  className="font-display text-4xl leading-tight md:text-5xl"
+                  style={{ color: COLORS.green }}
+                >
+                  Friendly people make the difference.
+                </h2>
+
+                <p className="mt-6 text-sm leading-8 text-black/65">
+                  Our waiters and team members wear neat uniforms, maintain
+                  excellent hygiene and present themselves professionally. We
+                  communicate politely, assist with menu choices and respond to
+                  every request with patience.
+                </p>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {[
+                    "Neat uniforms",
+                    "Excellent hygiene",
+                    "Polite communication",
+                    "Friendly assistance",
+                  ].map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border px-4 py-2 text-xs"
+                      style={{
+                        borderColor: "rgba(31,58,42,0.2)",
+                        color: COLORS.green,
+                      }}
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <ImageStrip images={uniformImages} title="Professional staff" />
+            </div>
+          </section>
+
+          {/* Standards */}
+          <section
+            id="standards"
+            className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28"
+          >
+            <div className="max-w-2xl">
+              <p
+                className="eyebrow mb-4 text-xs uppercase"
+                style={{ color: COLORS.gold }}
+              >
+                Our service standards
+              </p>
+
+              <h2
+                className="font-display text-4xl md:text-5xl"
+                style={{ color: COLORS.green }}
+              >
+                Hospitality you can count on.
+              </h2>
+            </div>
+
+            <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+              {standards.map(({ icon: Icon, title, text }) => (
+                <article
+                  key={title}
+                  className="standard-card rounded-2xl border bg-white p-5 md:p-6"
+                  style={{ borderColor: "rgba(31,58,42,0.1)" }}
+                >
+                  <div
+                    className="mb-5 flex h-11 w-11 items-center justify-center rounded-full"
+                    style={{ background: "rgba(199,163,57,0.17)" }}
+                  >
+                    <Icon size={19} color={COLORS.green} />
+                  </div>
+
+                  <h3
+                    className="font-display text-lg leading-snug"
+                    style={{ color: COLORS.green }}
+                  >
+                    {title}
+                  </h3>
+
+                  <p className="mt-3 text-xs leading-6 text-black/60">
+                    {text}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          {/* Customers and parking */}
+          <section
+            className="border-y"
+            style={{
+              background: COLORS.green,
+              borderColor: "rgba(246,241,231,0.1)",
+            }}
+          >
+            <div className="mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-2 md:px-10 md:py-28">
+              <div>
+                <p
+                  className="eyebrow mb-4 text-xs uppercase"
+                  style={{ color: COLORS.gold }}
+                >
+                  Customer satisfaction
+                </p>
+
+                <h2
+                  className="font-display text-4xl leading-tight md:text-5xl"
+                  style={{ color: COLORS.ivory }}
+                >
+                  Your experience matters to us.
+                </h2>
+
+                <p
+                  className="mt-6 text-sm leading-8"
+                  style={{ color: "rgba(246,241,231,0.7)" }}
+                >
+                  We value every customer's feedback and use suggestions and
+                  reviews to continuously improve our food, service and dining
+                  environment.
+                </p>
+
+                <div className="mt-8 flex items-center gap-3">
+                  <HeartHandshake size={22} color={COLORS.gold} />
+
+                  <span
+                    className="text-sm"
+                    style={{ color: "rgba(246,241,231,0.8)" }}
+                  >
+                    Every guest is welcomed with respect and care.
+                  </span>
+                </div>
+              </div>
+
+              <ImageStrip images={customerImages} title="Our customers" />
+            </div>
+          </section>
+
+          {/* Parking and convenience */}
+          <section className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
+            <div className="grid items-center gap-12 md:grid-cols-2">
+              <div className="image-card group relative overflow-hidden rounded-[2rem]">
+                <img
+                  src="/images/hero-2.png"
+                  alt="Green Valley parking zone"
+                  loading="lazy"
+                  className="feature-image h-[360px] w-full object-cover md:h-[450px]"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+                <div className="absolute bottom-7 left-7">
+                  <p className="eyebrow text-xs uppercase text-white/70">
+                    Easy arrival
+                  </p>
+
+                  <p className="font-display mt-2 text-3xl text-white">
+                    Convenient parking
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p
+                  className="eyebrow mb-4 text-xs uppercase"
+                  style={{ color: COLORS.gold }}
+                >
+                  Parking zone
+                </p>
+
+                <h2
+                  className="font-display text-4xl leading-tight md:text-5xl"
+                  style={{ color: COLORS.green }}
+                >
+                  Arrive comfortably. Dine peacefully.
+                </h2>
+
+                <p className="mt-6 text-sm leading-8 text-black/65">
+                  Convenient parking makes it easier for individuals, families
+                  and groups to visit Green Valley Food One without unnecessary
+                  stress.
+                </p>
+
+                <div className="mt-8 grid grid-cols-2 gap-5">
+                  <div>
+                    <Car size={21} color={COLORS.gold} />
+                    <p className="mt-3 text-sm font-medium">
+                      Two-wheeler parking
+                    </p>
+                  </div>
+
+                  <div>
+                    <Car size={21} color={COLORS.gold} />
+                    <p className="mt-3 text-sm font-medium">
+                      Car parking
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Final CTA */}
+          <section
+            className="px-6 py-20 text-center md:px-10 md:py-28"
+            style={{ background: COLORS.gold }}
+          >
+            <Utensils
+              className="mx-auto"
+              size={30}
+              color={COLORS.green}
+            />
+
+            <h2
+              className="font-display mx-auto mt-5 max-w-2xl text-4xl leading-tight md:text-5xl"
+              style={{ color: COLORS.green }}
+            >
+              Good food, clean spaces and genuine hospitality.
+            </h2>
+
+            <p
+              className="mx-auto mt-5 max-w-xl text-sm leading-7"
+              style={{ color: "rgba(31,58,42,0.75)" }}
+            >
+              Visit Green Valley Food One and enjoy a dining experience made
+              with care.
+            </p>
+
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <a
+                href={PHONE_LINK}
+                className="flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition hover:-translate-y-1"
                 style={{
-                  color: "rgba(246,241,231,0.6)",
+                  background: COLORS.green,
+                  color: COLORS.ivory,
                 }}
               >
-                Santhamaguluru, Andhra Pradesh
-              </span>
+                <Phone size={16} />
+                Call us
+              </a>
+
+              <a
+                href={WHATSAPP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-full border px-6 py-3 text-sm font-medium transition hover:-translate-y-1"
+                style={{
+                  borderColor: COLORS.green,
+                  color: COLORS.green,
+                }}
+              >
+                <MessageCircle size={16} />
+                WhatsApp
+              </a>
+            </div>
+          </section>
+
+          {/* Footer */}
+          <footer
+            className="px-6 py-10 md:px-10"
+            style={{ background: COLORS.darkGreen }}
+          >
+            <div className="mx-auto flex max-w-7xl flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p
+                  className="font-display text-2xl"
+                  style={{ color: COLORS.ivory }}
+                >
+                  Green Valley Food One
+                </p>
+
+                <p
+                  className="mt-2 text-sm"
+                  style={{ color: "rgba(246,241,231,0.6)" }}
+                >
+                  Fresh flavours. Warm hospitality.
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3 text-sm md:items-end">
+                <a
+                  href={PHONE_LINK}
+                  className="flex items-center gap-2"
+                  style={{ color: COLORS.ivory }}
+                >
+                  <Phone size={15} />
+                  {DISPLAY_PHONE}
+                </a>
+
+                <span
+                  className="flex items-center gap-2"
+                  style={{ color: "rgba(246,241,231,0.6)" }}
+                >
+                  <MapPin size={15} color={COLORS.gold} />
+                  Santhamaguluru, Andhra Pradesh
+                </span>
+              </div>
             </div>
           </footer>
         </main>

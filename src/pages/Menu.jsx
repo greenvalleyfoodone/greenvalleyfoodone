@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import Loader2 from '../components/Loader2';
 
 /* ============================================
@@ -80,8 +80,19 @@ function CategoryCard({ category, side, delay }) {
 }
 
 /* ---------- Section Block ---------- */
-function SectionBlock({ side, data, delayStart }) {
-  const [filter, setFilter] = useState('all');
+function SectionBlock({ side }) {
+  const navigate = useNavigate();
+
+  // Initial filter comes straight from the URL: /menu/cafe -> 'cafe',
+  // /menu/restaurant -> 'restaurant', /menu -> 'all'
+  const [filter, setFilter] = useState(side || 'all');
+
+  // Keep the on-page filter in sync if the URL param changes
+  // (e.g. user clicks the CTA on Home while already on /menu/*)
+  useEffect(() => {
+    setFilter(side || 'all');
+  }, [side]);
+
   const showCafe = filter === 'all' || filter === 'cafe';
   const showRestaurant = filter === 'all' || filter === 'restaurant';
 
@@ -90,6 +101,13 @@ function SectionBlock({ side, data, delayStart }) {
     { key: 'cafe', label: 'Cafe' },
     { key: 'restaurant', label: 'Restaurant' },
   ];
+
+  // Clicking a filter tab also updates the URL, so the address bar
+  // and the visible section always match (and the page is shareable/bookmarkable)
+  const handleFilterClick = (key) => {
+    setFilter(key);
+    navigate(key === 'all' ? '/menu' : `/menu/${key}`, { replace: true });
+  };
 
   return (
     <div style={styles.page}>
@@ -117,7 +135,7 @@ function SectionBlock({ side, data, delayStart }) {
           {filters.map((f) => (
             <button
               key={f.key}
-              onClick={() => setFilter(f.key)}
+              onClick={() => handleFilterClick(f.key)}
               style={{
                 ...styles.filterBtn,
                 ...(filter === f.key ? styles.filterBtnActive : {}),
@@ -186,12 +204,13 @@ function SectionBlock({ side, data, delayStart }) {
 }
 
 export default function MenuPage() {
+  const { side } = useParams();
   const [loading, setLoading] = useState(true);
 
   return (
     <>
       {loading && <Loader2 onComplete={() => setLoading(false)} />}
-      {!loading && <SectionBlock />}
+      {!loading && <SectionBlock side={side} />}
     </>
   );
 }

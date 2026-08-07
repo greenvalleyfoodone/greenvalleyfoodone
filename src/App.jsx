@@ -5,8 +5,8 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Cafe from "./pages/Cafe";
 import Restaurant from "./pages/Restaurant";
-import MenuPage from "./pages/Menu";          // ← NEW: Category grid landing
-import CategoryDetail from "./pages/CategoryDetail"; // ← NEW: Product detail
+import MenuPage from "./pages/Menu";          // Category grid landing (all, or filtered by side)
+import CategoryDetail from "./pages/CategoryDetail"; // Product detail
 import Gallery from "./pages/Gallery";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -29,11 +29,12 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/cafe" element={<Cafe />} />
           <Route path="/restaurant" element={<Restaurant />} />
-          
-          {/* NEW MENU SYSTEM */}
+
+          {/* MENU SYSTEM — dynamic by side and category */}
           <Route path="/menu" element={<MenuPage />} />
+          <Route path="/menu/:side" element={<MenuPage />} />
           <Route path="/menu/:side/:categoryId" element={<CategoryDetail />} />
-          
+
           <Route path="/services" element={<Services />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/about" element={<About />} />

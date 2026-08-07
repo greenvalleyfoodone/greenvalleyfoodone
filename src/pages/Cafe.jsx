@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 
-const cafeInteriorImg = "https://images.unsplash.com/photo-1509042239860-f550ce710c93?w=1200&auto=format&fit=crop";
+const cafeInteriorImg = "/images/cafe.png";
 const coffeeBeansImg = "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=900&auto=format&fit=crop";
 const coldCoffeeImg = "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=900&auto=format&fit=crop";
 const snacksImg = "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=900&auto=format&fit=crop";
@@ -513,7 +513,6 @@ export default function CafePage() {
 
       <section id="gallery" className={`floating-gallery ${showGallery ? "show" : ""}`}>
         <h2 className="gallery-title">Our Cafe Moments</h2>
-        <p className="gallery-sub">Floating, circular, and falling motion gallery for a lively showcase.</p>
         <div className="gallery-grid">
           {galleryImages.map((img, index) => (
             <FloatingImage key={img.id} img={img} index={index} onClick={setSelected} />

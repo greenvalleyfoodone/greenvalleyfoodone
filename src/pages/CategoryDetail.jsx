@@ -6,6 +6,11 @@ import { Link, useParams } from 'react-router-dom';
    Sidebar + Product Grid + Category Sliders
    ============================================ */
 
+/* Height (px) of the global fixed/sticky navbar from Layout.jsx.
+   Update this constant if your navbar's actual rendered height changes,
+   so the sidebar and page content keep clearing it correctly. */
+const NAVBAR_HEIGHT = 88;
+
 /* ---------- FULL PRODUCT DATA ---------- */
 const allData = {
   cafe: {
@@ -831,6 +836,8 @@ const styles = {
     color: '#2c1810',
     minHeight: '100vh',
     WebkitFontSmoothing: 'antialiased',
+    /* Push all page content below the fixed/sticky global navbar */
+    paddingTop: `${NAVBAR_HEIGHT}px`,
   },
 
   /* --- Layout --- */
@@ -848,8 +855,9 @@ const styles = {
     borderRight: '1px solid #f0e6dc',
     padding: '24px 16px',
     position: 'sticky',
-    top: 0,
-    height: '100vh',
+    /* Stick just below the navbar instead of at the very top of the viewport */
+    top: `${NAVBAR_HEIGHT}px`,
+    height: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
     overflowY: 'auto',
     flexShrink: 0,
   },
