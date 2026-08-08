@@ -21,6 +21,7 @@ import { Route as ServicesRouteImport } from './routes/services'
 import { Route as BillIndexRouteImport } from './routes/bill/index'
 import { Route as BillHistoryRouteImport } from './routes/bill/history'
 import { Route as BillReportsRouteImport } from './routes/bill/reports'
+import { Route as BillSettingsRouteImport } from './routes/bill/settings'
 import { Route as MenuIndexRouteImport } from './routes/menu/index'
 import { Route as MenuSideIndexRouteImport } from './routes/menu/$side/index'
 import { Route as MenuSideCategoryIdRouteImport } from './routes/menu/$side/$categoryId'
@@ -85,6 +86,11 @@ const BillReportsRoute = BillReportsRouteImport.update({
   path: '/reports',
   getParentRoute: () => BillRouteRoute,
 } as any)
+const BillSettingsRoute = BillSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => BillRouteRoute,
+} as any)
 const MenuIndexRoute = MenuIndexRouteImport.update({
   id: '/menu/',
   path: '/menu/',
@@ -113,6 +119,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/bill/history': typeof BillHistoryRoute
   '/bill/reports': typeof BillReportsRoute
+  '/bill/settings': typeof BillSettingsRoute
   '/bill/': typeof BillIndexRoute
   '/menu/': typeof MenuIndexRoute
   '/menu/$side/$categoryId': typeof MenuSideCategoryIdRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/bill/history': typeof BillHistoryRoute
   '/bill/reports': typeof BillReportsRoute
+  '/bill/settings': typeof BillSettingsRoute
   '/bill': typeof BillIndexRoute
   '/menu': typeof MenuIndexRoute
   '/menu/$side/$categoryId': typeof MenuSideCategoryIdRoute
@@ -147,6 +155,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/bill/history': typeof BillHistoryRoute
   '/bill/reports': typeof BillReportsRoute
+  '/bill/settings': typeof BillSettingsRoute
   '/bill/': typeof BillIndexRoute
   '/menu/': typeof MenuIndexRoute
   '/menu/$side/$categoryId': typeof MenuSideCategoryIdRoute
@@ -166,6 +175,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/bill/history'
     | '/bill/reports'
+    | '/bill/settings'
     | '/bill/'
     | '/menu/'
     | '/menu/$side/$categoryId'
@@ -182,6 +192,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/bill/history'
     | '/bill/reports'
+    | '/bill/settings'
     | '/bill'
     | '/menu'
     | '/menu/$side/$categoryId'
@@ -199,6 +210,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/bill/history'
     | '/bill/reports'
+    | '/bill/settings'
     | '/bill/'
     | '/menu/'
     | '/menu/$side/$categoryId'
@@ -306,6 +318,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BillReportsRouteImport
       parentRoute: typeof BillRouteRoute
     }
+    '/bill/settings': {
+      id: '/bill/settings'
+      path: '/settings'
+      fullPath: '/bill/settings'
+      preLoaderRoute: typeof BillSettingsRouteImport
+      parentRoute: typeof BillRouteRoute
+    }
     '/menu/': {
       id: '/menu/'
       path: '/menu'
@@ -333,12 +352,14 @@ declare module '@tanstack/react-router' {
 interface BillRouteRouteChildren {
   BillHistoryRoute: typeof BillHistoryRoute
   BillReportsRoute: typeof BillReportsRoute
+  BillSettingsRoute: typeof BillSettingsRoute
   BillIndexRoute: typeof BillIndexRoute
 }
 
 const BillRouteRouteChildren: BillRouteRouteChildren = {
   BillHistoryRoute: BillHistoryRoute,
   BillReportsRoute: BillReportsRoute,
+  BillSettingsRoute: BillSettingsRoute,
   BillIndexRoute: BillIndexRoute,
 }
 
