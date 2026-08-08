@@ -209,3 +209,38 @@ textarea:focus-visible {
   }
 }
 
+
+/* ---- POS receipt printing (80mm thermal) ---- */
+@media print {
+  @page {
+    size: 80mm auto;
+    margin: 4mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    width: 80mm;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  .print-area,
+  .print-area * {
+    visibility: visible !important;
+  }
+
+  .print-area {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 72mm !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    color: #000 !important;
+    background: #fff !important;
+  }
+}
