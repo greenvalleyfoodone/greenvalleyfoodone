@@ -170,14 +170,13 @@ export async function createBill(input: {
   const { data, error } = await supabase.rpc("pos_create_bill", {
     p_items: input.items,
     p_order_type: input.orderType,
-    p_table_id: input.tableId,
+    ...(input.tableId ? { p_table_id: input.tableId } : {}),
     p_discount_type: input.discountType,
     p_discount_value: input.discountValue,
     p_payment_method: input.paymentMethod,
     p_payment_status: input.paymentStatus,
     p_paid_amount: input.paidAmount,
-    p_notes: input.notes ?? null,
-    p_order_id: null,
+    ...(input.notes ? { p_notes: input.notes } : {}),
   });
   if (error) throw new Error(error.message);
   return data as unknown as { bill_id: string; bill_number: string; total: number };
