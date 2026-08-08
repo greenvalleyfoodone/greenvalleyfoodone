@@ -127,6 +127,18 @@ function ScrollToTop() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { pathname } = useLocation();
+  // The /bill area is a standalone staff admin panel — no public site chrome.
+  const isAdminPanel = pathname === "/bill" || pathname.startsWith("/bill/");
+
+  if (isAdminPanel) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <ScrollToTop />
+        <Outlet />
+      </QueryClientProvider>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -142,4 +154,5 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
+
 
