@@ -20,6 +20,7 @@ import { Route as RestaurantRouteImport } from './routes/restaurant'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as BillIndexRouteImport } from './routes/bill/index'
 import { Route as BillHistoryRouteImport } from './routes/bill/history'
+import { Route as BillReportsRouteImport } from './routes/bill/reports'
 import { Route as MenuIndexRouteImport } from './routes/menu/index'
 import { Route as MenuSideIndexRouteImport } from './routes/menu/$side/index'
 import { Route as MenuSideCategoryIdRouteImport } from './routes/menu/$side/$categoryId'
@@ -79,6 +80,11 @@ const BillHistoryRoute = BillHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => BillRouteRoute,
 } as any)
+const BillReportsRoute = BillReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => BillRouteRoute,
+} as any)
 const MenuIndexRoute = MenuIndexRouteImport.update({
   id: '/menu/',
   path: '/menu/',
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/restaurant': typeof RestaurantRoute
   '/services': typeof ServicesRoute
   '/bill/history': typeof BillHistoryRoute
+  '/bill/reports': typeof BillReportsRoute
   '/bill/': typeof BillIndexRoute
   '/menu/': typeof MenuIndexRoute
   '/menu/$side/$categoryId': typeof MenuSideCategoryIdRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/restaurant': typeof RestaurantRoute
   '/services': typeof ServicesRoute
   '/bill/history': typeof BillHistoryRoute
+  '/bill/reports': typeof BillReportsRoute
   '/bill': typeof BillIndexRoute
   '/menu': typeof MenuIndexRoute
   '/menu/$side/$categoryId': typeof MenuSideCategoryIdRoute
@@ -138,6 +146,7 @@ export interface FileRoutesById {
   '/restaurant': typeof RestaurantRoute
   '/services': typeof ServicesRoute
   '/bill/history': typeof BillHistoryRoute
+  '/bill/reports': typeof BillReportsRoute
   '/bill/': typeof BillIndexRoute
   '/menu/': typeof MenuIndexRoute
   '/menu/$side/$categoryId': typeof MenuSideCategoryIdRoute
@@ -156,6 +165,7 @@ export interface FileRouteTypes {
     | '/restaurant'
     | '/services'
     | '/bill/history'
+    | '/bill/reports'
     | '/bill/'
     | '/menu/'
     | '/menu/$side/$categoryId'
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/restaurant'
     | '/services'
     | '/bill/history'
+    | '/bill/reports'
     | '/bill'
     | '/menu'
     | '/menu/$side/$categoryId'
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/restaurant'
     | '/services'
     | '/bill/history'
+    | '/bill/reports'
     | '/bill/'
     | '/menu/'
     | '/menu/$side/$categoryId'
@@ -287,6 +299,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BillHistoryRouteImport
       parentRoute: typeof BillRouteRoute
     }
+    '/bill/reports': {
+      id: '/bill/reports'
+      path: '/reports'
+      fullPath: '/bill/reports'
+      preLoaderRoute: typeof BillReportsRouteImport
+      parentRoute: typeof BillRouteRoute
+    }
     '/menu/': {
       id: '/menu/'
       path: '/menu'
@@ -313,11 +332,13 @@ declare module '@tanstack/react-router' {
 
 interface BillRouteRouteChildren {
   BillHistoryRoute: typeof BillHistoryRoute
+  BillReportsRoute: typeof BillReportsRoute
   BillIndexRoute: typeof BillIndexRoute
 }
 
 const BillRouteRouteChildren: BillRouteRouteChildren = {
   BillHistoryRoute: BillHistoryRoute,
+  BillReportsRoute: BillReportsRoute,
   BillIndexRoute: BillIndexRoute,
 }
 
