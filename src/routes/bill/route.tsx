@@ -133,6 +133,8 @@ const NAV = [
   { to: "/bill", label: "Billing" },
   { to: "/bill/history", label: "Bill history" },
   { to: "/bill/reports", label: "Sales" },
+  { to: "/bill/reservations", label: "Reservations" },
+  { to: "/bill/menu", label: "Website menu" },
   { to: "/bill/settings", label: "Settings" },
 ];
 
