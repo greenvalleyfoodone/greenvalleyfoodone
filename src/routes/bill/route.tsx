@@ -133,6 +133,8 @@ const NAV = [
   { to: "/bill", label: "Billing" },
   { to: "/bill/history", label: "Bill history" },
   { to: "/bill/reports", label: "Sales" },
+  { to: "/bill/reservations", label: "Reservations" },
+  { to: "/bill/menu", label: "Website menu" },
   { to: "/bill/settings", label: "Settings" },
 ];
 
@@ -175,10 +177,10 @@ function Shell() {
 
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900">
-      <header className="no-print sticky top-0 z-40 flex items-center justify-between border-b border-slate-800 bg-slate-900 px-4 py-2.5 text-slate-100">
-        <div className="flex items-center gap-6">
-          <span className="text-sm font-bold uppercase tracking-wide">Green Valley POS</span>
-          <nav className="flex items-center gap-1">
+      <header className="no-print sticky top-0 z-40 flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 bg-slate-900 px-4 py-2.5 text-slate-100">
+        <div className="flex min-w-0 items-center gap-3 sm:gap-6">
+          <span className="hidden text-sm font-bold uppercase tracking-wide sm:inline">Green Valley POS</span>
+          <nav className="flex items-center gap-1 overflow-x-auto">
             {NAV.filter((n) => n.to !== "/bill/settings" || isAdmin).map((n) => {
               const active =
                 n.to === "/bill" ? location.pathname === "/bill" : location.pathname === n.to;

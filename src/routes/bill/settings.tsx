@@ -14,6 +14,17 @@ function SettingsPage() {
   const settingsQuery = useQuery({ queryKey: ["pos", "settings"], queryFn: fetchSettings });
   const menuQuery = useQuery({ queryKey: ["pos", "menu"], queryFn: fetchMenu });
   const tablesQuery = useQuery({ queryKey: ["pos", "tables"], queryFn: fetchTables });
+  const imagesQuery = useQuery({
+    queryKey: ["pos", "site-images"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_images")
+        .select("id, key, label, image_url")
+        .order("label");
+      if (error) throw error;
+      return data as { id: string; key: string; label: string; image_url: string | null }[];
+    },
+  });
   const [form, setForm] = useState<AppSettings | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -113,6 +124,45 @@ function SettingsPage() {
       </section>
 
       <div className="grid gap-3">
+        <section className="rounded-lg bg-white p-4 shadow-sm">
+          <h2 className="text-sm font-bold uppercase tracking-wide text-slate-600">
+            Website pictures
+          </h2>
+          <div className="mt-3 grid gap-2">
+            {(imagesQuery.data ?? []).map((img) => (
+              <div key={img.id} className="grid gap-2 sm:grid-cols-[auto_1fr]">
+                <div className="flex items-center gap-2">
+                  {img.image_url ? (
+                    <img src={img.image_url} alt="" className="h-10 w-16 rounded object-cover" />
+                  ) : null}
+                  <span className="text-xs font-medium text-slate-600">{img.label}</span>
+                </div>
+                <input
+                  defaultValue={img.image_url ?? ""}
+                  placeholder="Picture URL"
+                  onBlur={async (e) => {
+                    if (e.target.value === (img.image_url ?? "")) return;
+                    const { error } = await supabase
+                      .from("site_images")
+                      .update({ image_url: e.target.value })
+                      .eq("id", img.id);
+                    if (error) {
+                      toast.error(error.message);
+                      return;
+                    }
+                    toast.success("Picture updated on the website.");
+                    void queryClient.invalidateQueries({ queryKey: ["pos", "site-images"] });
+                  }}
+                  className="h-10 w-full rounded-md border border-slate-300 px-3 text-sm"
+                />
+              </div>
+            ))}
+            {(imagesQuery.data ?? []).length === 0 ? (
+              <p className="text-sm text-slate-500">No editable pictures configured yet.</p>
+            ) : null}
+          </div>
+        </section>
+
         <section className="rounded-lg bg-white p-4 shadow-sm">
           <h2 className="text-sm font-bold uppercase tracking-wide text-slate-600">Tables</h2>
           <div className="mt-3 grid gap-1.5">
