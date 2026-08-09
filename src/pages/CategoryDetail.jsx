@@ -192,9 +192,8 @@ function Sidebar({ side, activeCategory }) {
 }
 
 /* ---------- Main Page ---------- */
-export default function CategoryDetail() {
+function CategoryDetailInner() {
   const { side, categoryId } = useParams();
-  const { ready } = useMenuTree();
   const [search, setSearch] = useState('');
   const [pageIndex, setPageIndex] = useState(0);
   const [sortOption, setSortOption] = useState('default');
@@ -209,14 +208,6 @@ export default function CategoryDetail() {
 
   const sideData = allData[side];
   const category = sideData?.categories[categoryId];
-
-  if (!ready) {
-    return (
-      <div style={{ padding: '120px 24px', textAlign: 'center', color: '#8b7355' }}>
-        Loading menu…
-      </div>
-    );
-  }
 
   if (!category) {
     return (
@@ -1140,3 +1131,15 @@ const styles = {
     margin: '0 10px 10px',
   },
 };
+export default function CategoryDetail() {
+  const { ready } = useMenuTree();
+  const { side, categoryId } = useParams();
+  if (!ready) {
+    return (
+      <div style={{ padding: '120px 24px', textAlign: 'center', color: '#8b7355' }}>
+        Loading menu…
+      </div>
+    );
+  }
+  return <CategoryDetailInner key={`${side}/${categoryId}`} />;
+}
