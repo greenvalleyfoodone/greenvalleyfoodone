@@ -14,6 +14,17 @@ function SettingsPage() {
   const settingsQuery = useQuery({ queryKey: ["pos", "settings"], queryFn: fetchSettings });
   const menuQuery = useQuery({ queryKey: ["pos", "menu"], queryFn: fetchMenu });
   const tablesQuery = useQuery({ queryKey: ["pos", "tables"], queryFn: fetchTables });
+  const imagesQuery = useQuery({
+    queryKey: ["pos", "site-images"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("site_images")
+        .select("id, key, label, image_url")
+        .order("label");
+      if (error) throw error;
+      return data as { id: string; key: string; label: string; image_url: string | null }[];
+    },
+  });
   const [form, setForm] = useState<AppSettings | null>(null);
   const [saving, setSaving] = useState(false);
 
