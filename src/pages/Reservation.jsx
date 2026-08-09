@@ -30,19 +30,23 @@ export default function Reservation() {
       return;
     }
     setBusy(true);
-    const { data, error: err } = await supabase
-      .from("reservations")
-      .insert(payload)
-      .select("reference, customer_name, phone, guests, reserve_date, reserve_time")
-      .single();
+    const { data, error: err } = await supabase.rpc("create_reservation", {
+      p_name: payload.customer_name,
+      p_phone: payload.phone,
+      p_guests: payload.guests,
+      p_date: payload.reserve_date,
+      p_time: payload.reserve_time,
+      p_occasion: payload.occasion,
+      p_notes: payload.notes,
+    });
     setBusy(false);
-    if (err) {
-      setError(err.message || "Could not send your request. Please call us instead.");
+    if (err || !data || data.length === 0) {
+      setError(err?.message || "Could not send your request. Please call 98662 55533.");
       return;
     }
-    setBooking(data);
+    setBooking(data[0]);
     try {
-      window.localStorage.setItem("gv_reservation_ref", data.reference);
+      window.localStorage.setItem("gv_reservation_ref", data[0].reference);
     } catch {
       /* storage unavailable */
     }
