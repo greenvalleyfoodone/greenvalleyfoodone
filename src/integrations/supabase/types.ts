@@ -130,6 +130,45 @@ export type Database = {
           },
         ]
       }
+      menu_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          name: string
+          side: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name: string
+          side: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          name?: string
+          side?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       menu_items: {
         Row: {
           category: string
@@ -141,6 +180,7 @@ export type Database = {
           name: string
           price: number
           section: string
+          side: string
           sort_order: number
           tax_percent: number | null
           updated_at: string
@@ -155,6 +195,7 @@ export type Database = {
           name: string
           price: number
           section?: string
+          side?: string
           sort_order?: number
           tax_percent?: number | null
           updated_at?: string
@@ -169,6 +210,7 @@ export type Database = {
           name?: string
           price?: number
           section?: string
+          side?: string
           sort_order?: number
           tax_percent?: number | null
           updated_at?: string
@@ -350,6 +392,54 @@ export type Database = {
         }
         Relationships: []
       }
+      reservations: {
+        Row: {
+          admin_message: string | null
+          created_at: string
+          customer_name: string
+          guests: number
+          id: string
+          notes: string | null
+          occasion: string | null
+          phone: string
+          reference: string
+          reserve_date: string
+          reserve_time: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_message?: string | null
+          created_at?: string
+          customer_name: string
+          guests: number
+          id?: string
+          notes?: string | null
+          occasion?: string | null
+          phone: string
+          reference?: string
+          reserve_date: string
+          reserve_time: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_message?: string | null
+          created_at?: string
+          customer_name?: string
+          guests?: number
+          id?: string
+          notes?: string | null
+          occasion?: string | null
+          phone?: string
+          reference?: string
+          reserve_date?: string
+          reserve_time?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       restaurant_tables: {
         Row: {
           created_at: string
@@ -374,6 +464,33 @@ export type Database = {
           seats?: number
           sort_order?: number
           status?: Database["public"]["Enums"]["table_status"]
+        }
+        Relationships: []
+      }
+      site_images: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          key: string
+          label: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          key: string
+          label: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          key?: string
+          label?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -433,6 +550,17 @@ export type Database = {
       pos_set_payment_status: {
         Args: { p_bill_id: string; p_paid_amount?: number; p_status: string }
         Returns: undefined
+      }
+      reservation_status: {
+        Args: { p_reference: string }
+        Returns: {
+          admin_message: string
+          guests: number
+          reference: string
+          reserve_date: string
+          reserve_time: string
+          status: string
+        }[]
       }
     }
     Enums: {
