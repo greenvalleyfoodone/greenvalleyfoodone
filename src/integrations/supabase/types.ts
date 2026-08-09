@@ -520,6 +520,25 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_reservation: {
+        Args: {
+          p_date: string
+          p_guests: number
+          p_name: string
+          p_notes?: string
+          p_occasion?: string
+          p_phone: string
+          p_time: string
+        }
+        Returns: {
+          customer_name: string
+          guests: number
+          phone: string
+          reference: string
+          reserve_date: string
+          reserve_time: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
