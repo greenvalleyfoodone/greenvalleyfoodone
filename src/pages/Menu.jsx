@@ -8,36 +8,8 @@ import Loader2 from '../components/Loader2';
    ============================================ */
 
 /* ---------- DATA ---------- */
-const menuData = {
-  cafe: {
-    icon: '☕',
-    title: 'Café',
-    subtitle: 'Fresh brews & cozy bites',
-    categories: [
-      { id: 'coffee', name: 'Coffee', itemCount: 18, image: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=400&auto=format&fit=crop' },
-      { id: 'tea', name: 'Tea', itemCount: 14, image: 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=400&auto=format&fit=crop' },
-      { id: 'milk', name: 'Milk & More', itemCount: 10, image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&auto=format&fit=crop' },
-      { id: 'shakes', name: 'Shakes', itemCount: 16, image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&auto=format&fit=crop' },
-      { id: 'snacks', name: 'Snacks', itemCount: 20, image: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400&auto=format&fit=crop' },
-      { id: 'desserts', name: 'Desserts', itemCount: 12, image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&auto=format&fit=crop' },
-      { id: 'specials', name: 'Specials', itemCount: 16, image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&auto=format&fit=crop' },
-    ],
-  },
-  restaurant: {
-    icon: '🍽️',
-    title: 'Restaurant',
-    subtitle: 'Hearty meals & timeless flavors',
-    categories: [
-      { id: 'tiffins', name: 'Tiffins', itemCount: 22, image: 'https://images.unsplash.com/photo-1662116765994-54592e8772a5?w=400&auto=format&fit=crop' },
-      { id: 'starters', name: 'Starters', itemCount: 20, image: 'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=400&auto=format&fit=crop' },
-      { id: 'biryani', name: 'Biryani', itemCount: 16, image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&auto=format&fit=crop' },
-      { id: 'meals', name: 'Meals', itemCount: 18, image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&auto=format&fit=crop' },
-      { id: 'curries', name: 'Curries', itemCount: 25, image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&auto=format&fit=crop' },
-      { id: 'fried-rice', name: 'Fried Rice & Noodles', itemCount: 18, image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&auto=format&fit=crop' },
-      { id: 'restaurant-specials', name: 'Restaurant Specials', itemCount: 15, image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&auto=format&fit=crop' },
-    ],
-  },
-};
+import { useMenuTree, categoryList } from "@/lib/siteMenu";
+
 
 /* ---------- Category Card ---------- */
 function CategoryCard({ category, side, delay }) {
@@ -82,6 +54,11 @@ function CategoryCard({ category, side, delay }) {
 /* ---------- Section Block ---------- */
 function SectionBlock({ side }) {
   const navigate = useNavigate();
+  const { ready, menu } = useMenuTree();
+  const menuData = {
+    cafe: { ...menu.cafe, categories: categoryList('cafe') },
+    restaurant: { ...menu.restaurant, categories: categoryList('restaurant') },
+  };
 
   // Initial filter comes straight from the URL: /menu/cafe -> 'cafe',
   // /menu/restaurant -> 'restaurant', /menu -> 'all'
