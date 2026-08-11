@@ -23,18 +23,18 @@ const heroSlides = [
   {
     image: "/images/hero-1.png",
     eyebrow: "GREEN VALLEY · CAFE & RESTAURANT",
-    titleLine1: "Where mornings",
-    titleLine2: "turn golden.",
+    titleLine1: "Where every sip",
+    titleLine2: "feels special.",
     description:
-      "Step into a space built for slow mornings, easy evenings, and everything in between.",
+      "A welcoming place for good food, warm conversations, and moments you will want to come back to.",
   },
   {
     image: "/images/hero-3.png",
     eyebrow: "FARM TO TABLE",
-    titleLine1: "Fresh flavors,",
-    titleLine2: "grown nearby.",
+    titleLine1: "Taste the valley,",
+    titleLine2: "served with love.",
     description:
-      "Seasonal dishes plated simply, served in a room that glows at dusk.",
+  "Fresh flavors, wholesome ingredients, and memorable meals crafted for every family gathering.",
   },
   {
     image: "/images/hero-2.png",
@@ -57,7 +57,7 @@ const SCENES = {
       "Freshly brewed coffee, vibrant mojitos and crispy snacks under warm pendant lights. Built for catch-ups, slow scrolls and that second cup.",
     primaryCta: "See the menu",
     secondaryCta: "View gallery",
-    hours: "Open 4 PM — 11 PM",
+    hours: "Open 6 AM — 11 PM",
     image: "/images/cafe.png",
   },
 
@@ -71,7 +71,7 @@ const SCENES = {
       "Seasonal plates built around what the valley grows, plated simply and served in a room lit like an orchard at dusk.",
     primaryCta: "See the menu",
     secondaryCta: "View gallery",
-    hours: "Open 6 PM — 12 AM",
+    hours: "Open 7 AM — 11 PM",
     image: "/images/hotel.png",
   },
 };

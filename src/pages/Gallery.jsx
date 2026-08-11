@@ -20,8 +20,16 @@ const gallerySections = [
     description: "A warm look at our cafe atmosphere and dining space.",
     images: [
       ...imageRange("cafe", 1, 8, "Cafe image"),
-      ...imageRange("cafe", 30, 41, "Cafe image"),
-      ...imageRange("cafe", 48, 52, "Cafe image"),
+      ...imageRange("cafe", 30, 41, "Cafe image").map((image) =>
+        image.id === "cafe-36"
+          ? { ...image, src: "/images/cafe1.jpg" }
+          : image
+      ),
+      ...imageRange("cafe", 48, 52, "Cafe image").map((image) =>
+        image.id === "cafe-51"
+          ? { ...image, id: "cafe-51-cafe", src: "/images/cafe38.jpg" }
+          : image
+      ),
     ],
   },
   {
@@ -29,7 +37,11 @@ const gallerySections = [
     name: "Restaurant",
     description: "Our restaurant interiors, tables and dining experience.",
     images: [
-      ...imageRange("cafe", 53, 62, "Restaurant image"),
+      ...imageRange("cafe", 53, 62, "Restaurant image").map((image) =>
+        image.id === "cafe-56"
+          ? { ...image, src: "/images/cafe53.jpg" }
+          : image
+      ),
       {
         id: "restaurant-1",
         src: "/images/restaurent1.jpg",
@@ -41,7 +53,10 @@ const gallerySections = [
     id: "kitchen",
     name: "Kitchen",
     description: "Behind the scenes in our working kitchen.",
-    images: imageRange("out", 1, 7, "Kitchen image"),
+    images: [
+      ...imageRange("out", 1, 1, "Kitchen image"),
+      ...imageRange("out", 7, 7, "Kitchen image"),
+    ],
   },
   {
     id: "uniform",
@@ -71,7 +86,11 @@ const gallerySections = [
     description: "Friendly service and memorable hospitality.",
     images: [
       ...imageRange("cafe", 43, 47, "Service image"),
-      ...imageRange("cafe", 48, 52, "Service image"),
+      ...imageRange("cafe", 48, 52, "Service image").map((image) =>
+        image.id === "cafe-51"
+          ? { ...image, id: "cafe-51-service", src: "/images/cafe43.jpg" }
+          : image
+      ),
       ...imageRange("service", 27, 46, "Service image"),
     ],
   },

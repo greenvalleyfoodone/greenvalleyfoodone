@@ -5,16 +5,31 @@ import Loader5 from "../components/Loader5";
 
 const SLIDES = [
   {
-    src: "/images/hero-restaurant.jpg",
-    alt: "Green Valley Food One dining room, warm light over wooden tables",
+    src: "/images/service32.jpg",
+    alt: "Friendly service moment at Green Valley Food One",
   },
   {
-    src: "/images/hero-coffee.jpg",
-    alt: "Barista pouring freshly brewed coffee at Green Valley Food One",
+    src: "/images/service46.jpg",
+    alt: "Friendly service moment at Green Valley Food One",
   },
   {
-    src: "/images/hero-dish.jpg",
-    alt: "A signature dish plated at Green Valley Food One",
+    src: "/images/overview15.jpg",
+    alt: "Green Valley Food One overview",
+  },
+];
+
+const OWNER_SLIDES = [
+  {
+    src: "/images/overview6.jpg",
+    alt: "Owner overseeing Green Valley Food One",
+  },
+  {
+    src: "/images/overview14.jpg",
+    alt: "Owner ensuring hospitality at Green Valley Food One",
+  },
+  {
+    src: "/images/overview1.jpg",
+    alt: "Owner and the Green Valley Food One experience",
   },
 ];
 
@@ -44,32 +59,33 @@ function usePrefersReducedMotion() {
   return reduced;
 }
 
-function HeroSlider() {
+function ImageSlider({ slides, ariaLabel }) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const reducedMotion = usePrefersReducedMotion();
   const timerRef = useRef(null);
   const dotsRef = useRef([]);
 
-  const goTo = useCallback((slideIndex) => {
-    setIndex(
-      (slideIndex + SLIDES.length) % SLIDES.length
-    );
-  }, []);
+  const goTo = useCallback(
+    (slideIndex) => {
+      setIndex((slideIndex + slides.length) % slides.length);
+    },
+    [slides.length]
+  );
 
   useEffect(() => {
     if (paused || reducedMotion) return;
 
     timerRef.current = setInterval(() => {
       setIndex((previousIndex) => {
-        return (previousIndex + 1) % SLIDES.length;
+        return (previousIndex + 1) % slides.length;
       });
     }, AUTOPLAY_MS);
 
     return () => {
       clearInterval(timerRef.current);
     };
-  }, [paused, reducedMotion]);
+  }, [paused, reducedMotion, slides.length]);
 
   useEffect(() => {
     const handleVisibility = () => {
@@ -94,7 +110,7 @@ function HeroSlider() {
       event.preventDefault();
 
       const nextIndex =
-        (currentIndex + 1) % SLIDES.length;
+        (currentIndex + 1) % slides.length;
 
       goTo(nextIndex);
       dotsRef.current[nextIndex]?.focus();
@@ -104,7 +120,7 @@ function HeroSlider() {
       event.preventDefault();
 
       const previousIndex =
-        (currentIndex - 1 + SLIDES.length) % SLIDES.length;
+        (currentIndex - 1 + slides.length) % slides.length;
 
       goTo(previousIndex);
       dotsRef.current[previousIndex]?.focus();
@@ -120,9 +136,9 @@ function HeroSlider() {
       onBlur={() => setPaused(false)}
       role="group"
       aria-roledescription="carousel"
-      aria-label="Green Valley Food One gallery"
+      aria-label={ariaLabel}
     >
-      {SLIDES.map((slide, slideIndex) => (
+      {slides.map((slide, slideIndex) => (
         <img
           key={slide.src}
           src={slide.src}
@@ -143,7 +159,7 @@ function HeroSlider() {
       ))}
 
       <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-        {SLIDES.map((slide, slideIndex) => (
+        {slides.map((slide, slideIndex) => (
           <button
             key={slide.src}
             ref={(element) => {
@@ -155,7 +171,7 @@ function HeroSlider() {
               handleDotKeyDown(event, slideIndex)
             }
             aria-label={`Show slide ${slideIndex + 1} of ${
-              SLIDES.length
+              slides.length
             }: ${slide.alt}`}
             aria-current={slideIndex === index}
             className={`h-2.5 rounded-full transition-[width,background-color] duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-valley-clay ${
@@ -266,7 +282,10 @@ export default function About() {
             </Reveal>
 
             <Reveal delay={150}>
-              <HeroSlider />
+              <ImageSlider
+                slides={SLIDES}
+                ariaLabel="Green Valley Food One gallery"
+              />
             </Reveal>
           </section>
 
@@ -308,12 +327,9 @@ export default function About() {
 
           <section className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 md:grid-cols-2 md:px-8">
             <Reveal className="order-2 md:order-1">
-              <img
-                src="/images/owner-placeholder.jpg"
-                alt="Owner of Green Valley Food One"
-                className="aspect-[4/5] w-full rounded-sm object-cover"
-                loading="lazy"
-                decoding="async"
+              <ImageSlider
+                slides={OWNER_SLIDES}
+                ariaLabel="Owner of Green Valley Food One"
               />
             </Reveal>
 
@@ -345,9 +361,11 @@ export default function About() {
               </p>
 
               <p className="leading-relaxed text-valley-ink/75">
-                Placeholder text: You can add more details here about his
-                journey, experience in the food business, inspiration behind
-                the restaurant, and his vision for the future.
+                He stays personally connected to the restaurant, often seen
+                overseeing daily operations himself, welcoming guests, and
+                listening closely to their feedback. This hands-on presence is
+                what keeps the hospitality at Green Valley Food One genuine and
+                consistent, visit after visit.
               </p>
             </Reveal>
           </section>

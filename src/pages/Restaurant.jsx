@@ -1,78 +1,60 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Utensils,
+  HeartHandshake,
+  Leaf,
+  Users,
+} from "lucide-react";
 import Loader1 from "../components/Loader1";
 
-const heroImg =
-  "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=1400&auto=format&fit=crop";
+const heroImg = "/images/restaurent1.jpg";
 
 const carouselImages = [
   {
-    src: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=1400&auto=format&fit=crop",
-    alt: "Andhra chicken biryani",
-    caption: "Andhra Chicken Biryani",
+    src: "https://i.pinimg.com/736x/7c/cc/fa/7cccfaf7a57ca015159c2c53c1153f1e.jpg",
+    alt: "Idli Ghee Karam",
+    caption: "Idli Ghee Karam",
   },
   {
-    src: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=1400&auto=format&fit=crop",
-    alt: "Gongura mutton",
-    caption: "Gongura Mutton",
+    src: "https://i.pinimg.com/736x/56/89/16/568916fac789f03858fe4218211c5637.jpg",
+    alt: "Vada Sambar",
+    caption: "Vada Sambar",
   },
   {
-    src: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=1400&auto=format&fit=crop",
-    alt: "Andhra meals veg",
-    caption: "Full Andhra Meals",
+    src: "https://i.pinimg.com/1200x/a7/65/32/a765326d023dd9a8af14114c4ee317bf.jpg",
+    alt: "Upma Pesara",
+    caption: "Upma Pesara",
   },
   {
-    src: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=1400&auto=format&fit=crop",
-    alt: "Royyala iguru",
-    caption: "Royyala Iguru",
+    src: "https://i.pinimg.com/1200x/57/dc/f6/57dcf64c2abc64d67f79377b1408d956.jpg",
+    alt: "Pongal",
+    caption: "Pongal",
   },
 ];
 
-const menuSections = [
+const highlightItems = [
   {
-    title: "Lunch Specials",
-    items: [
-      {
-        name: "Andhra Chicken Biryani",
-        desc: "Slow-cooked with home-ground spices, served with raita.",
-        price: "₹280",
-      },
-      {
-        name: "Gongura Mutton",
-        desc: "Sorrel leaf curry, a Prakasam specialty.",
-        price: "₹320",
-      },
-      {
-        name: "Royyala Iguru",
-        desc: "Prawn curry in thick Andhra masala.",
-        price: "₹300",
-      },
-    ],
+    icon: Utensils,
+    title: "Authentic Andhra Flavors",
+    desc: "Recipes rooted in Andhra tradition, cooked the way grandmothers made them — no shortcuts, just real taste.",
   },
   {
-    title: "Meals",
-    items: [
-      {
-        name: "Full Andhra Meals (Veg)",
-        desc: "Unlimited rice, sambar, rasam, curries and pickle.",
-        price: "₹150",
-      },
-      {
-        name: "Full Andhra Meals (Non-Veg)",
-        desc: "Meals thali with a chicken or fish curry.",
-        price: "₹220",
-      },
-    ],
+    icon: HeartHandshake,
+    title: "Warm Hospitality",
+    desc: "Every guest is welcomed with genuine care, from the first hello to the last bite.",
   },
   {
-    title: "Breakfast",
-    items: [
-      {
-        name: "Pesarattu with Upma",
-        desc: "Green gram dosa, traditional breakfast combo.",
-        price: "₹110",
-      },
-    ],
+    icon: Leaf,
+    title: "Fresh, Quality Ingredients",
+    desc: "We source and prepare ingredients fresh every day to keep our food consistent and flavorful.",
+  },
+  {
+    icon: Users,
+    title: "Family-Friendly Dining",
+    desc: "A comfortable, welcoming space designed for individuals, families and groups alike.",
   },
 ];
 
@@ -280,7 +262,7 @@ export default function Restaurant() {
             </h1>
 
             <p className="text-[#7f746a] max-w-xl leading-relaxed mb-10 text-[15px] md:text-[16px]">
-              From breakfast to dinner, our kitchen turns out biryanis, curries and thalis rooted in Prakasam's own recipes — no shortcuts, just authentic taste and warm hospitality.
+              From breakfast to dinner, our kitchen turns out biryanis, curries and thalis rooted in traditional Andhra recipes — no shortcuts, just authentic taste and warm hospitality.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -306,7 +288,7 @@ export default function Restaurant() {
             <div className="relative overflow-hidden rounded-[2rem] border border-[#eee6db] shadow-2xl shadow-[#2c1810]/10">
               <img
                 src={heroImg}
-                alt="Traditional Andhra thali served at Green Valley"
+                alt="Green Valley Food One restaurant interior"
                 className="w-full aspect-[4/5] object-cover"
               />
             </div>
@@ -319,72 +301,67 @@ export default function Restaurant() {
         <RestaurantCarousel />
       </div>
 
-      {/* MENU */}
+      {/* RESTAURANT HIGHLIGHT SECTION (replaces the dish menu) */}
       <section id="menu" className="max-w-7xl mx-auto px-5 md:px-8 pb-28 pt-10">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
           <div className="animate-fadeUp">
             <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#a08060] mb-3">
-              The menu
+              Green Valley Food One
             </p>
-            <h2 className="font-display text-3xl md:text-5xl text-[#2c1810]">
-              Signature dishes
+            <h2 className="font-display text-3xl md:text-5xl text-[#2c1810] max-w-2xl leading-tight">
+              A restaurant built on taste, care and tradition.
             </h2>
           </div>
-          <p className="hidden md:block text-sm text-[#b0a99f] font-mono">
-            Freshly prepared · Prices in INR
+          <p className="hidden md:block text-sm text-[#b0a99f] font-mono max-w-xs md:text-right">
+            Andhra flavors, served fresh every single day.
           </p>
         </div>
 
-        <div className="space-y-14">
-          {menuSections.map((section, sIndex) => (
-            <div key={section.title} className="animate-fadeUp" style={{ animationDelay: `${sIndex * 0.08}s` }}>
-              <h3 className="font-display text-2xl md:text-3xl text-[#2c1810] mb-6">
-                {section.title}
-              </h3>
+        <p className="text-[#7f746a] max-w-2xl leading-relaxed mb-14 text-[15px] md:text-[16px] animate-fadeUp">
+          Green Valley Food One brings together the comfort of home-style
+          Andhra cooking and the warmth of genuine hospitality. Every dish
+          that leaves our kitchen carries the same care and consistency our
+          guests have come to trust — whether you're stopping in for a quick
+          breakfast or settling in for a full family meal.
+        </p>
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-7">
-                {section.items.map((item, index) => (
-                  <div
-                    key={item.name}
-                    className="group bg-white rounded-[1.75rem] overflow-hidden border border-[#eeeae4] card-hover"
-                    style={{ animationDelay: `${index * 0.06}s` }}
-                  >
-                    <div className="relative h-[330px] overflow-hidden image-hover">
-                      <img
-                        src={item.image || heroImg}
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
-                    </div>
-
-                    <div className="p-6">
-                      <h4 className="font-display text-2xl text-[#2c1810] mb-2 leading-snug">
-                        {item.name}
-                      </h4>
-
-                      <p className="text-sm md:text-[15px] text-[#8a8279] leading-relaxed">
-                        {item.desc}
-                      </p>
-
-                      <div className="flex items-center justify-between mt-6 pt-5 border-t border-[#f0e6dc]">
-                        <span className="font-mono text-base text-[#1a4d3a] font-semibold">
-                          {item.price}
-                        </span>
-                        <button className="w-11 h-11 rounded-full border border-[#eeeae4] flex items-center justify-center text-[#8a8279] hover:bg-[#2c1810] hover:text-white hover:border-[#2c1810] transition-all duration-200">
-                          <ArrowUpRight size={16} strokeWidth={2.5} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-7">
+          {highlightItems.map(({ icon: Icon, title, desc }, index) => (
+            <div
+              key={title}
+              className="group bg-white rounded-[1.75rem] p-8 border border-[#eeeae4] card-hover animate-fadeUp"
+              style={{ animationDelay: `${index * 0.08}s` }}
+            >
+              <div className="w-12 h-12 rounded-full bg-[#f7f1e8] flex items-center justify-center mb-6 group-hover:bg-[#2c1810] transition-colors duration-300">
+                <Icon
+                  size={20}
+                  className="text-[#2c1810] group-hover:text-white transition-colors duration-300"
+                />
               </div>
+
+              <h4 className="font-display text-xl text-[#2c1810] mb-3 leading-snug">
+                {title}
+              </h4>
+
+              <p className="text-sm md:text-[15px] text-[#8a8279] leading-relaxed">
+                {desc}
+              </p>
             </div>
           ))}
         </div>
 
+        <div className="mt-14 flex justify-center">
+          <a
+            href="#highlights"
+            className="inline-flex items-center gap-2 bg-[#2c1810] text-white font-mono text-xs uppercase tracking-[0.18em] px-7 py-3.5 rounded-full hover:bg-[#1a0f08] transition-colors"
+          >
+            See the restaurant
+            <ArrowUpRight size={14} strokeWidth={2.5} />
+          </a>
+        </div>
+
         <p className="text-xs text-[#b0a99f] mt-10 font-mono text-center tracking-wide">
-          All dishes are prepared fresh. Prices are inclusive of taxes.
+          A trusted dining destination in Santhamaguluru, Andhra Pradesh.
         </p>
       </section>
     </div>

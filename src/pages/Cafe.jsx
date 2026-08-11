@@ -1,96 +1,47 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
 
-const cafeInteriorImg = "/images/cafe.png";
-const coffeeBeansImg = "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=900&auto=format&fit=crop";
-const coldCoffeeImg = "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=900&auto=format&fit=crop";
-const snacksImg = "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=900&auto=format&fit=crop";
+const cafeInteriorImg = "/images/cafe3.jpg";
+const coffeeBeansImg = "/images/service32.jpg";
+const coldCoffeeImg = "/images/cafe6.jpg";
+const snacksImg = "/images/cafe35.jpg";
 
 const galleryImages = [
-  { id: 1, src: cafeInteriorImg, alt: "Cafe interior", caption: "Cafe Ambience" },
-  { id: 2, src: coffeeBeansImg, alt: "Coffee beans", caption: "Fresh Beans" },
-  { id: 3, src: coldCoffeeImg, alt: "Cold coffee", caption: "Cold Coffee" },
-  { id: 4, src: snacksImg, alt: "Snacks", caption: "Crispy Snacks" },
-  { id: 5, src: "https://images.unsplash.com/photo-1511920170033-f8396924c348?w=900&auto=format&fit=crop", alt: "Dessert", caption: "Sweet Treats" },
-  { id: 6, src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=900&auto=format&fit=crop", alt: "Coffee cup", caption: "Hot Brew" },
+  { id: 1, src: "/images/cafe1.jpg", alt: "Cafe photo" },
+  { id: 2, src: "/images/cafe2.jpg", alt: "Cafe photo" },
+  { id: 3, src: "/images/cafe3.jpg", alt: "Cafe photo" },
+  { id: 4, src: "/images/cafe4.jpg", alt: "Cafe photo" },
+  { id: 5, src: "/images/service27.jpg", alt: "Cafe photo" },
+  { id: 6, src: "/images/cafe6.jpg", alt: "Cafe photo" },
+  { id: 7, src: "/images/cafe7.jpg", alt: "Cafe photo" },
+  { id: 8, src: "/images/cafe8.jpg", alt: "Cafe photo" },
+  { id: 9, src: "/images/cafe30.jpg", alt: "Cafe photo" },
 ];
 
-const menuData = [
+const features = [
   {
-    id: "coffee",
-    title: "Coffee",
-    description: "Freshly brewed from 100% pure beans.",
-    image: coffeeBeansImg,
-    items: [
-      { name: "Regular Coffee", price: 30 },
-      { name: "Filter Coffee", price: 40 },
-      { name: "Black Coffee", price: 30 },
-      { name: "Tati Bellam Coffee", price: 30, badge: "Signature" },
-    ],
+    icon: "☕",
+    title: "Freshly Brewed",
+    description:
+      "Enjoy rich and aromatic coffee prepared with carefully selected beans.",
   },
   {
-    id: "premium-coffee",
-    title: "Premium Coffee",
-    description: "Hand-flavored with rich syrups.",
-    image: coffeeBeansImg,
-    items: [
-      { name: "Hazelnut Coffee", price: 60 },
-      { name: "Vanilla Coffee", price: 60 },
-      { name: "Chocolate Coffee", price: 60 },
-      { name: "Caramel Coffee", price: 60 },
-    ],
+    icon: "✨",
+    title: "Cozy Atmosphere",
+    description:
+      "Relax in a warm and peaceful space designed for memorable moments.",
   },
   {
-    id: "cold-coffee",
-    title: "Cold Coffee",
-    description: "Iced, blended, and refreshing.",
-    image: coldCoffeeImg,
-    items: [
-      { name: "Premium Cold Coffee", price: 70 },
-      { name: "Vanilla Cold Coffee", price: 90 },
-      { name: "Hazelnut Cold Coffee", price: 90 },
-      { name: "Chocolate Cold Coffee", price: 90 },
-      { name: "Caramel Cold Coffee", price: 90 },
-    ],
+    icon: "🥪",
+    title: "Fresh Snacks",
+    description:
+      "Taste delicious snacks prepared fresh and served with care.",
   },
   {
-    id: "milkshakes",
-    title: "Milkshakes",
-    description: "Thick, creamy, and delicious.",
-    image: coldCoffeeImg,
-    items: [
-      { name: "Strawberry", price: 80 },
-      { name: "Mango", price: 90 },
-      { name: "Chocolate", price: 90 },
-      { name: "Oreo", price: 90, badge: "Top pick" },
-      { name: "KitKat", price: 90 },
-      { name: "Nutella", price: 90 },
-    ],
-  },
-  {
-    id: "mojitos",
-    title: "Mojitos",
-    description: "Minty, icy, and refreshing.",
-    image: snacksImg,
-    items: [
-      { name: "Virgin Mojito", price: 80 },
-      { name: "Blue Curacao", price: 80 },
-      { name: "Strawberry", price: 80 },
-      { name: "Green Apple", price: 80 },
-    ],
-  },
-  {
-    id: "snacks-veg",
-    title: "Snacks · Veg",
-    description: "Crispy, hot and made to share.",
-    image: snacksImg,
-    items: [
-      { name: "French Fries", price: 80 },
-      { name: "Veg Nuggets (6pcs)", price: 90 },
-      { name: "Veg Fingers (6pcs)", price: 90 },
-      { name: "Veg Momos (6pcs)", price: 90 },
-      { name: "Veg Sandwich", price: 90 },
-    ],
+    icon: "🧊",
+    title: "Refreshing Drinks",
+    description:
+      "Cool down with refreshing cold coffees, mojitos, and milkshakes.",
   },
 ];
 
@@ -99,12 +50,11 @@ function FloatingImage({ img, index, onClick }) {
     <div
       className={`float-card float-${(index % 4) + 1}`}
       onClick={() => onClick(img)}
-      title={img.caption}
     >
       <img src={img.src} alt={img.alt} />
+
       <div className="float-overlay">
         <span>🔍</span>
-        <p>{img.caption}</p>
       </div>
     </div>
   );
@@ -115,9 +65,19 @@ function GalleryLightbox({ image, onClose }) {
 
   return (
     <div className="lightbox" onClick={onClose}>
-      <button className="lightbox-close" onClick={onClose}>✕</button>
-      <img src={image.src} alt={image.alt} onClick={(e) => e.stopPropagation()} />
-      <p>{image.caption}</p>
+      <button
+        className="lightbox-close"
+        onClick={onClose}
+        aria-label="Close image"
+      >
+        ✕
+      </button>
+
+      <img
+        src={image.src}
+        alt={image.alt}
+        onClick={(event) => event.stopPropagation()}
+      />
     </div>
   );
 }
@@ -128,426 +88,717 @@ export default function CafePage() {
   const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
-    const t = setTimeout(() => setShowGallery(true), 150);
-    return () => clearTimeout(t);
+    const galleryTimer = setTimeout(() => {
+      setShowGallery(true);
+    }, 150);
+
+    return () => clearTimeout(galleryTimer);
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowLoader(false), 2200);
-    return () => clearTimeout(timer);
+    const loaderTimer = setTimeout(() => {
+      setShowLoader(false);
+    }, 2200);
+
+    return () => clearTimeout(loaderTimer);
   }, []);
 
   return (
     <>
       {showLoader && <Loader onComplete={() => setShowLoader(false)} />}
-    <div className="page">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
-        * { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { margin: 0; background: #faf7f2; }
+      <div className="page">
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-        .page {
-          font-family: "Inter", system-ui, sans-serif;
-          color: #1f140f;
-          background: #faf7f2;
-          min-height: 100vh;
-        }
+          * {
+            box-sizing: border-box;
+          }
 
-        .hero {
-          position: relative;
-          min-height: 92vh;
-          overflow: hidden;
-          display: flex;
-          align-items: flex-end;
-        }
+          html {
+            scroll-behavior: smooth;
+          }
 
-        .hero::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.74), rgba(0,0,0,0.2));
-          z-index: 1;
-        }
+          body {
+            margin: 0;
+            background: #faf7f2;
+          }
 
-        .hero-bg {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transform: scale(1.04);
-        }
+          .page {
+            min-height: 100vh;
+            overflow: hidden;
+            color: #24150e;
+            background: #faf7f2;
+            font-family: "Inter", system-ui, sans-serif;
+          }
 
-        .hero-content {
-          position: relative;
-          z-index: 2;
-          padding: 5rem 1.5rem 3rem;
-          width: 100%;
-          max-width: 1200px;
-          margin: 0 auto;
-          color: white;
-        }
+          .hero {
+            position: relative;
+            min-height: 92vh;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            padding: 90px 6%;
+          }
 
-        .hero-title {
-          font-family: "Playfair Display", serif;
-          font-size: clamp(2.5rem, 7vw, 5.4rem);
-          line-height: 1;
-          margin: 0 0 1rem;
-          animation: fadeUp 1s ease both;
-        }
+          .hero-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.05);
+          }
 
-        .hero-sub {
-          max-width: 640px;
-          font-size: 1.05rem;
-          line-height: 1.8;
-          opacity: 0.95;
-          margin: 0 0 1.5rem;
-          animation: fadeUp 1s ease 0.15s both;
-        }
+          .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+              linear-gradient(
+                90deg,
+                rgba(17, 8, 4, 0.88) 0%,
+                rgba(17, 8, 4, 0.62) 45%,
+                rgba(17, 8, 4, 0.18) 100%
+              );
+            z-index: 1;
+          }
 
-        .hero-actions {
-          display: flex;
-          gap: 12px;
-          flex-wrap: wrap;
-          animation: fadeUp 1s ease 0.3s both;
-        }
+          .hero-content {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1250px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            color: white;
+          }
 
-        .btn {
-          border: none;
-          border-radius: 999px;
-          padding: 0.95rem 1.4rem;
-          font-weight: 700;
-          cursor: pointer;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-        }
+          .hero-text {
+            max-width: 650px;
+            animation: fadeUp 1s ease both;
+          }
 
-        .btn-primary { background: #d97706; color: white; }
-        .btn-ghost { background: rgba(255,255,255,0.14); color: white; backdrop-filter: blur(8px); }
+          .eyebrow {
+            display: inline-block;
+            margin-bottom: 18px;
+            color: #fbbf7a;
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+          }
 
-        .floating-gallery {
-          position: relative;
-          z-index: 2;
-          margin-top: 2rem;
-          padding: 0 1.5rem 4rem;
-          max-width: 1200px;
-          margin-left: auto;
-          margin-right: auto;
-        }
+          .hero-title {
+            margin: 0 0 20px;
+            font-family: "Playfair Display", serif;
+            font-size: clamp(3rem, 7vw, 6.5rem);
+            line-height: 0.98;
+          }
 
-        .gallery-title {
-          font-family: "Playfair Display", serif;
-          color: #2b1a12;
-          font-size: clamp(1.7rem, 4vw, 2.8rem);
-          margin: 0 0 0.5rem;
-          text-align: center;
-        }
+          .hero-description {
+            max-width: 600px;
+            margin: 0 0 24px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.08rem;
+            line-height: 1.8;
+          }
 
-        .gallery-sub {
-          text-align: center;
-          color: #7b6a5f;
-          margin: 0 0 2rem;
-        }
+          .hero-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            color: #fff2e5;
+            font-size: 0.9rem;
+          }
 
-        .gallery-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-        }
+          .hero-highlights span {
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+          }
 
-        .float-card {
-          position: relative;
-          height: 240px;
-          border-radius: 20px;
-          overflow: hidden;
-          cursor: pointer;
-          box-shadow: 0 15px 40px rgba(61, 34, 18, 0.14);
-          transform-origin: center;
-          animation: floatY 4.5s ease-in-out infinite;
-          transition: transform 0.3s ease;
-          background: #e8dbcf;
-        }
+          .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+          }
 
-        .float-card:hover {
-          transform: scale(1.03);
-        }
+          .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 52px;
+            padding: 0.95rem 1.5rem;
+            border: none;
+            border-radius: 999px;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.3s ease;
+          }
 
-        .float-card img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-          transition: transform 0.6s ease;
-        }
+          .btn:hover {
+            transform: translateY(-3px);
+          }
 
-        .float-card:hover img {
-          transform: scale(1.08);
-        }
+          .btn-primary {
+            color: white;
+            background: #d97706;
+            box-shadow: 0 12px 25px rgba(217, 119, 6, 0.3);
+          }
 
-        .float-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(to top, rgba(20,10,5,0.72), rgba(20,10,5,0.05));
-          color: white;
-          display: flex;
-          align-items: flex-end;
-          justify-content: center;
-          padding: 18px;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          text-align: center;
-        }
+          .btn-primary:hover {
+            background: #b45309;
+          }
 
-        .float-card:hover .float-overlay {
-          opacity: 1;
-        }
+          .btn-ghost {
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+          }
 
-        .float-overlay p {
-          margin: 6px 0 0;
-          font-family: "Playfair Display", serif;
-          font-size: 1.1rem;
-        }
+          .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.22);
+          }
 
-        .float-1 { animation-name: floatY, rotateSlow; animation-duration: 4.5s, 16s; }
-        .float-2 { animation-name: floatY, driftLeft; animation-duration: 5s, 14s; }
-        .float-3 { animation-name: fallLoop, driftRight; animation-duration: 6s, 15s; }
-        .float-4 { animation-name: circularMove; animation-duration: 12s; }
+          .hero-images {
+            position: relative;
+            width: 390px;
+            min-width: 390px;
+            height: 430px;
+            animation: fadeIn 1.2s ease 0.25s both;
+          }
 
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(24px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
+          .hero-image {
+            position: absolute;
+            overflow: hidden;
+            border: 5px solid rgba(255, 255, 255, 0.8);
+            border-radius: 24px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+          }
 
-        @keyframes floatY {
-          0%,100% { transform: translateY(0px); }
-          50% { transform: translateY(-12px); }
-        }
+          .hero-image img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
 
-        @keyframes rotateSlow {
-          0% { filter: hue-rotate(0deg); }
-          100% { filter: hue-rotate(0deg); }
-        }
+          .hero-image-main {
+            top: 15px;
+            left: 50px;
+            width: 260px;
+            height: 330px;
+            transform: rotate(-5deg);
+          }
 
-        @keyframes driftLeft {
-          0%,100% { transform: translateX(0); }
-          50% { transform: translateX(-8px); }
-        }
+          .hero-image-small-one {
+            right: 0;
+            bottom: 20px;
+            width: 170px;
+            height: 190px;
+            transform: rotate(7deg);
+          }
 
-        @keyframes driftRight {
-          0%,100% { transform: translateX(0); }
-          50% { transform: translateX(8px); }
-        }
+          .hero-image-small-two {
+            bottom: 0;
+            left: 0;
+            width: 155px;
+            height: 160px;
+            transform: rotate(-8deg);
+          }
 
-        @keyframes fallLoop {
-          0% { transform: translateY(-8px); }
-          50% { transform: translateY(10px); }
-          100% { transform: translateY(-8px); }
-        }
+          .image-label {
+            position: absolute;
+            right: 28px;
+            top: 42px;
+            z-index: 5;
+            padding: 12px 16px;
+            border-radius: 14px;
+            color: #3b2114;
+            background: #fff7ed;
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+            font-size: 0.78rem;
+            font-weight: 800;
+          }
 
-        @keyframes circularMove {
-          0% { transform: rotate(0deg) translateX(0); }
-          25% { transform: rotate(0deg) translateX(4px); }
-          50% { transform: rotate(0deg) translateX(0); }
-          75% { transform: rotate(0deg) translateX(-4px); }
-          100% { transform: rotate(0deg) translateX(0); }
-        }
+          .features-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 90px 24px 80px;
+          }
 
-        .menu-section {
-          max-width: 1100px;
-          margin: 0 auto;
-          padding: 2rem 1.5rem 5rem;
-        }
+          .section-heading {
+            max-width: 680px;
+            margin: 0 auto 42px;
+            text-align: center;
+          }
 
-        .menu-row {
-          display: flex;
-          align-items: center;
-          gap: 2.2rem;
-          flex-wrap: wrap;
-          margin: 0 0 3.2rem;
-        }
+          .section-heading span {
+            color: #c2410c;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+          }
 
-        .menu-row.reverse {
-          flex-direction: row-reverse;
-        }
+          .section-heading h2 {
+            margin: 12px 0;
+            color: #2b1a12;
+            font-family: "Playfair Display", serif;
+            font-size: clamp(2rem, 4vw, 3.4rem);
+          }
 
-        .menu-img-wrap {
-          flex: 1 1 320px;
-          min-width: 280px;
-        }
+          .section-heading p {
+            margin: 0;
+            color: #7b6a5f;
+            line-height: 1.7;
+          }
 
-        .menu-img-wrap img {
-          width: 100%;
-          height: 340px;
-          object-fit: cover;
-          border-radius: 18px;
-          box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-        }
+          .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+          }
 
-        .menu-content {
-          flex: 1 1 360px;
-          min-width: 280px;
-        }
+          .feature-card {
+            padding: 28px 22px;
+            border: 1px solid #f0dfd0;
+            border-radius: 22px;
+            background: white;
+            box-shadow: 0 12px 35px rgba(61, 34, 18, 0.07);
+            text-align: center;
+            transition: 0.3s ease;
+          }
 
-        .menu-content h2 {
-          font-family: "Playfair Display", serif;
-          color: #2c1810;
-          font-size: 1.9rem;
-          margin: 0 0 8px;
-        }
+          .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 45px rgba(61, 34, 18, 0.14);
+          }
 
-        .menu-content p {
-          color: #6f6259;
-          margin: 0 0 18px;
-          line-height: 1.7;
-        }
+          .feature-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #fff1df;
+            font-size: 2rem;
+          }
 
-        .menu-list {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-          border-top: 1px solid #ecdccf;
-        }
+          .feature-card h3 {
+            margin: 0 0 10px;
+            color: #3b2114;
+            font-family: "Playfair Display", serif;
+            font-size: 1.35rem;
+          }
 
-        .menu-list li {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 12px;
-          padding: 12px 0;
-          border-bottom: 1px solid #ecdccf;
-        }
+          .feature-card p {
+            margin: 0;
+            color: #796b62;
+            font-size: 0.92rem;
+            line-height: 1.7;
+          }
 
-        .item-name {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          flex-wrap: wrap;
-        }
+          .floating-gallery {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 24px 100px;
+          }
 
-        .badge {
-          font-size: 0.65rem;
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          background: #c2410c;
-          color: white;
-          padding: 3px 8px;
-          border-radius: 999px;
-          font-weight: 700;
-        }
+          .gallery-title {
+            margin: 0 0 10px;
+            color: #2b1a12;
+            font-family: "Playfair Display", serif;
+            font-size: clamp(2rem, 4vw, 3.4rem);
+            text-align: center;
+          }
 
-        .price {
-          color: #6d4734;
-          font-weight: 700;
-          white-space: nowrap;
-        }
+          .gallery-sub {
+            margin: 0 auto 35px;
+            color: #7b6a5f;
+            text-align: center;
+          }
 
-        .lightbox {
-          position: fixed;
-          inset: 0;
-          background: rgba(10,10,10,0.92);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          z-index: 999;
-          padding: 24px;
-        }
+          .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+          }
 
-        .lightbox img {
-          max-width: 92vw;
-          max-height: 78vh;
-          border-radius: 14px;
-          object-fit: contain;
-        }
+          .float-card {
+            position: relative;
+            height: 255px;
+            overflow: hidden;
+            border-radius: 22px;
+            background: #e8dbcf;
+            box-shadow: 0 15px 40px rgba(61, 34, 18, 0.14);
+            cursor: pointer;
+            animation: floatY 4.5s ease-in-out infinite;
+            transition: transform 0.3s ease;
+          }
 
-        .lightbox p {
-          color: white;
-          margin-top: 16px;
-          font-family: "Playfair Display", serif;
-          font-size: 1.2rem;
-        }
+          .float-card:hover {
+            transform: scale(1.03);
+          }
 
-        .lightbox-close {
-          position: absolute;
-          top: 22px;
-          right: 22px;
-          width: 44px;
-          height: 44px;
-          border: none;
-          border-radius: 50%;
-          background: rgba(255,255,255,0.12);
-          color: white;
-          font-size: 1.2rem;
-          cursor: pointer;
-        }
+          .float-card img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+          }
 
-        @media (max-width: 900px) {
-          .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-        }
+          .float-card:hover img {
+            transform: scale(1.08);
+          }
 
-        @media (max-width: 640px) {
-          .gallery-grid { grid-template-columns: 1fr; }
-          .menu-row, .menu-row.reverse { flex-direction: column; }
-          .menu-img-wrap img { height: 280px; }
-        }
-      `}</style>
+          .float-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            background: linear-gradient(
+              to top,
+              rgba(20, 10, 5, 0.55),
+              rgba(20, 10, 5, 0.05)
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+          }
 
-      <section className="hero">
-        <img className="hero-bg" src={cafeInteriorImg} alt="Cafe interior" />
-        <div className="hero-content">
-          <h1 className="hero-title">Green Valley Coffee</h1>
-          <p className="hero-sub">
-            A cozy cafe experience with premium coffee, cold drinks, and fresh snacks.
-            Explore the flowing gallery first, then scroll down to see the menu.
+          .float-card:hover .float-overlay {
+            opacity: 1;
+          }
+
+          .float-overlay span {
+            font-size: 1.6rem;
+          }
+
+          .float-1 {
+            animation-name: floatY;
+            animation-duration: 4.5s;
+          }
+
+          .float-2 {
+            animation-name: driftLeft;
+            animation-duration: 5s;
+          }
+
+          .float-3 {
+            animation-name: fallLoop;
+            animation-duration: 6s;
+          }
+
+          .float-4 {
+            animation-name: driftRight;
+            animation-duration: 5.5s;
+          }
+
+          .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 24px;
+            background: rgba(10, 10, 10, 0.92);
+          }
+
+          .lightbox img {
+            max-width: 92vw;
+            max-height: 78vh;
+            border-radius: 14px;
+            object-fit: contain;
+          }
+
+          .lightbox-close {
+            position: absolute;
+            top: 22px;
+            right: 22px;
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 1.2rem;
+            cursor: pointer;
+          }
+
+          @keyframes fadeUp {
+            from {
+              opacity: 0;
+              transform: translateY(28px);
+            }
+
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: scale(0.9);
+            }
+
+            to {
+              opacity: 1;
+              transform: scale(1);
+            }
+          }
+
+          @keyframes floatY {
+            0%,
+            100% {
+              transform: translateY(0);
+            }
+
+            50% {
+              transform: translateY(-12px);
+            }
+          }
+
+          @keyframes driftLeft {
+            0%,
+            100% {
+              transform: translateX(0);
+            }
+
+            50% {
+              transform: translateX(-8px);
+            }
+          }
+
+          @keyframes driftRight {
+            0%,
+            100% {
+              transform: translateX(0);
+            }
+
+            50% {
+              transform: translateX(8px);
+            }
+          }
+
+          @keyframes fallLoop {
+            0%,
+            100% {
+              transform: translateY(-8px);
+            }
+
+            50% {
+              transform: translateY(10px);
+            }
+          }
+
+          @media (max-width: 950px) {
+            .hero {
+              padding: 100px 5% 70px;
+            }
+
+            .hero-content {
+              flex-direction: column;
+              align-items: flex-start;
+            }
+
+            .hero-images {
+              align-self: center;
+            }
+
+            .features-grid {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }
+
+          @media (max-width: 700px) {
+            .hero {
+              min-height: auto;
+              padding: 100px 20px 70px;
+            }
+
+            .hero-content {
+              gap: 40px;
+            }
+
+            .hero-title {
+              font-size: clamp(2.8rem, 14vw, 4.5rem);
+            }
+
+            .hero-description {
+              font-size: 1rem;
+            }
+
+            .hero-images {
+              align-self: center;
+              width: 310px;
+              min-width: 310px;
+              height: 360px;
+              transform: scale(0.9);
+              transform-origin: center;
+            }
+
+            .hero-image-main {
+              left: 30px;
+              width: 220px;
+              height: 280px;
+            }
+
+            .hero-image-small-one {
+              width: 140px;
+              height: 160px;
+            }
+
+            .hero-image-small-two {
+              width: 130px;
+              height: 140px;
+            }
+
+            .image-label {
+              right: 5px;
+              top: 30px;
+            }
+
+            .features-grid {
+              grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+              grid-template-columns: 1fr;
+            }
+
+            .float-card {
+              height: 280px;
+            }
+          }
+        `}</style>
+
+        <section className="hero">
+          <img
+            className="hero-bg"
+            src={cafeInteriorImg}
+            alt="Green Valley Coffee interior"
+          />
+
+          <div className="hero-content">
+            <div className="hero-text">
+              <span className="eyebrow">Welcome to Green Valley Coffee</span>
+
+              <h1 className="hero-title">
+                Where Every Sip Feels Like Home
+              </h1>
+
+              <p className="hero-description">
+                Discover freshly brewed coffee, refreshing cold drinks,
+                delicious snacks, and peaceful moments at Green Valley Coffee.
+              </p>
+
+              <div className="hero-highlights">
+                <span>Freshly brewed</span>
+                <span>Cozy ambience</span>
+                <span>Delicious moments</span>
+              </div>
+
+              <div className="hero-actions">
+                <a className="btn btn-primary" href="/cafe-menu">
+                  Explore Our Menu
+                </a>
+
+                <a className="btn btn-ghost" href="#gallery">
+                  View Cafe Gallery
+                </a>
+              </div>
+            </div>
+
+            <div className="hero-images">
+              <div className="image-label">Made with love ☕</div>
+
+              <div className="hero-image hero-image-main">
+                <img src={coffeeBeansImg} alt="Fresh coffee beans" />
+              </div>
+
+              <div className="hero-image hero-image-small-one">
+                <img src={coldCoffeeImg} alt="Refreshing cold coffee" />
+              </div>
+
+              <div className="hero-image hero-image-small-two">
+                <img src={snacksImg} alt="Delicious cafe snacks" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="features-section">
+          <div className="section-heading">
+            <span>More than just coffee</span>
+
+            <h2>Everything You Need for a Perfect Cafe Moment</h2>
+
+            <p>
+              Whether you want to relax, meet friends, work peacefully, or
+              enjoy something delicious, Green Valley Coffee is the perfect
+              place for you.
+            </p>
+          </div>
+
+          <div className="features-grid">
+            {features.map((feature) => (
+              <div className="feature-card" key={feature.title}>
+                <div className="feature-icon">{feature.icon}</div>
+
+                <h3>{feature.title}</h3>
+
+                <p>{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          id="gallery"
+          className={`floating-gallery ${showGallery ? "show" : ""}`}
+        >
+          <h2 className="gallery-title">Our Cafe Moments</h2>
+
+          <p className="gallery-sub">
+            Take a look at the atmosphere, flavours, and moments waiting for
+            you.
           </p>
-          <div className="hero-actions">
-            <a className="btn btn-primary" href="#gallery">View Gallery</a>
-            <a className="btn btn-ghost" href="#menu">See Menu</a>
+
+          <div className="gallery-grid">
+            {galleryImages.map((img, index) => (
+              <FloatingImage
+                key={img.id}
+                img={img}
+                index={index}
+                onClick={setSelected}
+              />
+            ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="gallery" className={`floating-gallery ${showGallery ? "show" : ""}`}>
-        <h2 className="gallery-title">Our Cafe Moments</h2>
-        <div className="gallery-grid">
-          {galleryImages.map((img, index) => (
-            <FloatingImage key={img.id} img={img} index={index} onClick={setSelected} />
-          ))}
-        </div>
-      </section>
-
-      <section id="menu" className="menu-section">
-        {menuData.map((section, idx) => (
-          <div key={section.id} className={`menu-row ${idx % 2 === 1 ? "reverse" : ""}`}>
-            <div className="menu-img-wrap">
-              <img src={section.image} alt={section.title} />
-            </div>
-
-            <div className="menu-content">
-              <h2>{section.title}</h2>
-              <p>{section.description}</p>
-              <ul className="menu-list">
-                {section.items.map((item, i) => (
-                  <li key={i}>
-                    <span className="item-name">
-                      {item.name}
-                      {item.badge && <span className="badge">{item.badge}</span>}
-                    </span>
-                    <span className="price">₹{item.price}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      <GalleryLightbox image={selected} onClose={() => setSelected(null)} />
-    </div>
+        <GalleryLightbox
+          image={selected}
+          onClose={() => setSelected(null)}
+        />
+      </div>
     </>
   );
 }

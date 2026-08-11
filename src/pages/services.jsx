@@ -69,10 +69,6 @@ const restaurantImages = [
     alt: "Restaurant dining tables",
   },
   {
-    src: "/images/cafe56.jpg",
-    alt: "Green Valley restaurant interior",
-  },
-  {
     src: "/images/cafe57.jpg",
     alt: "Restaurant dining experience",
   },
@@ -147,6 +143,13 @@ const kitchenImages = [
     alt: "Clean food preparation area",
   },
   {
+    src: "/images/out7.jpg",
+    alt: "Green Valley kitchen operations",
+  },
+];
+
+const washroomImages = [
+  {
     src: "/images/out3.jpg",
     alt: "Restaurant washroom",
   },
@@ -161,10 +164,6 @@ const kitchenImages = [
   {
     src: "/images/out6.jpg",
     alt: "Hygienic washroom",
-  },
-  {
-    src: "/images/out7.jpg",
-    alt: "Green Valley kitchen operations",
   },
 ];
 
@@ -319,7 +318,7 @@ const services = [
     icon: Sparkles,
     title: "Clean Dining Space",
     text: "Tables, chairs, floors and serving areas are cleaned and maintained regularly.",
-    image: restaurantImages[5].src,
+    image: restaurantImages[4].src,
   },
   {
     icon: Users,
@@ -404,6 +403,78 @@ function usePrefersReducedMotion() {
   }, []);
 
   return reducedMotion;
+}
+
+/* -------------------------------------------------------
+   Auto Slider (flexible height via className, aspectRatio optional)
+-------------------------------------------------------- */
+
+function AutoSquareSlider({ images, interval = 3500, className = "", aspectRatio }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const reducedMotion = usePrefersReducedMotion();
+
+  useEffect(() => {
+    if (images.length <= 1 || reducedMotion) return;
+
+    const timer = setInterval(() => {
+      setCurrentIndex((current) => (current + 1) % images.length);
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [images.length, interval, reducedMotion]);
+
+  if (images.length === 0) return null;
+
+  return (
+    <div
+      className={`relative overflow-hidden rounded-2xl shadow-xl ${className}`}
+      style={aspectRatio ? { aspectRatio } : undefined}
+    >
+      <div
+        className={`flex h-full w-full ${
+          reducedMotion
+            ? ""
+            : "transition-transform duration-700 ease-out"
+        }`}
+        style={{
+          transform: `translateX(-${currentIndex * 100}%)`,
+        }}
+      >
+        {images.map((image) => (
+          <div
+            key={image.src}
+            className="relative h-full w-full shrink-0"
+          >
+            <img
+              src={image.src}
+              alt={image.alt}
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Dots */}
+      {images.length > 1 && (
+        <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+          {images.map((_, index) => (
+            <span
+              key={index}
+              className="block h-2 rounded-full transition-all duration-300"
+              style={{
+                width: currentIndex === index ? 24 : 8,
+                background:
+                  currentIndex === index
+                    ? COLORS.ivory
+                    : "rgba(246,241,231,0.5)",
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
 /* -------------------------------------------------------
@@ -588,38 +659,6 @@ function HeroSlider() {
 }
 
 /* -------------------------------------------------------
-   Image strip component
--------------------------------------------------------- */
-
-function ImageStrip({ images, title }) {
-  return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-      {images.slice(0, 4).map((image, index) => (
-        <div
-          key={image.src}
-          className={`group relative overflow-hidden rounded-2xl ${
-            index === 0 ? "md:row-span-2 md:h-[420px]" : "h-48 md:h-52"
-          }`}
-        >
-          <img
-            src={image.src}
-            alt={image.alt || title}
-            loading="lazy"
-            className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
-
-          <p className="absolute bottom-4 left-4 right-4 translate-y-3 text-sm text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-            {image.alt}
-          </p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* -------------------------------------------------------
    Main page
 -------------------------------------------------------- */
 
@@ -692,26 +731,6 @@ export default function GreenValleyServices() {
               }
             }
           `}</style>
-
-          {/* Navigation */}
-          <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 md:px-10">
-            <a
-              href="/"
-              className="font-display text-2xl"
-              style={{ color: COLORS.green }}
-            >
-              Green Valley
-            </a>
-
-            <a
-              href={PHONE_LINK}
-              className="hidden items-center gap-2 text-sm md:flex"
-              style={{ color: COLORS.green }}
-            >
-              <Phone size={16} />
-              {DISPLAY_PHONE}
-            </a>
-          </nav>
 
           {/* Hero */}
           <header className="mx-auto grid max-w-7xl items-center gap-12 px-6 pb-20 pt-10 md:grid-cols-[1fr_0.85fr] md:px-10 md:pb-28 md:pt-16">
@@ -943,17 +962,57 @@ export default function GreenValleyServices() {
                 </div>
               </div>
 
-              <ImageStrip
-                images={restaurantImages}
-                title="Restaurant dining"
-              />
+              {/* Restaurant dining gallery: one static image left + auto-slider right */}
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <div className="group relative overflow-hidden rounded-2xl h-72 md:h-[420px]">
+                  <img
+                    src={restaurantImages[0].src}
+                    alt={restaurantImages[0].alt}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+
+                  <p className="absolute bottom-4 left-4 right-4 translate-y-3 text-sm text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    {restaurantImages[0].alt}
+                  </p>
+                </div>
+
+                <AutoSquareSlider
+                  images={restaurantImages.slice(1)}
+                  interval={3500}
+                  className="h-72 md:h-[420px]"
+                />
+              </div>
             </div>
           </section>
 
           {/* Cafe */}
           <section className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
             <div className="grid items-center gap-12 md:grid-cols-[0.9fr_1.1fr]">
-              <ImageStrip images={cafeImages} title="Cafe experience" />
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <div className="group relative overflow-hidden rounded-2xl h-72 md:h-[420px]">
+                  <img
+                    src={cafeImages[0].src}
+                    alt={cafeImages[0].alt}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+
+                  <p className="absolute bottom-4 left-4 right-4 translate-y-3 text-sm text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    {cafeImages[0].alt}
+                  </p>
+                </div>
+
+                <AutoSquareSlider
+                  images={cafeImages.slice(1)}
+                  interval={3500}
+                  className="h-72 md:h-[420px]"
+                />
+              </div>
 
               <div>
                 <p
@@ -1052,22 +1111,14 @@ export default function GreenValleyServices() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                {kitchenImages.slice(0, 4).map((image, index) => (
-                  <div
-                    key={image.src}
-                    className={`image-card group relative overflow-hidden rounded-2xl ${
-                      index === 0 ? "row-span-2 h-[430px]" : "h-52"
-                    }`}
-                  >
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      loading="lazy"
-                      className="feature-image h-full w-full object-cover"
-                    />
-                  </div>
-                ))}
+              {/* Kitchen: single static image, no slider */}
+              <div className="relative overflow-hidden rounded-2xl h-72 md:h-[450px]">
+                <img
+                  src={kitchenImages[0].src}
+                  alt={kitchenImages[0].alt}
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
               </div>
             </div>
           </section>
@@ -1075,10 +1126,28 @@ export default function GreenValleyServices() {
           {/* Washrooms */}
           <section className="mx-auto max-w-7xl px-6 py-20 md:px-10 md:py-28">
             <div className="grid items-center gap-12 md:grid-cols-[1.1fr_0.9fr]">
-              <ImageStrip
-                images={kitchenImages.slice(2, 6)}
-                title="Clean washrooms"
-              />
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                <div className="group relative overflow-hidden rounded-2xl h-72 md:h-[420px]">
+                  <img
+                    src={washroomImages[0].src}
+                    alt={washroomImages[0].alt}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+
+                  <p className="absolute bottom-4 left-4 right-4 translate-y-3 text-sm text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+                    {washroomImages[0].alt}
+                  </p>
+                </div>
+
+                <AutoSquareSlider
+                  images={washroomImages.slice(1)}
+                  interval={3500}
+                  className="h-72 md:h-[420px]"
+                />
+              </div>
 
               <div>
                 <p
@@ -1162,7 +1231,12 @@ export default function GreenValleyServices() {
                 </div>
               </div>
 
-              <ImageStrip images={uniformImages} title="Professional staff" />
+              <AutoSquareSlider
+                images={uniformImages}
+                interval={3500}
+                aspectRatio="1 / 1"
+                className="mx-auto w-full max-w-[420px]"
+              />
             </div>
           </section>
 
@@ -1261,7 +1335,12 @@ export default function GreenValleyServices() {
                 </div>
               </div>
 
-              <ImageStrip images={customerImages} title="Our customers" />
+              <AutoSquareSlider
+                images={customerImages}
+                interval={3500}
+                aspectRatio="1 / 1"
+                className="mx-auto w-full max-w-[420px]"
+              />
             </div>
           </section>
 
