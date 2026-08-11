@@ -13,9 +13,11 @@ import {
   MessageCircle
 } from "lucide-react";
 
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const footerHeadingId = "footer-heading";
+
 
   const exploreLinks = [
     { label: "Home", to: "/", icon: Home },
@@ -27,6 +29,7 @@ export default function Footer() {
     { label: "About", to: "/about", icon: Info },
     { label: "Contact", to: "/contact", icon: MessageCircle },
   ];
+
 
   return (
     <footer
@@ -55,17 +58,30 @@ export default function Footer() {
             with love — and served in the heart of Santhamaguluru.
           </p>
 
+
           <div className="flex items-center gap-3 pt-1">
             <a 
-              href="https://instagram.com/" 
+              href="https://www.instagram.com/greenvalleyfoodone?igsh=b2ZlMHI2NWd5OGZ3" 
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Instagram"
               className="w-10 h-10 rounded-full border border-[#f5f5dc]/20 flex items-center justify-center text-[#f5f5dc]/60 hover:text-amber-400 hover:border-amber-400/40 transition-all duration-300 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
             >
-              <span aria-hidden="true" className="text-[0.7rem] font-semibold uppercase tracking-wide">
-                IG
-              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-4 h-4"
+                aria-hidden="true"
+              >
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+              </svg>
             </a>
             <a 
               href="https://facebook.com/" 
@@ -74,23 +90,45 @@ export default function Footer() {
               aria-label="Facebook"
               className="w-10 h-10 rounded-full border border-[#f5f5dc]/20 flex items-center justify-center text-[#f5f5dc]/60 hover:text-amber-400 hover:border-amber-400/40 transition-all duration-300 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
             >
-              <span aria-hidden="true" className="text-[0.7rem] font-semibold uppercase tracking-wide">
-                FB
-              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-4 h-4"
+                aria-hidden="true"
+              >
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
             </a>
             <a 
-              href="https://youtube.com/" 
+              href="https://www.youtube.com/@GREENVALLEYFOODONE" 
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="YouTube"
               className="w-10 h-10 rounded-full border border-[#f5f5dc]/20 flex items-center justify-center text-[#f5f5dc]/60 hover:text-amber-400 hover:border-amber-400/40 transition-all duration-300 hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
             >
-              <span aria-hidden="true" className="text-[0.7rem] font-semibold uppercase tracking-wide">
-                YT
-              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-4 h-4"
+                aria-hidden="true"
+              >
+                <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
+                <path d="m10 15 5-3-5-3z" />
+              </svg>
             </a>
           </div>
         </div>
+
 
         {/* Explore Column */}
         <div>
@@ -104,7 +142,7 @@ export default function Footer() {
                   <Link 
                     to={item.to}
                     className="group flex items-center gap-2.5 text-sm text-[#f5f5dc]/70 hover:text-amber-400 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 rounded-sm"
-                  >
+                    >
                     <item.icon className="w-3.5 h-3.5 text-[#f5f5dc]/30 group-hover:text-amber-400 transition-colors" />
                     <span>{item.label}</span>
                   </Link>
@@ -113,6 +151,7 @@ export default function Footer() {
             </ul>
           </nav>
         </div>
+
 
         {/* Visit Column */}
         <div>
@@ -149,6 +188,7 @@ export default function Footer() {
           </address>
         </div>
       </div>
+
 
       {/* Bottom Bar */}
       <div className="border-t border-[#f5f5dc]/10">
