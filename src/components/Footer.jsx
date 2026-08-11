@@ -10,7 +10,8 @@ import {
   Briefcase,
   Image,
   Info,
-  MessageCircle
+  MessageCircle,
+  ExternalLink
 } from "lucide-react";
 
 
@@ -192,9 +193,31 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-[#f5f5dc]/10">
-        <div className="max-w-6xl mx-auto px-5 md:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[#f5f5dc]/40">
+        <div className="max-w-6xl mx-auto px-5 md:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#f5f5dc]/40">
           <p>© {currentYear} Green Valley. All rights reserved.</p>
-          <p className="hidden sm:block">Crafted with care in Andhra Pradesh.</p>
+          
+          {/* B TO P NEXUS Credit */}
+          <div className="flex items-center gap-2">
+            <span>Designed by</span>
+            <a 
+              href="https://btopnexus.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-[#f5f5dc]/60 hover:text-amber-400 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 rounded-sm"
+            >
+              <span className="font-semibold tracking-wide">B TO P NEXUS</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <span className="mx-1">·</span>
+            <a 
+              href="https://btopnexus.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-amber-500/80 hover:text-amber-400 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 rounded-sm font-medium"
+            >
+              Visit Now
+            </a>
+          </div>
         </div>
       </div>
     </footer>
