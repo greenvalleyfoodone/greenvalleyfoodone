@@ -25,7 +25,7 @@ export default function Contact() {
             </dt>
 
             <dd>
-              Green Valley Coffee One, 4XRH+3GM, Santhamaguluru, Andhra Pradesh
+              Green Valley Food One, 4XRH+3GM, Santhamaguluru, Andhra Pradesh
               522603
             </dd>
           </div>
@@ -52,7 +52,7 @@ export default function Contact() {
 
             <dd>
               <a
-                href="mailto:greenvalleyinfo@gmail.com"
+                href="mailto:greenvalleyfoodone@gmail.com"
                 className="hover:text-valley-clay"
               >
                 greenvalleyinfo@gmail.com

@@ -701,9 +701,7 @@ export default function CafePage() {
             <div className="hero-text">
               <span className="eyebrow">Welcome to Green Valley Coffee</span>
 
-              <h1 className="hero-title">
-                Where Every Sip Feels Like Home
-              </h1>
+              <h1 className="hero-title">Where Every Sip Feels Like Home</h1>
 
               <p className="hero-description">
                 Discover freshly brewed coffee, refreshing cold drinks,
@@ -717,7 +715,7 @@ export default function CafePage() {
               </div>
 
               <div className="hero-actions">
-                <a className="btn btn-primary" href="/cafe-menu">
+                <a className="btn btn-primary" href="/menu">
                   Explore Our Menu
                 </a>
 
