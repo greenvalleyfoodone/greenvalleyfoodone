@@ -178,11 +178,11 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="mailto:greenvalleyinfo@gmail.com" 
+                  href="mailto:contact@greenvalleyfoodone.com" 
                   className="flex items-center gap-3 text-sm text-[#f5f5dc]/70 hover:text-amber-400 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 rounded-sm"
                 >
                   <Mail className="w-4 h-4 text-amber-500 shrink-0" />
-                  <span>greenvalleyinfo.in</span>
+                  <span>contact@greenvalleyfoodone.com</span>
                 </a>
               </li>
             </ul>

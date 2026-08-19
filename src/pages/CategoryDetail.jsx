@@ -1,18 +1,191 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
-import { Link, useParams } from "@/lib/router-compat";
+import React, { useState, useMemo, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
 /* ============================================
    Green Valley — Category Detail Page
    Sidebar + Product Grid + Category Sliders
    ============================================ */
 
-/* Height (px) of the global fixed/sticky navbar from Layout.jsx.
-   Update this constant if your navbar's actual rendered height changes,
-   so the sidebar and page content keep clearing it correctly. */
-const NAVBAR_HEIGHT = 88;
-
-import { liveMenu as allData, useMenuTree } from "@/lib/siteMenu";
-
+/* ---------- FULL PRODUCT DATA ---------- */
+const allData = {
+  cafe: {
+    icon: '☕',
+    title: 'Café',
+    subtitle: 'Fresh brews & cozy bites',
+    categories: {
+      coffee: {
+        name: 'Coffee',
+        description: 'A perfect blend for every mood',
+        image: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=400&auto=format&fit=crop',
+        products: [
+          { id: 1, name: 'Cappuccino', desc: 'Espresso with steamed milk and a layer of foam.', price: 220, image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400&auto=format&fit=crop' },
+          { id: 2, name: 'Latte', desc: 'Smooth espresso with steamed milk.', price: 200, image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&auto=format&fit=crop' },
+          { id: 3, name: 'Americano', desc: 'Espresso diluted with hot water.', price: 180, image: 'https://images.unsplash.com/photo-1551030173-122aabc4489c?w=400&auto=format&fit=crop' },
+          { id: 4, name: 'Mocha', desc: 'Espresso with rich chocolate and steamed milk.', price: 240, image: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=400&auto=format&fit=crop' },
+          { id: 5, name: 'Espresso', desc: 'Strong and bold single shot of espresso.', price: 150, image: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=400&auto=format&fit=crop' },
+          { id: 6, name: 'Flat White', desc: 'Smooth espresso with steamed milk.', price: 210, image: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=400&auto=format&fit=crop' },
+          { id: 7, name: 'Caramel Macchiato', desc: 'Vanilla-flavored milk with espresso & caramel.', price: 240, image: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=400&auto=format&fit=crop' },
+          { id: 8, name: 'Hazelnut Coffee', desc: 'Aromatic hazelnut flavor with a coffee kick.', price: 230, image: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=400&auto=format&fit=crop' },
+        ],
+      },
+      tea: {
+        name: 'Tea',
+        description: 'Warm up with our finest teas',
+        image: 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=400&auto=format&fit=crop',
+        products: [
+          { id: 9, name: 'Masala Chai', desc: 'Spiced milk tea with cardamom and ginger.', price: 120, image: 'https://images.unsplash.com/photo-1561336313-0bd5e0b27ec8?w=400&auto=format&fit=crop' },
+          { id: 10, name: 'Green Tea', desc: 'Refreshing green tea with antioxidants.', price: 130, image: 'https://images.unsplash.com/photo-1627435601361-ec25f5b1d0e5?w=400&auto=format&fit=crop' },
+          { id: 11, name: 'Lemon Tea', desc: 'Black tea with fresh lemon and honey.', price: 130, image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=400&auto=format&fit=crop' },
+          { id: 12, name: 'Ginger Tea', desc: 'Strong ginger-infused black tea.', price: 120, image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400&auto=format&fit=crop' },
+          { id: 13, name: 'Earl Grey', desc: 'Classic bergamot-flavored black tea.', price: 140, image: 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=400&auto=format&fit=crop' },
+        ],
+      },
+      milk: {
+        name: 'Milk & More',
+        description: 'Wholesome & refreshing drinks',
+        image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&auto=format&fit=crop',
+        products: [
+          { id: 14, name: 'Cold Milk', desc: 'Chilled farm-fresh milk.', price: 80, image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&auto=format&fit=crop' },
+          { id: 15, name: 'Chocolate Milk', desc: 'Rich chocolate-flavored cold milk.', price: 120, image: 'https://images.unsplash.com/photo-1559598467-f8b76c8155d0?w=400&auto=format&fit=crop' },
+          { id: 16, name: 'Badam Milk', desc: 'Almond-flavored warm milk.', price: 130, image: 'https://images.unsplash.com/photo-1600788886242-5c96aabe3757?w=400&auto=format&fit=crop' },
+          { id: 17, name: 'Turmeric Milk', desc: 'Golden milk with turmeric and honey.', price: 120, image: 'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=400&auto=format&fit=crop' },
+          { id: 18, name: 'Oreo Milkshake', desc: 'Creamy Oreo cookie milkshake.', price: 160, image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&auto=format&fit=crop' },
+        ],
+      },
+      shakes: {
+        name: 'Shakes',
+        description: 'Creamy shakes for every craving',
+        image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&auto=format&fit=crop',
+        products: [
+          { id: 19, name: 'Chocolate Shake', desc: 'Rich chocolate ice cream shake.', price: 180, image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400&auto=format&fit=crop' },
+          { id: 20, name: 'Strawberry Shake', desc: 'Fresh strawberry blended shake.', price: 180, image: 'https://images.unsplash.com/photo-1553530979-7ee52a2670c4?w=400&auto=format&fit=crop' },
+          { id: 21, name: 'Vanilla Shake', desc: 'Classic vanilla bean milkshake.', price: 170, image: 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400&auto=format&fit=crop' },
+          { id: 22, name: 'Mango Shake', desc: 'Seasonal mango thick shake.', price: 180, image: 'https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=400&auto=format&fit=crop' },
+          { id: 23, name: 'Coffee Shake', desc: 'Cold coffee blended with ice cream.', price: 190, image: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=400&auto=format&fit=crop' },
+        ],
+      },
+      snacks: {
+        name: 'Snacks',
+        description: 'Tasty bites to fuel your mood',
+        image: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400&auto=format&fit=crop',
+        products: [
+          { id: 24, name: 'Veg Sandwich', desc: 'Grilled veggies with cheese.', price: 120, image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&auto=format&fit=crop' },
+          { id: 25, name: 'French Fries', desc: 'Crispy golden potato fries.', price: 130, image: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400&auto=format&fit=crop' },
+          { id: 26, name: 'Cheese Balls', desc: 'Crispy cheese-filled bites.', price: 130, image: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=400&auto=format&fit=crop' },
+          { id: 27, name: 'Veg Puff', desc: 'Flaky pastry with spiced filling.', price: 110, image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&auto=format&fit=crop' },
+          { id: 28, name: 'Garlic Bread', desc: 'Toasted bread with garlic butter.', price: 140, image: 'https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=400&auto=format&fit=crop' },
+        ],
+      },
+      desserts: {
+        name: 'Desserts',
+        description: 'Sweet treats for a perfect end',
+        image: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400&auto=format&fit=crop',
+        products: [
+          { id: 29, name: 'Chocolate Brownie', desc: 'Warm brownie with nuts.', price: 150, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&auto=format&fit=crop' },
+          { id: 30, name: 'Cheesecake', desc: 'Creamy New York style cheesecake.', price: 160, image: 'https://images.unsplash.com/photo-1524351199678-941a58a3df26?w=400&auto=format&fit=crop' },
+          { id: 31, name: 'Tiramisu', desc: 'Classic Italian coffee dessert.', price: 170, image: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400&auto=format&fit=crop' },
+          { id: 32, name: 'Chocolate Lava Cake', desc: 'Molten center chocolate cake.', price: 180, image: 'https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=400&auto=format&fit=crop' },
+          { id: 33, name: 'Ice Cream (2 Scoops)', desc: 'Choice of vanilla, chocolate or strawberry.', price: 120, image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&auto=format&fit=crop' },
+        ],
+      },
+      specials: {
+        name: 'Specials',
+        description: "Chef's special creations",
+        image: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=400&auto=format&fit=crop',
+        products: [
+          { id: 34, name: 'Affogato', desc: 'Vanilla ice cream drowned in espresso.', price: 220, image: 'https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=400&auto=format&fit=crop' },
+          { id: 35, name: 'Irish Coffee', desc: 'Coffee with Irish whiskey and cream.', price: 240, image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&auto=format&fit=crop' },
+          { id: 36, name: 'Nitro Cold Brew', desc: 'Nitrogen-infused cold brew coffee.', price: 230, image: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=400&auto=format&fit=crop' },
+          { id: 37, name: 'Cinnamon Coffee', desc: 'Spiced coffee with cinnamon stick.', price: 220, image: 'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?w=400&auto=format&fit=crop' },
+          { id: 38, name: 'Vienna Coffee', desc: 'Espresso topped with whipped cream.', price: 230, image: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=400&auto=format&fit=crop' },
+        ],
+      },
+    },
+  },
+  restaurant: {
+    icon: '🍽️',
+    title: 'Restaurant',
+    subtitle: 'Hearty meals & timeless flavors',
+    categories: {
+      tiffins: {
+        name: 'Tiffins',
+        description: 'Early morning favorites from the village kitchen.',
+        image: 'https://images.unsplash.com/photo-1662116765994-54592e8772a5?w=400&auto=format&fit=crop',
+        products: [
+          { id: 101, name: 'Pesarattu with Upma', desc: 'Green gram dosa with semolina upma.', price: 110, image: 'https://images.unsplash.com/photo-1662116765994-54592e8772a5?w=400&auto=format&fit=crop' },
+          { id: 102, name: 'Idly Sambar', desc: 'Steamed rice cakes with lentil soup.', price: 60, image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&auto=format&fit=crop' },
+          { id: 103, name: 'Dosa (Plain)', desc: 'Crispy rice crepe.', price: 50, image: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=400&auto=format&fit=crop' },
+          { id: 104, name: 'Dosa (Masala)', desc: 'Crispy dosa with spiced potato filling.', price: 70, image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400&auto=format&fit=crop' },
+          { id: 105, name: 'Puri Bhaji', desc: 'Deep-fried bread with potato curry.', price: 80, image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&auto=format&fit=crop' },
+        ],
+      },
+      starters: {
+        name: 'Starters',
+        description: 'Crispy, spicy and perfect to share.',
+        image: 'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=400&auto=format&fit=crop',
+        products: [
+          { id: 106, name: 'Chicken 65', desc: 'Spicy deep-fried chicken bites.', price: 180, image: 'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=400&auto=format&fit=crop' },
+          { id: 107, name: 'Apollo Fish', desc: 'Tangy battered fish fry.', price: 220, image: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=400&auto=format&fit=crop' },
+          { id: 108, name: 'Chilli Chicken', desc: 'Indo-Chinese style chicken.', price: 190, image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&auto=format&fit=crop' },
+          { id: 109, name: 'Paneer Tikka', desc: 'Grilled cottage cheese with spices.', price: 160, image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&auto=format&fit=crop' },
+        ],
+      },
+      biryani: {
+        name: 'Biryani',
+        description: 'Slow-cooked dum biryanis with home-ground spices.',
+        image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&auto=format&fit=crop',
+        products: [
+          { id: 110, name: 'Andhra Chicken Biryani', desc: 'Slow-cooked with home-ground spices, served with raita.', price: 280, image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&auto=format&fit=crop' },
+          { id: 111, name: 'Mutton Biryani', desc: 'Tender mutton layered with fragrant rice.', price: 350, image: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=400&auto=format&fit=crop' },
+          { id: 112, name: 'Veg Biryani', desc: 'Mixed vegetables with aromatic basmati.', price: 200, image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&auto=format&fit=crop' },
+          { id: 113, name: 'Egg Biryani', desc: 'Boiled eggs in spiced rice.', price: 180, image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&auto=format&fit=crop' },
+        ],
+      },
+      meals: {
+        name: 'Meals',
+        description: 'Unlimited thalis served on banana leaf.',
+        image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&auto=format&fit=crop',
+        products: [
+          { id: 114, name: 'Full Andhra Meals (Veg)', desc: 'Unlimited rice, sambar, rasam, curries and pickle.', price: 150, image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&auto=format&fit=crop' },
+          { id: 115, name: 'Full Andhra Meals (Non-Veg)', desc: 'Meals thali with a chicken or fish curry.', price: 220, image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&auto=format&fit=crop' },
+          { id: 116, name: 'Mini Meals', desc: 'Compact thali with essentials.', price: 120, image: 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=400&auto=format&fit=crop' },
+        ],
+      },
+      curries: {
+        name: 'Curries',
+        description: 'Traditional gravies rooted in Prakasam recipes.',
+        image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&auto=format&fit=crop',
+        products: [
+          { id: 117, name: 'Gongura Mutton', desc: 'Sorrel leaf curry, a Prakasam specialty.', price: 320, image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&auto=format&fit=crop' },
+          { id: 118, name: 'Royyala Iguru', desc: 'Prawn curry in a thick Andhra masala.', price: 300, image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&auto=format&fit=crop' },
+          { id: 119, name: 'Chicken Curry', desc: 'Home-style chicken gravy.', price: 260, image: 'https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=400&auto=format&fit=crop' },
+          { id: 120, name: 'Natu Kodi Pulusu', desc: 'Country chicken in tangy tamarind gravy.', price: 340, image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&auto=format&fit=crop' },
+        ],
+      },
+      'fried-rice': {
+        name: 'Fried Rice & Noodles',
+        description: 'Indo-Chinese favorites.',
+        image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&auto=format&fit=crop',
+        products: [
+          { id: 121, name: 'Veg Fried Rice', desc: 'Rice tossed with vegetables and soy.', price: 160, image: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&auto=format&fit=crop' },
+          { id: 122, name: 'Chicken Fried Rice', desc: 'Rice with chicken and vegetables.', price: 200, image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&auto=format&fit=crop' },
+          { id: 123, name: 'Egg Fried Rice', desc: 'Rice with scrambled eggs.', price: 170, image: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=400&auto=format&fit=crop' },
+          { id: 124, name: 'Hakka Noodles', desc: 'Stir-fried noodles with veggies.', price: 160, image: 'https://images.unsplash.com/photo-1552611052-33e04de081de?w=400&auto=format&fit=crop' },
+        ],
+      },
+      'restaurant-specials': {
+        name: 'Restaurant Specials',
+        description: "Chef's exclusive dishes.",
+        image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&auto=format&fit=crop',
+        products: [
+          { id: 125, name: 'Gongura Mutton', desc: 'Sorrel leaf curry, a Prakasam specialty.', price: 320, image: 'https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=400&auto=format&fit=crop' },
+          { id: 126, name: 'Royyala Iguru', desc: 'Prawn curry in a thick Andhra masala.', price: 300, image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&auto=format&fit=crop' },
+          { id: 127, name: 'Andhra Chicken Biryani', desc: 'Slow-cooked with home-ground spices.', price: 280, image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&auto=format&fit=crop' },
+        ],
+      },
+    },
+  },
+};
 
 /* ---------- Heart Icon ---------- */
 function HeartIcon({ filled, onClick }) {
@@ -192,19 +365,15 @@ function Sidebar({ side, activeCategory }) {
 }
 
 /* ---------- Main Page ---------- */
-function CategoryDetailInner() {
+export default function CategoryDetail() {
   const { side, categoryId } = useParams();
   const [search, setSearch] = useState('');
   const [pageIndex, setPageIndex] = useState(0);
   const [sortOption, setSortOption] = useState('default');
   const [showFilterPanel, setShowFilterPanel] = useState(false);
   const [showSortPanel, setShowSortPanel] = useState(false);
-  const [priceRange, setPriceRange] = useState('all');
-  const [sortLabel, setSortLabel] = useState('Default');
-  const [filterLabel, setFilterLabel] = useState('All Prices');
+  const [priceFilter, setPriceFilter] = useState('all');
   const itemsPerPage = 3;
-  const filterPanelRef = useRef(null);
-  const sortPanelRef = useRef(null);
 
   const sideData = allData[side];
   const category = sideData?.categories[categoryId];
@@ -227,11 +396,11 @@ function CategoryDetailInner() {
       );
     }
 
-    if (priceRange === 'under150') {
+    if (priceFilter === 'under150') {
       results = results.filter((p) => p.price < 150);
-    } else if (priceRange === '150to250') {
+    } else if (priceFilter === '150to250') {
       results = results.filter((p) => p.price >= 150 && p.price <= 250);
-    } else if (priceRange === 'above250') {
+    } else if (priceFilter === 'above250') {
       results = results.filter((p) => p.price > 250);
     }
 
@@ -247,28 +416,11 @@ function CategoryDetailInner() {
     }
 
     return sorted;
-  }, [category.products, search, priceRange, sortOption]);
+  }, [category.products, search, priceFilter, sortOption]);
 
   useEffect(() => {
     setPageIndex(0);
-  }, [search, categoryId, side, priceRange, sortOption]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        filterPanelRef.current &&
-        !filterPanelRef.current.contains(event.target) &&
-        sortPanelRef.current &&
-        !sortPanelRef.current.contains(event.target)
-      ) {
-        setShowFilterPanel(false);
-        setShowSortPanel(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [search, categoryId, side, priceFilter, sortOption]);
 
   const pageCount = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
   const currentProducts = filteredProducts.slice(
@@ -413,20 +565,27 @@ function CategoryDetailInner() {
                   }}
                 >
                   <span>Filter</span>
-                  <span style={styles.toolbarBadge}>{filterLabel}</span>
+                  <span style={styles.toolbarBadge}>
+                    {priceFilter === 'all'
+                      ? 'All'
+                      : priceFilter === 'under150'
+                      ? 'Under ₹150'
+                      : priceFilter === '150to250'
+                      ? '₹150–₹250'
+                      : 'Above ₹250'}
+                  </span>
                 </button>
                 {showFilterPanel && (
-                  <div ref={filterPanelRef} style={{ ...styles.panelDropdown, animation: 'fadeInDown 0.2s ease' }}>
+                  <div style={styles.panelDropdown}>
                     <button
                       type="button"
                       onClick={() => {
-                        setPriceRange('all');
-                        setFilterLabel('All Prices');
+                        setPriceFilter('all');
                         setShowFilterPanel(false);
                       }}
                       style={{
                         ...styles.panelOption,
-                        ...(priceRange === 'all' ? styles.panelOptionActive : {}),
+                        ...(priceFilter === 'all' ? styles.panelOptionActive : {}),
                       }}
                     >
                       All Prices
@@ -434,13 +593,12 @@ function CategoryDetailInner() {
                     <button
                       type="button"
                       onClick={() => {
-                        setPriceRange('under150');
-                        setFilterLabel('Under ₹150');
+                        setPriceFilter('under150');
                         setShowFilterPanel(false);
                       }}
                       style={{
                         ...styles.panelOption,
-                        ...(priceRange === 'under150' ? styles.panelOptionActive : {}),
+                        ...(priceFilter === 'under150' ? styles.panelOptionActive : {}),
                       }}
                     >
                       Under ₹150
@@ -448,13 +606,12 @@ function CategoryDetailInner() {
                     <button
                       type="button"
                       onClick={() => {
-                        setPriceRange('150to250');
-                        setFilterLabel('₹150–₹250');
+                        setPriceFilter('150to250');
                         setShowFilterPanel(false);
                       }}
                       style={{
                         ...styles.panelOption,
-                        ...(priceRange === '150to250' ? styles.panelOptionActive : {}),
+                        ...(priceFilter === '150to250' ? styles.panelOptionActive : {}),
                       }}
                     >
                       ₹150–₹250
@@ -462,13 +619,12 @@ function CategoryDetailInner() {
                     <button
                       type="button"
                       onClick={() => {
-                        setPriceRange('above250');
-                        setFilterLabel('Above ₹250');
+                        setPriceFilter('above250');
                         setShowFilterPanel(false);
                       }}
                       style={{
                         ...styles.panelOption,
-                        ...(priceRange === 'above250' ? styles.panelOptionActive : {}),
+                        ...(priceFilter === 'above250' ? styles.panelOptionActive : {}),
                       }}
                     >
                       Above ₹250
@@ -505,7 +661,7 @@ function CategoryDetailInner() {
                   </span>
                 </button>
                 {showSortPanel && (
-                  <div ref={sortPanelRef} style={{ ...styles.panelDropdown, animation: 'fadeInDown 0.2s ease' }}>
+                  <div style={styles.panelDropdown}>
                     <button
                       type="button"
                       onClick={() => {
@@ -582,12 +738,6 @@ function CategoryDetailInner() {
             {currentProducts.map((product, i) => (
               <ProductCard key={product.id} product={product} delay={i * 0.05} />
             ))}
-            {currentProducts.length === 0 && (
-              <div style={styles.emptyState}>
-                <p style={styles.emptyTitle}>No items found</p>
-                <p style={styles.emptyText}>Try a different search, filter, or sort option.</p>
-              </div>
-            )}
           </div>
 
           {/* Pagination Dots */}
@@ -658,8 +808,6 @@ const styles = {
     color: '#2c1810',
     minHeight: '100vh',
     WebkitFontSmoothing: 'antialiased',
-    /* Push all page content below the fixed/sticky global navbar */
-    paddingTop: `${NAVBAR_HEIGHT}px`,
   },
 
   /* --- Layout --- */
@@ -677,9 +825,8 @@ const styles = {
     borderRight: '1px solid #f0e6dc',
     padding: '24px 16px',
     position: 'sticky',
-    /* Stick just below the navbar instead of at the very top of the viewport */
-    top: `${NAVBAR_HEIGHT}px`,
-    height: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
+    top: 0,
+    height: '100vh',
     overflowY: 'auto',
     flexShrink: 0,
   },
@@ -1002,33 +1149,11 @@ const styles = {
     borderRadius: '50%',
     background: '#d4cdc3',
     display: 'inline-block',
-    transition: 'transform 0.2s ease, background 0.2s ease',
   },
   pageDotActive: {
     background: '#2c1810',
     width: '8px',
     height: '8px',
-    transform: 'scale(1.3)',
-  },
-  emptyState: {
-    gridColumn: '1 / -1',
-    padding: '60px 24px',
-    borderRadius: '20px',
-    border: '1px dashed #e5dfd7',
-    background: '#fff',
-    textAlign: 'center',
-    color: '#6f645b',
-  },
-  emptyTitle: {
-    margin: '0 0 8px',
-    fontSize: '1rem',
-    fontWeight: 700,
-    color: '#2c1810',
-  },
-  emptyText: {
-    margin: 0,
-    fontSize: '0.9rem',
-    lineHeight: 1.6,
   },
 
   /* --- Sliders --- */
@@ -1131,15 +1256,3 @@ const styles = {
     margin: '0 10px 10px',
   },
 };
-export default function CategoryDetail() {
-  const { ready } = useMenuTree();
-  const { side, categoryId } = useParams();
-  if (!ready) {
-    return (
-      <div style={{ padding: '120px 24px', textAlign: 'center', color: '#8b7355' }}>
-        Loading menu…
-      </div>
-    );
-  }
-  return <CategoryDetailInner key={`${side}/${categoryId}`} />;
-}

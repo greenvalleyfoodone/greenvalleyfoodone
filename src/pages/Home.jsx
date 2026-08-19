@@ -58,7 +58,7 @@ const SCENES = {
     primaryCta: "See the menu",
     secondaryCta: "View gallery",
     hours: "Open 6 AM — 11 PM",
-    image: "/images/cafe.png",
+    image: "/images/cafe85.jpg",
   },
 
   restaurant: {
@@ -72,7 +72,7 @@ const SCENES = {
     primaryCta: "See the menu",
     secondaryCta: "View gallery",
     hours: "Open 7 AM — 11 PM",
-    image: "/images/hotel.png",
+    image: "/images/cafe63.jpg",
   },
 };
 
