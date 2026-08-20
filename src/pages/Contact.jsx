@@ -55,7 +55,7 @@ export default function Contact() {
                 href="mailto:greenvalleyfoodone@gmail.com"
                 className="hover:text-valley-clay"
               >
-                greenvalleyinfo@gmail.com
+                contact@greenvalleyfoodone.com
               </a>
             </dd>
           </div>
