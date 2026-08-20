@@ -66,7 +66,7 @@ export default function Contact() {
             </dt>
 
             <dd>
-              Restaurant: 7:00 AM – 10:00 PM · Cafe: 5:00 PM – 11:00 PM
+              Restaurant: 7:00 AM – 11:00 PM · Cafe: 6:00 AM – 11:00 PM
             </dd>
           </div>
         </dl>
