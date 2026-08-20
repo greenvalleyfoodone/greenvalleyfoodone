@@ -22,6 +22,7 @@ export default function ApertureLoader({ onComplete }) {
         ease: [0.22, 1, 0.36, 1],
       }}
     >
+      {/* Green glow behind the aperture */}
       <motion.div
         className="absolute h-[420px] w-[420px] rounded-full bg-[#315c3b]/20 blur-[100px]"
         initial={{ opacity: 0 }}
@@ -29,6 +30,7 @@ export default function ApertureLoader({ onComplete }) {
         transition={{ duration: 1 }}
       />
 
+      {/* Camera aperture */}
       <motion.div
         className="relative h-[300px] w-[300px]"
         initial={{
@@ -44,6 +46,7 @@ export default function ApertureLoader({ onComplete }) {
           ease: "easeOut",
         }}
       >
+        {/* Outer rotating lens ring */}
         <motion.div
           className="
             absolute inset-0
@@ -62,6 +65,7 @@ export default function ApertureLoader({ onComplete }) {
           }}
         />
 
+        {/* Gold lens ring */}
         <div
           className="
             absolute inset-[12px]
@@ -70,6 +74,7 @@ export default function ApertureLoader({ onComplete }) {
           "
         />
 
+        {/* Inner lens ring */}
         <div
           className="
             absolute inset-[25px]
@@ -78,6 +83,7 @@ export default function ApertureLoader({ onComplete }) {
           "
         />
 
+        {/* Gold lens ticks */}
         {[0, 45, 90, 135, 180, 225, 270, 315].map((degree) => (
           <div
             key={degree}
@@ -97,6 +103,7 @@ export default function ApertureLoader({ onComplete }) {
           />
         ))}
 
+        {/* Aperture blade area */}
         <motion.div
           className="
             absolute inset-[40px]
@@ -116,6 +123,7 @@ export default function ApertureLoader({ onComplete }) {
             ease: [0.65, 0, 0.35, 1],
           }}
         >
+          {/* Aperture blades */}
           {blades.map((_, index) => (
             <motion.div
               key={index}
@@ -153,6 +161,7 @@ export default function ApertureLoader({ onComplete }) {
             />
           ))}
 
+          {/* Light opening behind the logo */}
           <motion.div
             className="
               absolute
@@ -169,8 +178,8 @@ export default function ApertureLoader({ onComplete }) {
               height: 5,
             }}
             animate={{
-              width: 155,
-              height: 155,
+              width: 180,
+              height: 180,
             }}
             transition={{
               delay: 0.45,
@@ -179,16 +188,23 @@ export default function ApertureLoader({ onComplete }) {
             }}
           />
 
+          {/* Same dark rectangular logo background as MenuCardRevealLoader */}
           <motion.div
             className="
               absolute
               left-1/2 top-1/2
               z-30
-              flex
+              flex h-28 w-32
               -translate-x-1/2
               -translate-y-1/2
-              items-center
-              justify-center
+              items-center justify-center
+              rounded-2xl
+              border border-[#b69b62]/45
+              bg-gradient-to-br
+              from-[#173c2b]
+              via-[#214b34]
+              to-[#102c20]
+              shadow-[0_12px_24px_rgba(20,57,38,0.25)]
             "
             initial={{
               opacity: 0,
@@ -207,11 +223,12 @@ export default function ApertureLoader({ onComplete }) {
             <img
               src="/images/logo.png"
               alt="Green Valley Food One"
-              className="h-28 w-28 object-contain"
+              className="h-24 w-24 object-contain"
             />
           </motion.div>
         </motion.div>
 
+        {/* Lens reflection */}
         <motion.div
           className="
             absolute
@@ -233,6 +250,7 @@ export default function ApertureLoader({ onComplete }) {
         />
       </motion.div>
 
+      {/* Brand text */}
       <motion.div
         className="
           absolute
@@ -278,6 +296,7 @@ export default function ApertureLoader({ onComplete }) {
         </p>
       </motion.div>
 
+      {/* Final expanding reveal */}
       <motion.div
         className="
           pointer-events-none

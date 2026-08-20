@@ -29,6 +29,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
         ease: [0.22, 1, 0.36, 1],
       }}
     >
+      {/* Soft background glow */}
       <div
         className="
           absolute
@@ -39,6 +40,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
         "
       />
 
+      {/* Menu card */}
       <motion.div
         className="relative h-[390px] w-[290px] perspective-[1200px]"
         initial={{
@@ -56,6 +58,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
           ease: [0.22, 1, 0.36, 1],
         }}
       >
+        {/* Inside page */}
         <div
           className="
             absolute inset-0
@@ -66,6 +69,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
             shadow-[0_30px_80px_rgba(25,50,35,0.20)]
           "
         >
+          {/* Top gold line */}
           <motion.div
             className="
               absolute left-1/2 top-8
@@ -83,7 +87,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
             className="
               flex h-full flex-col
               items-center
-              px-8 pt-16
+              px-8 pt-12
               text-center
             "
             initial={{ opacity: 0 }}
@@ -93,10 +97,15 @@ export default function MenuCardRevealLoader({ onComplete }) {
               duration: 0.6,
             }}
           >
-            <motion.img
-              src="/images/logo.png"
-              alt="Green Valley Food One"
-              className="h-20 w-20 object-contain"
+            {/* Dark stylish background only for white-text logo */}
+            <motion.div
+              className="
+                flex h-28 w-28 items-center justify-center
+                rounded-2xl
+                border border-[#b69b62]/45
+                bg-gradient-to-br from-[#173c2b] via-[#214b34] to-[#102c20]
+                shadow-[0_12px_24px_rgba(20,57,38,0.25)]
+              "
               initial={{
                 opacity: 0,
                 scale: 0.7,
@@ -110,7 +119,13 @@ export default function MenuCardRevealLoader({ onComplete }) {
                 duration: 0.6,
                 ease: "easeOut",
               }}
-            />
+            >
+              <img
+                src="/images/logo.png"
+                alt="Green Valley Food One"
+                className="h-24 w-24 object-contain"
+              />
+            </motion.div>
 
             <motion.h1
               className="
@@ -162,9 +177,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
               transition={{ delay: 1.7 }}
             >
               <span className="h-px w-8 bg-[#b69b62]/50" />
-
               <span className="text-[8px] text-[#b69b62]">◆</span>
-
               <span className="h-px w-8 bg-[#b69b62]/50" />
             </motion.div>
 
@@ -192,6 +205,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
               Menu
             </motion.p>
 
+            {/* Fake menu lines */}
             <div className="mt-5 w-full space-y-3">
               {[80, 65, 75].map((width, index) => (
                 <motion.div
@@ -212,9 +226,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
                 >
                   <div
                     className="h-[2px] rounded-full bg-[#315c3b]/15"
-                    style={{
-                      width: `${width}%`,
-                    }}
+                    style={{ width: `${width}%` }}
                   />
 
                   <div className="ml-3 h-[3px] w-3 rounded-full bg-[#b69b62]/40" />
@@ -239,6 +251,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
           </motion.div>
         </div>
 
+        {/* Animated front cover */}
         <motion.div
           className="
             absolute inset-0
@@ -272,6 +285,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
             "
           />
 
+          {/* Book spine shadow */}
           <div
             className="
               absolute left-0 top-0
@@ -294,17 +308,22 @@ export default function MenuCardRevealLoader({ onComplete }) {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <img
-                src="/images/logo.png"
-                alt="Green Valley"
+              {/* Cover logo: keeps original white logo visible */}
+              <div
                 className="
                   mx-auto
-                  h-20 w-20
-                  object-contain
-                  brightness-0 invert
-                  opacity-90
+                  flex h-24 w-24 items-center justify-center
+                  rounded-2xl
+                  border border-[#d5bd7a]/30
+                  bg-black/10
                 "
-              />
+              >
+                <img
+                  src="/images/logo.png"
+                  alt="Green Valley"
+                  className="h-20 w-20 object-contain opacity-95"
+                />
+              </div>
 
               <div className="mx-auto my-5 h-px w-12 bg-[#d5bd7a]/70" />
 
@@ -323,6 +342,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
           </div>
         </motion.div>
 
+        {/* Card shadow */}
         <motion.div
           className="
             absolute -bottom-8 left-1/2
@@ -342,6 +362,7 @@ export default function MenuCardRevealLoader({ onComplete }) {
         />
       </motion.div>
 
+      {/* Bottom loader text and progress line */}
       <motion.div
         className="
           absolute bottom-[8%]

@@ -51,6 +51,7 @@ export default function IconSequenceLoader({ onComplete }) {
         ease: [0.22, 1, 0.36, 1],
       }}
     >
+      {/* Background glow */}
       <div
         className="
           absolute
@@ -61,6 +62,7 @@ export default function IconSequenceLoader({ onComplete }) {
         "
       />
 
+      {/* Café → Restaurant → Brand sequence */}
       <div className="relative flex flex-col items-center">
         <div className="relative h-32 w-32">
           {icons.map(({ id, Icon }, index) => {
@@ -118,13 +120,18 @@ export default function IconSequenceLoader({ onComplete }) {
                     }}
                   />
 
-                  <Icon size={40} strokeWidth={1.4} className="text-[#244C35]" />
+                  <Icon
+                    size={40}
+                    strokeWidth={1.4}
+                    className="text-[#244C35]"
+                  />
                 </motion.div>
               </motion.div>
             );
           })}
         </div>
 
+        {/* Changing title/subtitle */}
         <div className="relative mt-5 h-16 w-72 text-center">
           {icons.map(({ id, title, subtitle }, index) => {
             const delay = index * 1;
@@ -175,6 +182,7 @@ export default function IconSequenceLoader({ onComplete }) {
           })}
         </div>
 
+        {/* Step indicators */}
         <div className="mt-7 flex items-center gap-3">
           {[0, 1, 2].map((index) => (
             <motion.div
@@ -200,6 +208,7 @@ export default function IconSequenceLoader({ onComplete }) {
           ))}
         </div>
 
+        {/* Progress bar */}
         <div
           className="
             mt-7
@@ -220,6 +229,7 @@ export default function IconSequenceLoader({ onComplete }) {
         </div>
       </div>
 
+      {/* Final Green Valley logo reveal */}
       <motion.div
         className="
           absolute
@@ -239,11 +249,26 @@ export default function IconSequenceLoader({ onComplete }) {
           times: [0, 0.75, 0.87, 1],
         }}
       >
-        <img
-          src="/images/logo.png"
-          alt="Green Valley Food One"
-          className="h-28 w-28 object-contain"
-        />
+        {/* Same dark background style as MenuCardRevealLoader */}
+        <div
+          className="
+            flex h-32 w-36
+            items-center justify-center
+            rounded-2xl
+            border border-[#b69b62]/45
+            bg-gradient-to-br
+            from-[#173c2b]
+            via-[#214b34]
+            to-[#102c20]
+            shadow-[0_12px_24px_rgba(20,57,38,0.25)]
+          "
+        >
+          <img
+            src="/images/logo.png"
+            alt="Green Valley Food One"
+            className="h-28 w-28 object-contain"
+          />
+        </div>
 
         <motion.p
           className="
