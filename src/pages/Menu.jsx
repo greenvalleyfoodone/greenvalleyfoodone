@@ -104,9 +104,6 @@ function SectionBlock({ side }) {
       <header style={styles.header}>
         <p style={styles.headerOverline}>THE GREEN VALLEY</p>
         <h1 style={styles.headerTitle}>The Full Menu</h1>
-        <p style={styles.headerText}>
-          Browse by side — cafe, restaurant, or all together. Prices in INR.
-        </p>
 
         <div style={styles.filterWrap}>
           {filters.map((f) => (

@@ -23,26 +23,26 @@ const heroSlides = [
   {
     image: "/images/hero-1.png",
     eyebrow: "GREEN VALLEY · CAFE & RESTAURANT",
-    titleLine1: "Where every sip",
-    titleLine2: "feels special.",
+    titleLine1: "Where Every Sip",
+    titleLine2: "Feels Special .",
     description:
-      "A welcoming place for good food, warm conversations, and moments you will want to come back to.",
+      "Great coffee, thoughtful meals, and the kind of atmosphere that makes you want to linger.",
   },
   {
     image: "/images/hero-3.png",
-    eyebrow: "FARM TO TABLE",
-    titleLine1: "Taste the valley,",
-    titleLine2: "served with love.",
+    eyebrow: "FRESH & LOCAL",
+    titleLine1: "Real Ingredients,",
+    titleLine2: "Real Flavor.",
     description:
-  "Fresh flavors, wholesome ingredients, and memorable meals crafted for every family gathering.",
+      "Seasonal produce, locally sourced meats, and dishes made from scratch daily.",
   },
   {
     image: "/images/hero-2.png",
     eyebrow: "GREEN VALLEY · SANTHAMAGULURU",
-    titleLine1: "Free parking",
-    titleLine2: "with security.",
+    titleLine1: "Free Parking,",
+    titleLine2: "With Security.",
     description:
-      "Safe and convenient parking for cars and bikes, with security support for a comfortable visit.",
+      "Dedicated parking space for cars and two-wheelers with 24/7 security surveillance.",
   },
 ];
 
@@ -51,12 +51,12 @@ const SCENES = {
     tabLabel: "Coffee cafe",
     tabIcon: Coffee,
     accent: "#E08D3C",
-    eyebrow: "EVENINGS · OPEN-AIR",
-    title: "Coffee One Cafe",
+    eyebrow: "OPEN DAILY · 6 AM TO 11 PM",
+    title: "The Coffee Bar",
     description:
-      "Freshly brewed coffee, vibrant mojitos and crispy snacks under warm pendant lights. Built for catch-ups, slow scrolls and that second cup.",
-    primaryCta: "See the menu",
-    secondaryCta: "View gallery",
+      "Specialty coffee, fresh juices, and light bites in a relaxed setting. Perfect for morning meetings, afternoon breaks, or evening catch-ups.",
+    primaryCta: "View menu",
+    secondaryCta: "Browse photos",
     hours: "Open 6 AM — 11 PM",
     image: "/images/cafe85.jpg",
   },
@@ -65,12 +65,12 @@ const SCENES = {
     tabLabel: "Green restaurant",
     tabIcon: UtensilsCrossed,
     accent: "#4C7A52",
-    eyebrow: "DINNER · FARM TABLE",
-    title: "Green Valley Kitchen",
+    eyebrow: "DINNER SERVICE · FARM FRESH",
+    title: "Green Valley Dining",
     description:
-      "Seasonal plates built around what the valley grows, plated simply and served in a room lit like an orchard at dusk.",
-    primaryCta: "See the menu",
-    secondaryCta: "View gallery",
+      "Contemporary Indian cuisine with a focus on regional flavors. From Andhra classics to modern fusion plates, all prepared with locally sourced ingredients.",
+    primaryCta: "View menu",
+    secondaryCta: "Browse photos",
     hours: "Open 7 AM — 11 PM",
     image: "/images/cafe63.jpg",
   },
@@ -79,37 +79,37 @@ const SCENES = {
 const facilities = [
   {
     icon: Wifi,
-    label: "Free Wi-Fi",
-    description: "High-speed internet for customers.",
+    label: "Complimentary Wi-Fi",
+    description: "High-speed internet access throughout the premises.",
   },
   {
     icon: CarFront,
-    label: "Free Parking",
-    description: "Secure parking for cars and bikes.",
+    label: "Secure Parking",
+    description: "Monitored parking area for cars and two-wheelers.",
   },
   {
     icon: BadgeCheck,
-    label: "Fine Dining",
+    label: "Premium Dining",
     description:
-      "Airy seating, calm ambience, and attentive service.",
+      "Climate-controlled seating with professional table service.",
   },
   {
     icon: PartyPopper,
-    label: "Party & Events",
+    label: "Private Events",
     description:
-      "Birthday parties, meetings, and small celebrations.",
+      "Bookable spaces for birthdays, corporate gatherings, and celebrations.",
   },
   {
     icon: Sparkles,
-    label: "Refined Atmosphere",
+    label: "Thoughtful Design",
     description:
-      "A warm setting designed for memorable dining experiences.",
+      "Modern interiors with natural lighting and comfortable seating.",
   },
   {
     icon: UtensilsCrossed,
-    label: "Curated Menu",
+    label: "Diverse Menu",
     description:
-      "Comforting cafe items and hearty restaurant meals.",
+      "From quick cafe snacks to full-course restaurant meals.",
   },
 ];
 
@@ -117,17 +117,17 @@ const stats = [
   {
     value: "50+",
     label: "Menu Items",
-    text: "From filter coffee to Andhra thalis.",
+    text: "Including regional specialties and signature brews.",
   },
   {
     value: "100%",
-    label: "Pure Beans",
-    text: "Freshly brewed, every single time.",
+    label: "Fresh Coffee",
+    text: "Beans ground in-house, brewed to order.",
   },
   {
     value: "4.8★",
-    label: "Guest Love",
-    text: "Across thousands of warm visits.",
+    label: "Customer Rating",
+    text: "Based on verified guest feedback.",
   },
 ];
 
@@ -314,7 +314,7 @@ export default function Home() {
                   {/* Image overlay */}
                   <div className="absolute inset-0 bg-gradient-to-r from-slate-950/75 via-slate-900/35 to-slate-900/10" />
 
-                  {/* Slide headline content — every slide gets its own copy */}
+                  {/* Slide headline content */}
                   <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl items-center px-5 py-24 md:px-8 md:py-36">
                     <motion.div
                       key={`${index}-${activeSlide === index}`}
@@ -386,7 +386,7 @@ export default function Home() {
                   fontWeight: 400,
                 }}
               >
-                A cafe and a restaurant,
+                Two concepts,
                 <br />
                 <span
                   style={{
@@ -394,7 +394,7 @@ export default function Home() {
                     fontStyle: "italic",
                   }}
                 >
-                  side by side.
+                  one location.
                 </span>
               </h1>
             </div>
@@ -409,8 +409,7 @@ export default function Home() {
                 margin: 0,
               }}
             >
-              Tap below to peek into each side of Green Valley — the atmosphere,
-              the food, and the hours.
+              Explore both dining experiences at Green Valley — from quick coffee breaks to leisurely dinners.
             </p>
           </motion.div>
 
@@ -720,7 +719,7 @@ export default function Home() {
                     fontFamily: "Helvetica, Arial, sans-serif",
                   }}
                 >
-                  Why guests come back
+                  Guest amenities
                 </p>
 
                 <h2
@@ -731,7 +730,7 @@ export default function Home() {
                     fontWeight: 400,
                   }}
                 >
-                  Everything you need,
+                  Designed for comfort,
                   <br />
                   <span
                     style={{
@@ -739,7 +738,7 @@ export default function Home() {
                       fontStyle: "italic",
                     }}
                   >
-                    nothing you don't.
+                    built for convenience.
                   </span>
                 </h2>
               </div>

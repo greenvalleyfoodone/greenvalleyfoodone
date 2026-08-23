@@ -7,15 +7,15 @@ const coldCoffeeImg = "/images/cafe6.jpg";
 const snacksImg = "/images/cafe35.jpg";
 
 const galleryImages = [
-  { id: 1, src: "/images/cafe1.jpg", alt: "Cafe photo" },
-  { id: 2, src: "/images/cafe2.jpg", alt: "Cafe photo" },
-  { id: 3, src: "/images/cafe3.jpg", alt: "Cafe photo" },
-  { id: 4, src: "/images/cafe4.jpg", alt: "Cafe photo" },
-  { id: 5, src: "/images/service27.jpg", alt: "Cafe photo" },
-  { id: 6, src: "/images/cafe6.jpg", alt: "Cafe photo" },
-  { id: 7, src: "/images/cafe7.jpg", alt: "Cafe photo" },
-  { id: 8, src: "/images/cafe8.jpg", alt: "Cafe photo" },
-  { id: 9, src: "/images/cafe30.jpg", alt: "Cafe photo" },
+  { id: 1, src: "/images/cafe1.jpg", alt: "Cafe interior" },
+  { id: 2, src: "/images/cafe2.jpg", alt: "Cafe seating" },
+  { id: 3, src: "/images/cafe3.jpg", alt: "Cafe ambience" },
+  { id: 4, src: "/images/cafe4.jpg", alt: "Cafe space" },
+  { id: 5, src: "/images/service27.jpg", alt: "Cafe dining" },
+  { id: 6, src: "/images/cafe6.jpg", alt: "Cold coffee" },
+  { id: 7, src: "/images/cafe7.jpg", alt: "Cafe menu" },
+  { id: 8, src: "/images/cafe8.jpg", alt: "Cafe drinks" },
+  { id: 9, src: "/images/cafe30.jpg", alt: "Cafe experience" },
 ];
 
 const features = [
@@ -23,25 +23,25 @@ const features = [
     icon: "☕",
     title: "Freshly Brewed",
     description:
-      "Enjoy rich and aromatic coffee prepared with carefully selected beans.",
+      "Premium coffee beans ground in-house and brewed to order for consistent quality.",
   },
   {
     icon: "✨",
-    title: "Cozy Atmosphere",
+    title: "Comfortable Setting",
     description:
-      "Relax in a warm and peaceful space designed for memorable moments.",
+      "Modern interiors with natural lighting and seating designed for relaxation.",
   },
   {
     icon: "🥪",
     title: "Fresh Snacks",
     description:
-      "Taste delicious snacks prepared fresh and served with care.",
+      "Daily-prepared snacks and light meals made with quality ingredients.",
   },
   {
     icon: "🧊",
     title: "Refreshing Drinks",
     description:
-      "Cool down with refreshing cold coffees, mojitos, and milkshakes.",
+      "Cold coffees, mojitos, and milkshakes prepared fresh throughout the day.",
   },
 ];
 
@@ -699,34 +699,34 @@ export default function CafePage() {
 
           <div className="hero-content">
             <div className="hero-text">
-              <span className="eyebrow">Welcome to Green Valley Coffee</span>
+              <span className="eyebrow">GREEN VALLEY COFFEE</span>
 
-              <h1 className="hero-title">Where Every Sip Feels Like Home</h1>
+              <h1 className="hero-title">Quality Coffee, Crafted Daily</h1>
 
               <p className="hero-description">
-                Discover freshly brewed coffee, refreshing cold drinks,
-                delicious snacks, and peaceful moments at Green Valley Coffee.
+                Premium coffee, refreshing beverages, and fresh snacks in a
+                modern setting designed for comfort and conversation.
               </p>
 
               <div className="hero-highlights">
-                <span>Freshly brewed</span>
-                <span>Cozy ambience</span>
-                <span>Delicious moments</span>
+                <span>Premium beans</span>
+                <span>Modern interiors</span>
+                <span>Fresh preparation</span>
               </div>
 
               <div className="hero-actions">
                 <a className="btn btn-primary" href="/menu">
-                  Explore Our Menu
+                  View Menu
                 </a>
 
                 <a className="btn btn-ghost" href="#gallery">
-                  View Cafe Gallery
+                  Browse Gallery
                 </a>
               </div>
             </div>
 
             <div className="hero-images">
-              <div className="image-label">Made with love ☕</div>
+              <div className="image-label">Open daily 6 AM – 11 PM</div>
 
               <div className="hero-image hero-image-main">
                 <img src={coffeeBeansImg} alt="Fresh coffee beans" />
@@ -737,7 +737,7 @@ export default function CafePage() {
               </div>
 
               <div className="hero-image hero-image-small-two">
-                <img src={snacksImg} alt="Delicious cafe snacks" />
+                <img src={snacksImg} alt="Fresh cafe snacks" />
               </div>
             </div>
           </div>
@@ -745,14 +745,14 @@ export default function CafePage() {
 
         <section className="features-section">
           <div className="section-heading">
-            <span>More than just coffee</span>
+            <span>What We Offer</span>
 
-            <h2>Everything You Need for a Perfect Cafe Moment</h2>
+            <h2>Everything for a Great Cafe Experience</h2>
 
             <p>
-              Whether you want to relax, meet friends, work peacefully, or
-              enjoy something delicious, Green Valley Coffee is the perfect
-              place for you.
+              From morning coffee to evening gatherings, Green Valley Coffee
+              provides quality beverages, fresh food, and a comfortable
+              environment for every visit.
             </p>
           </div>
 
@@ -773,11 +773,11 @@ export default function CafePage() {
           id="gallery"
           className={`floating-gallery ${showGallery ? "show" : ""}`}
         >
-          <h2 className="gallery-title">Our Cafe Moments</h2>
+          <h2 className="gallery-title">Inside Green Valley Coffee</h2>
 
           <p className="gallery-sub">
-            Take a look at the atmosphere, flavours, and moments waiting for
-            you.
+            Explore our space, menu highlights, and the atmosphere that keeps
+            guests coming back.
           </p>
 
           <div className="gallery-grid">

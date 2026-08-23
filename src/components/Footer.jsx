@@ -85,7 +85,7 @@ export default function Footer() {
               </svg>
             </a>
             <a 
-              href="https://facebook.com/" 
+              href="https://www.facebook.com/profile.php?id=61593722728951" 
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Facebook"
