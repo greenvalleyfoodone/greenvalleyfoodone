@@ -161,14 +161,20 @@ export default function Navbar() {
             </NavLink>
 
             {/* Right-side cup image */}
-            <img
-              src="/images/coffee-cup.png"
-              alt=""
-              aria-hidden="true"
-              width={110}
-              height={110}
-              className="h-20 w-20 lg:h-24 lg:w-24 object-contain -ml-2 -mr-5 pointer-events-none"
-            />
+            <button
+              type="button"
+              onClick={() => window.location.assign("https://www.greenvalleyfoodone.com/bill")}
+              aria-label="Open billing"
+              className="-ml-2 -mr-5 border-0 bg-transparent p-0"
+            >
+              <img
+                src="/images/coffee-cup.png"
+                alt="Open billing"
+                width={110}
+                height={110}
+                className="h-20 w-20 object-contain lg:h-24 lg:w-24"
+              />
+            </button>
           </div>
         </div>
 
