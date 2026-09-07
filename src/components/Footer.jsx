@@ -85,7 +85,7 @@ export default function Footer() {
               </svg>
             </a>
             <a 
-              href="https://www.facebook.com/profile.php?id=61593722728951" 
+              href="https://www.facebook.com/profile.php?id=61594260598601"
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Facebook"
@@ -106,7 +106,7 @@ export default function Footer() {
               </svg>
             </a>
             <a 
-              href="https://www.youtube.com/@GREENVALLEYFOODONE" 
+              href="https://www.youtube.com/@NgsInfraDevelopers"
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="YouTube"
@@ -161,11 +161,18 @@ export default function Footer() {
           </h3>
           <address className="not-italic">
             <ul className="space-y-4">
-              <li className="flex items-start gap-3 text-sm text-[#f5f5dc]/70">
+              <li>
+                <a
+                  href="https://maps.app.goo.gl/y6pyQp3WJHRwoJM56"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-3 text-sm text-[#f5f5dc]/70 hover:text-amber-400 transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400 rounded-sm"
+                >
                 <MapPin className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
                 <span className="leading-relaxed">
                   Santhamaguluru, Prakasam,<br />Andhra Pradesh
                 </span>
+                </a>
               </li>
               <li>
                 <a 
