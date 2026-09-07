@@ -25,15 +25,8 @@ export default function Contact() {
             </dt>
 
             <dd>
-              <a
-                href="https://maps.app.goo.gl/y6pyQp3WJHRwoJM56"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-valley-clay"
-              >
               Green Valley Food One, 4XRH+3GM, Santhamaguluru, Andhra Pradesh
               522603
-              </a>
             </dd>
           </div>
 
