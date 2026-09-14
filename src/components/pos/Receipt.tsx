@@ -20,9 +20,18 @@ const METHOD_LABEL: Record<string, string> = {
 export default function Receipt({ data }: { data: ReceiptData }) {
   const { bill, items, settings } = data;
   const { date, time } = fmtDate(bill.created_at);
+  const paperWidth = settings.paper_width || "80mm";
+  const fontSize = settings.receipt_text_size || 12;
+  const extraLines = Array.isArray(settings.extra_receipt_lines) ? settings.extra_receipt_lines : [];
 
   return (
-    <div className="receipt-80mm">
+    <div
+      className="receipt-80mm"
+      style={{
+        width: paperWidth,
+        fontSize: `${fontSize}px`,
+      }}
+    >
       <div className="text-center">
         <div className="text-[15px] font-bold uppercase leading-tight">
           {settings.restaurant_name}
@@ -101,6 +110,16 @@ export default function Receipt({ data }: { data: ReceiptData }) {
 
       <div className="rc-sep" />
 
+      {extraLines.length > 0 ? (
+        <div className="mb-1 text-center">
+          {extraLines.map((line, index) => (
+            <div key={`${line.label}-${line.value}-${index}`}>
+              {line.label ? <span>{line.label}: </span> : null}
+              <span>{line.value}</span>
+            </div>
+          ))}
+        </div>
+      ) : null}
       <div className="whitespace-pre-line text-center">{settings.receipt_footer}</div>
     </div>
   );

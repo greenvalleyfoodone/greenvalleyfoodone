@@ -17,11 +17,15 @@ export type Database = {
       app_settings: {
         Row: {
           address: string
+          copies_per_bill: number
+          extra_receipt_lines: string
           gstin: string
           id: boolean
           max_cashier_discount_percent: number
+          paper_width: string
           phone: string
           receipt_footer: string
+          receipt_text_size: number
           restaurant_name: string
           tax_label: string
           tax_percent: number
@@ -29,11 +33,15 @@ export type Database = {
         }
         Insert: {
           address?: string
+          copies_per_bill?: number
+          extra_receipt_lines?: string
           gstin?: string
           id?: boolean
           max_cashier_discount_percent?: number
+          paper_width?: string
           phone?: string
           receipt_footer?: string
+          receipt_text_size?: number
           restaurant_name?: string
           tax_label?: string
           tax_percent?: number
@@ -41,11 +49,15 @@ export type Database = {
         }
         Update: {
           address?: string
+          copies_per_bill?: number
+          extra_receipt_lines?: string
           gstin?: string
           id?: boolean
           max_cashier_discount_percent?: number
+          paper_width?: string
           phone?: string
           receipt_footer?: string
+          receipt_text_size?: number
           restaurant_name?: string
           tax_label?: string
           tax_percent?: number

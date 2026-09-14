@@ -71,6 +71,10 @@ CREATE TABLE public.app_settings (
   tax_label text NOT NULL DEFAULT 'GST',
   max_cashier_discount_percent numeric(5,2) NOT NULL DEFAULT 10.00,
   receipt_footer text NOT NULL DEFAULT 'Thank you! Visit Again',
+  copies_per_bill integer NOT NULL DEFAULT 3 CHECK (copies_per_bill >= 1),
+  paper_width text NOT NULL DEFAULT '80mm',
+  receipt_text_size integer NOT NULL DEFAULT 12 CHECK (receipt_text_size >= 8 AND receipt_text_size <= 24),
+  extra_receipt_lines text NOT NULL DEFAULT '',
   updated_at timestamptz NOT NULL DEFAULT now()
 );
 GRANT SELECT ON public.app_settings TO authenticated;

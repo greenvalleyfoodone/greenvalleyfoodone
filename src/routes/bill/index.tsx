@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import {
+  addMenuItem,
   computeTotals,
   createBill,
   fetchActiveOrderTableIds,
@@ -11,6 +12,8 @@ import {
   fetchReceipt,
   fetchSettings,
   fetchTables,
+  deleteMenuItem,
+  updateMenuItemPrice,
   money,
   type CartLine,
   type ReceiptData,
@@ -45,6 +48,13 @@ function PosPage() {
   const [markPaid, setMarkPaid] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [receipt, setReceipt] = useState<ReceiptData | null>(null);
+  const [addingIn, setAddingIn] = useState<string | null>(null);
+  const [customOpen, setCustomOpen] = useState(false);
+  const [customCategory, setCustomCategory] = useState("");
+  const [customName, setCustomName] = useState("");
+  const [customPrice, setCustomPrice] = useState("");
+  const [newName, setNewName] = useState("");
+  const [newPrice, setNewPrice] = useState("");
 
   // Live menu/table updates so price or availability changes show without a refresh.
   useEffect(() => {
@@ -81,6 +91,75 @@ function PosPage() {
         (q === "" || m.name.toLowerCase().includes(q)),
     );
   }, [menu, search, category, onlyAvailable]);
+
+  const grouped = useMemo(() => {
+    const map = new Map<string, typeof filtered>();
+    for (const item of filtered) {
+      const list = map.get(item.category) ?? [];
+      list.push(item);
+      map.set(item.category, list);
+    }
+    return Array.from(map.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+  }, [filtered]);
+
+  async function refreshMenu() {
+    await queryClient.invalidateQueries({ queryKey: ["pos", "menu"] });
+  }
+
+  async function saveNewItem(sectionName: string) {
+    try {
+      await addMenuItem({ name: newName, category: sectionName, price: Number(newPrice) });
+      setNewName("");
+      setNewPrice("");
+      setAddingIn(null);
+      await refreshMenu();
+      toast.success("Item added to the menu.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not add the item");
+    }
+  }
+
+  async function saveCustomItem() {
+    try {
+      await addMenuItem({
+        name: customName,
+        category: customCategory,
+        price: Number(customPrice),
+        side: "restaurant",
+      });
+      setCustomName("");
+      setCustomCategory("");
+      setCustomPrice("");
+      setCustomOpen(false);
+      await refreshMenu();
+      toast.success("Custom item added to the restaurant menu.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not add the custom item");
+    }
+  }
+
+  async function repriceItem(id: string, name: string, current: number) {
+    const next = window.prompt(`New price for ${name} (₹)`, String(current));
+    if (next === null) return;
+    try {
+      await updateMenuItemPrice(id, Number(next));
+      await refreshMenu();
+      toast.success("Price updated.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not update the price");
+    }
+  }
+
+  async function removeItem(id: string, name: string) {
+    if (!window.confirm(`Remove ${name} from the menu?`)) return;
+    try {
+      await deleteMenuItem(id);
+      await refreshMenu();
+      toast.success("Item removed.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not remove the item");
+    }
+  }
 
   const totals = computeTotals(lines, discount.type, discount.value, taxPercent);
 
@@ -173,7 +252,74 @@ function PosPage() {
           >
             Refresh
           </button>
+          {isAdmin ? (
+            <button
+              onClick={() => setCustomOpen((open) => !open)}
+              className="h-11 rounded-md bg-valley-forest px-4 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-valley-forest-light"
+            >
+              ＋ Add Custom Item
+            </button>
+          ) : null}
         </div>
+
+        {isAdmin && customOpen ? (
+          <div className="mt-3 rounded-md border border-emerald-100 bg-emerald-50/70 p-3">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="text-sm font-bold text-valley-forest">Add Custom Item</h2>
+              <button
+                type="button"
+                onClick={() => setCustomOpen(false)}
+                className="rounded px-2 py-1 text-lg leading-none text-valley-forest hover:bg-emerald-100"
+                aria-label="Close custom item form"
+              >
+                ×
+              </button>
+            </div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_1fr_0.7fr_auto] sm:items-end">
+              <label className="text-xs font-medium text-slate-700">
+                Item name
+                <input
+                  value={customName}
+                  onChange={(e) => setCustomName(e.target.value)}
+                  placeholder="e.g. Special Noodles"
+                  className="mt-1 h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-sm"
+                />
+              </label>
+              <label className="text-xs font-medium text-slate-700">
+                Category
+                <select
+                  value={customCategory}
+                  onChange={(e) => setCustomCategory(e.target.value)}
+                  className="mt-1 h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-sm"
+                >
+                  <option value="">Select category</option>
+                  {categories.filter((c) => c !== "all").map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </label>
+              <label className="text-xs font-medium text-slate-700">
+                Price (₹)
+                <input
+                  value={customPrice}
+                  onChange={(e) => setCustomPrice(e.target.value)}
+                  placeholder="e.g. 120"
+                  type="number"
+                  min={0}
+                  step="0.01"
+                  className="mt-1 h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-sm"
+                />
+              </label>
+              <button
+                type="button"
+                onClick={() => void saveCustomItem()}
+                className="h-10 rounded-md bg-valley-forest px-4 text-sm font-semibold text-primary-foreground hover:bg-valley-forest-light"
+              >
+                Add Item
+              </button>
+            </div>
+          </div>
+        ) : null}
 
         <div className="mt-3 flex flex-wrap gap-1.5">
           {categories.map((c) => (
@@ -201,27 +347,100 @@ function PosPage() {
                 Retry
               </button>
             </div>
-          ) : filtered.length === 0 ? (
+          ) : grouped.length === 0 ? (
             <p className="py-10 text-center text-slate-500">No items match this search.</p>
           ) : (
-            <div className="grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
-              {filtered.map((m) => (
-                <button
-                  key={m.id}
-                  disabled={!m.is_available}
-                  onClick={() => addItem(m.id, m.name, Number(m.price))}
-                  className="flex flex-col rounded-md border border-slate-200 p-2 text-left transition-colors hover:border-emerald-600 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200 disabled:hover:bg-white"
-                >
-                  <span className="text-[15px] font-semibold leading-snug">{m.name}</span>
-                  <span className="text-xs text-slate-500">{m.category}</span>
-                  <span className="mt-1 text-base font-bold text-emerald-800">
-                    {m.is_available ? money(Number(m.price)) : "Unavailable"}
-                  </span>
-                </button>
+            <div className="grid gap-4">
+              {grouped.map(([sectionName, sectionItems]) => (
+                <div key={sectionName}>
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-1">
+                    <h3 className="text-sm font-bold uppercase tracking-wide text-slate-700">
+                      {sectionName}{" "}
+                      <span className="text-xs font-normal text-slate-400">
+                        ({sectionItems.length})
+                      </span>
+                    </h3>
+                    {isAdmin ? (
+                      <button
+                        onClick={() =>
+                          setAddingIn(addingIn === sectionName ? null : sectionName)
+                        }
+                        className="rounded-md border border-emerald-600 px-2.5 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-50"
+                      >
+                        {addingIn === sectionName ? "Close" : "+ Add item"}
+                      </button>
+                    ) : null}
+                  </div>
+
+                  {isAdmin && addingIn === sectionName ? (
+                    <div className="mt-2 flex flex-wrap items-center gap-2 rounded-md bg-slate-50 p-2">
+                      <input
+                        value={newName}
+                        onChange={(e) => setNewName(e.target.value)}
+                        placeholder="Item name"
+                        className="h-9 min-w-[160px] flex-1 rounded-md border border-slate-300 px-2 text-sm"
+                      />
+                      <input
+                        value={newPrice}
+                        onChange={(e) => setNewPrice(e.target.value)}
+                        placeholder="Price ₹"
+                        type="number"
+                        min={0}
+                        step="1"
+                        className="h-9 w-28 rounded-md border border-slate-300 px-2 text-sm"
+                      />
+                      <button
+                        onClick={() => void saveNewItem(sectionName)}
+                        className="h-9 rounded-md bg-emerald-700 px-3 text-sm font-semibold text-white"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  ) : null}
+
+                  <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
+                    {sectionItems.map((m) => (
+                      <div
+                        key={m.id}
+                        className="relative flex flex-col rounded-md border border-slate-200 p-2"
+                      >
+                        <button
+                          disabled={!m.is_available}
+                          onClick={() => addItem(m.id, m.name, Number(m.price))}
+                          className="flex flex-col text-left disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <span className="pr-6 text-[15px] font-semibold leading-snug">
+                            {m.name}
+                          </span>
+                          <span className="mt-1 text-base font-bold text-emerald-800">
+                            {m.is_available ? money(Number(m.price)) : "Unavailable"}
+                          </span>
+                        </button>
+                        {isAdmin ? (
+                          <div className="mt-2 flex gap-1">
+                            <button
+                              onClick={() => void repriceItem(m.id, m.name, Number(m.price))}
+                              className="rounded border border-slate-300 px-2 py-0.5 text-[11px] hover:bg-slate-50"
+                            >
+                              Price
+                            </button>
+                            <button
+                              onClick={() => void removeItem(m.id, m.name)}
+                              className="rounded bg-destructive px-2 py-0.5 text-[11px] font-semibold text-destructive-foreground hover:opacity-90"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           )}
         </div>
+
       </section>
 
       {/* RIGHT — order */}

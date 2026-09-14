@@ -2,11 +2,21 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { cancelBill, fetchBills, fetchReceipt, money, type ReceiptData } from "@/lib/pos";
+import {
+  cancelBill,
+  fetchBills,
+  fetchReceipt,
+  money,
+  updateBillPayment,
+  type BillRow,
+  type ReceiptData,
+} from "@/lib/pos";
 import { useStaff } from "@/lib/useStaff";
 import PrintPreview from "@/components/pos/PrintPreview";
 
+
 export const Route = createFileRoute("/bill/history")({ component: HistoryPage });
+
 
 function HistoryPage() {
   const { isAdmin } = useStaff();
@@ -16,11 +26,18 @@ function HistoryPage() {
   const [method, setMethod] = useState("all");
   const [status, setStatus] = useState("all");
   const [receipt, setReceipt] = useState<ReceiptData | null>(null);
+  const [editing, setEditing] = useState<BillRow | null>(null);
+  const [editMethod, setEditMethod] = useState("cash");
+  const [editStatus, setEditStatus] = useState("paid");
+  const [editPaidAmount, setEditPaidAmount] = useState("0");
+  const [savingEdit, setSavingEdit] = useState(false);
+
 
   const billsQuery = useQuery({
     queryKey: ["pos", "bills", { search, date, method, status }],
     queryFn: () => fetchBills({ search, date, method, status }),
   });
+
 
   async function openReceipt(billId: string) {
     try {
@@ -29,6 +46,7 @@ function HistoryPage() {
       toast.error(err instanceof Error ? err.message : "Could not load the bill");
     }
   }
+
 
   async function doCancel(billId: string, billNumber: string) {
     const reason = window.prompt(`Reason for cancelling ${billNumber}?`);
@@ -42,7 +60,43 @@ function HistoryPage() {
     }
   }
 
+
+  function openPaymentEditor(bill: BillRow) {
+    setEditing(bill);
+    setEditMethod(bill.payment_method);
+    setEditStatus(bill.payment_status);
+    setEditPaidAmount(String(bill.paid_amount ?? 0));
+  }
+
+
+  async function savePaymentEdit() {
+    if (!editing) return;
+    const paidAmount = Number(editPaidAmount);
+    if (!Number.isFinite(paidAmount) || paidAmount < 0) {
+      toast.error("Enter a valid paid amount.");
+      return;
+    }
+    setSavingEdit(true);
+    try {
+      await updateBillPayment({
+        billId: editing.id,
+        method: editMethod,
+        status: editStatus,
+        paidAmount,
+      });
+      toast.success(`${editing.bill_number} payment updated.`);
+      setEditing(null);
+      void queryClient.invalidateQueries({ queryKey: ["pos", "bills"] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not update payment");
+    } finally {
+      setSavingEdit(false);
+    }
+  }
+
+
   const bills = billsQuery.data ?? [];
+
 
   return (
     <div className="no-print p-4">
@@ -92,6 +146,7 @@ function HistoryPage() {
         </button>
       </div>
 
+
       <div className="mt-3 overflow-x-auto rounded-lg bg-white shadow-sm">
         {billsQuery.isLoading ? (
           <p className="p-8 text-center text-slate-500">Loading bills…</p>
@@ -140,6 +195,12 @@ function HistoryPage() {
                       >
                         View / Reprint
                       </button>
+                      <button
+                        onClick={() => openPaymentEditor(b)}
+                        className="ml-2 rounded border border-slate-300 px-2 py-1 text-xs hover:bg-slate-50"
+                      >
+                        Edit payment
+                      </button>
                       {isAdmin && b.status === "active" ? (
                         <button
                           onClick={() => doCancel(b.id, b.bill_number)}
@@ -157,12 +218,95 @@ function HistoryPage() {
         )}
       </div>
 
+
       {receipt ? (
         <PrintPreview
           data={receipt}
           title={`Reprint ${receipt.bill.bill_number}`}
           onClose={() => setReceipt(null)}
         />
+      ) : null}
+
+
+      {editing ? (
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/60 p-4">
+          <div
+            className="w-full max-w-md rounded-lg bg-white p-5 shadow-xl"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="edit-payment-title"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 id="edit-payment-title" className="text-base font-bold text-slate-900">
+                  Edit payment
+                </h2>
+                <p className="mt-1 text-sm text-slate-500">{editing.bill_number}</p>
+              </div>
+              <button
+                onClick={() => setEditing(null)}
+                className="rounded px-2 py-1 text-sm text-slate-500 hover:bg-slate-100"
+                aria-label="Close payment editor"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="mt-4 grid gap-3">
+              <label className="text-sm">
+                <span className="block font-medium text-slate-700">Payment method</span>
+                <select
+                  value={editMethod}
+                  onChange={(e) => setEditMethod(e.target.value)}
+                  className="mt-1 h-10 w-full rounded-md border border-slate-300 px-3"
+                >
+                  <option value="cash">Cash</option>
+                  <option value="upi">UPI</option>
+                  <option value="card">Card</option>
+                  <option value="other">Other</option>
+                </select>
+              </label>
+              <label className="text-sm">
+                <span className="block font-medium text-slate-700">Payment status</span>
+                <select
+                  value={editStatus}
+                  onChange={(e) => setEditStatus(e.target.value)}
+                  className="mt-1 h-10 w-full rounded-md border border-slate-300 px-3"
+                >
+                  <option value="pending">Pending</option>
+                  <option value="paid">Paid</option>
+                  <option value="failed">Failed</option>
+                  <option value="refunded">Refunded</option>
+                </select>
+              </label>
+              <label className="text-sm">
+                <span className="block font-medium text-slate-700">Paid amount</span>
+                <input
+                  type="number"
+                  min={0}
+                  step="0.01"
+                  value={editPaidAmount}
+                  onChange={(e) => setEditPaidAmount(e.target.value)}
+                  className="mt-1 h-10 w-full rounded-md border border-slate-300 px-3"
+                />
+              </label>
+            </div>
+            <div className="mt-5 flex justify-end gap-2">
+              <button
+                onClick={() => setEditing(null)}
+                className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => void savePaymentEdit()}
+                disabled={savingEdit}
+                className="rounded-md bg-emerald-700 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-800 disabled:opacity-60"
+              >
+                {savingEdit ? "Saving…" : "Save payment"}
+              </button>
+            </div>
+          </div>
+        </div>
       ) : null}
     </div>
   );
