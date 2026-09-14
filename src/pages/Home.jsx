@@ -21,12 +21,20 @@ import "swiper/css/navigation";
 
 const heroSlides = [
   {
+    image: "/images/slide.png",
+    eyebrow: "GREEN VALLEY · CAFE & RESTAURANT",
+    titleLine1: "Welcome to",
+    titleLine2: "Green Valley",
+    description:
+      "A warm destination for coffee, comfort food, and memorable family moments.",
+  },
+  {
     image: "/images/hero-1.png",
     eyebrow: "GREEN VALLEY · CAFE & RESTAURANT",
-    titleLine1: "Where Every Sip",
-    titleLine2: "Feels Special .",
+    titleLine1: "Where Every Bite",
+    titleLine2: "Feels Special.",
     description:
-      "Great coffee, thoughtful meals, and the kind of atmosphere that makes you want to linger.",
+      "Great food, handcrafted flavors, and the kind of atmosphere that makes you want to linger.",
   },
   {
     image: "/images/hero-3.png",
