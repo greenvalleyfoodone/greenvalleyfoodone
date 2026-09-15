@@ -20,10 +20,7 @@ export type RestaurantTable = {
   sort_order: number;
 };
 
-export type ReceiptExtraLine = {
-  label: string;
-  value: string;
-};
+export type ReceiptLine = { label: string; value: string };
 
 export type AppSettings = {
   restaurant_name: string;
@@ -34,11 +31,13 @@ export type AppSettings = {
   tax_label: string;
   max_cashier_discount_percent: number;
   receipt_footer: string;
-  copies_per_bill: number;
-  paper_width: string;
-  receipt_text_size: number;
-  extra_receipt_lines: ReceiptExtraLine[];
+  receipt_copies: number;
+  receipt_paper_mm: number;
+  receipt_extra_lines: ReceiptLine[];
+  receipt_font_px: number;
+  receipt_name_font_px: number;
 };
+
 
 export type CartLine = {
   menu_item_id: string;
@@ -119,35 +118,13 @@ export const DEFAULT_SETTINGS: AppSettings = {
   tax_label: "GST",
   max_cashier_discount_percent: 10,
   receipt_footer: "Thank you! Visit Again",
-  copies_per_bill: 3,
-  paper_width: "80mm",
-  receipt_text_size: 12,
-  extra_receipt_lines: [],
+  receipt_copies: 1,
+  receipt_paper_mm: 80,
+  receipt_extra_lines: [],
+  receipt_font_px: 12,
+  receipt_name_font_px: 18,
 };
 
-function parseExtraReceiptLines(raw: unknown): ReceiptExtraLine[] {
-  const fallback: ReceiptExtraLine[] = [];
-  if (Array.isArray(raw)) {
-    return raw
-      .filter((item): item is ReceiptExtraLine => !!item && typeof item === "object" && "label" in item && "value" in item)
-      .map((item) => ({
-        label: String((item as ReceiptExtraLine).label ?? ""),
-        value: String((item as ReceiptExtraLine).value ?? ""),
-      }));
-  }
-  if (typeof raw !== "string" || !raw.trim()) return fallback;
-
-  try {
-    const parsed = JSON.parse(raw) as unknown;
-    if (Array.isArray(parsed)) {
-      return parseExtraReceiptLines(parsed);
-    }
-  } catch {
-    // legacy plain-string values are not editable JSON; ignore them and use empty list.
-  }
-
-  return fallback;
-}
 
 function unwrap<T>(res: { data: T | null; error: { message: string } | null }, what: string): T {
   if (res.error) throw new Error(`${what}: ${res.error.message}`);
@@ -176,18 +153,26 @@ export async function fetchSettings(): Promise<AppSettings> {
   const res = await supabase
     .from("app_settings")
     .select(
-      "restaurant_name,address,phone,gstin,tax_percent,tax_label,max_cashier_discount_percent,receipt_footer,copies_per_bill,paper_width,receipt_text_size,extra_receipt_lines",
+      "restaurant_name,address,phone,gstin,tax_percent,tax_label,max_cashier_discount_percent,receipt_footer,receipt_copies,receipt_paper_mm,receipt_extra_lines,receipt_font_px,receipt_name_font_px",
     )
     .maybeSingle();
   if (res.error) throw new Error(`Could not load settings: ${res.error.message}`);
-
-  const next = (res.data ?? {}) as Partial<AppSettings> & { extra_receipt_lines?: string | ReceiptExtraLine[] | null };
+  const row = res.data as unknown as Partial<AppSettings> | null;
+  if (!row) return DEFAULT_SETTINGS;
+  const lines = row.receipt_extra_lines;
   return {
     ...DEFAULT_SETTINGS,
-    ...next,
-    extra_receipt_lines: parseExtraReceiptLines(next.extra_receipt_lines ?? DEFAULT_SETTINGS.extra_receipt_lines),
-  } as AppSettings;
+    ...row,
+    receipt_copies: 1,
+    receipt_paper_mm: 80,
+    receipt_font_px: Math.min(Math.max(Number(row.receipt_font_px) || 12, 9), 20),
+    receipt_name_font_px: Math.min(Math.max(Number(row.receipt_name_font_px) || 18, 10), 32),
+    receipt_extra_lines: Array.isArray(lines)
+      ? lines.filter((l) => l && typeof l === "object")
+      : [],
+  };
 }
+
 
 export async function fetchActiveOrderTableIds(): Promise<string[]> {
   const res = await supabase
@@ -197,34 +182,6 @@ export async function fetchActiveOrderTableIds(): Promise<string[]> {
     .not("table_id", "is", null);
   if (res.error) return [];
   return (res.data ?? []).map((r) => (r as { table_id: string }).table_id);
-}
-
-export async function addMenuItem(input: {
-  name: string;
-  category: string;
-  price: number;
-  section?: string;
-  side?: string;
-}): Promise<void> {
-  const section = input.section ?? input.side ?? "restaurant";
-  const { error } = await supabase.from("menu_items").insert({
-    name: input.name,
-    category: input.category,
-    section,
-    price: Number(input.price) || 0,
-    is_available: true,
-  });
-  if (error) throw new Error(error.message);
-}
-
-export async function updateMenuItemPrice(id: string, price: number): Promise<void> {
-  const { error } = await supabase.from("menu_items").update({ price: Number(price) || 0 }).eq("id", id);
-  if (error) throw new Error(error.message);
-}
-
-export async function deleteMenuItem(id: string): Promise<void> {
-  const { error } = await supabase.from("menu_items").delete().eq("id", id);
-  if (error) throw new Error(error.message);
 }
 
 export async function createBill(input: {
@@ -314,48 +271,55 @@ export async function updateBillPayment(input: {
   billId: string;
   method: string;
   status: string;
-  paidAmount: number;
+  paidAmount?: number;
 }) {
-  const status = String(input.status || "pending").toLowerCase();
-  const method = String(input.method || "cash").toLowerCase();
-  const paidAmount = Number(input.paidAmount || 0);
-
-  const { data: bill, error: billErr } = await supabase
-    .from("bills")
-    .select("id,total,payment_status,payment_method,paid_amount")
-    .eq("id", input.billId)
-    .single();
-
-  if (billErr) throw new Error(billErr.message);
-  if (!bill) throw new Error("Bill not found");
-
-  const nextPaidAmount = status === "paid" ? Math.min(Math.max(paidAmount, 0), Number(bill.total || 0)) : 0;
-  const paymentTimestamp = status === "paid" ? new Date().toISOString() : null;
-
-  const { error: updateBillErr } = await supabase
-    .from("bills")
-    .update({
-      payment_method: method,
-      payment_status: status,
-      paid_amount: nextPaidAmount,
-      payment_timestamp: paymentTimestamp,
-    })
-    .eq("id", input.billId);
-
-  if (updateBillErr) throw new Error(updateBillErr.message);
-
-  const { error: updatePaymentErr } = await supabase
-    .from("payments")
-    .update({
-      method,
-      amount: nextPaidAmount,
-      status,
-      paid_at: paymentTimestamp,
-    })
-    .eq("bill_id", input.billId);
-
-  if (updatePaymentErr) throw new Error(updatePaymentErr.message);
+  const { error } = await supabase.rpc("pos_update_bill_payment", {
+    p_bill_id: input.billId,
+    p_method: input.method,
+    p_status: input.status,
+    p_paid_amount: input.paidAmount ?? 0,
+  });
+  if (error) throw new Error(error.message);
 }
+
+/* ---------- Menu items managed straight from the billing screen ---------- */
+
+export async function addMenuItem(input: {
+  name: string;
+  category: string;
+  price: number;
+  side?: string;
+}) {
+  const name = input.name.trim();
+  if (!name) throw new Error("Enter an item name");
+  if (!input.category) throw new Error("Choose a section for this item");
+  const price = Number(input.price);
+  if (!Number.isFinite(price) || price < 0) throw new Error("Enter a valid price");
+  const side = input.side ?? "restaurant";
+  const { error } = await supabase.from("menu_items").insert({
+    name,
+    category: input.category,
+    price,
+    side,
+    section: side,
+    is_available: true,
+  });
+  if (error) throw new Error(error.message);
+}
+
+export async function updateMenuItemPrice(id: string, price: number) {
+  const value = Number(price);
+  if (!Number.isFinite(value) || value < 0) throw new Error("Enter a valid price");
+  const { error } = await supabase.from("menu_items").update({ price: value }).eq("id", id);
+  if (error) throw new Error(error.message);
+}
+
+export async function deleteMenuItem(id: string) {
+  const { error } = await supabase.from("menu_items").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+}
+
+/* ---------- Daily sales ---------- */
 
 export type DailySalesRow = {
   sale_date: string;
@@ -370,62 +334,20 @@ export type DailySalesRow = {
   cancelled_count: number;
 };
 
-export async function fetchDailySales(limit = 30): Promise<DailySalesRow[]> {
-  const { data, error } = await supabase
-    .from("bills")
-    .select("created_at,total,payment_method,discount_amount,tax_amount,status")
-    .order("created_at", { ascending: false })
-    .limit(Math.max(limit, 1) * 200);
+/** Stores the totals of every finished day, so yesterday is kept once the day is over. */
+export async function rollupDailySales() {
+  const { error } = await supabase.rpc("pos_rollup_daily_sales");
   if (error) throw new Error(error.message);
-
-  const grouped = new Map<string, DailySalesRow>();
-  for (const bill of data ?? []) {
-    const created = new Date(bill.created_at);
-    const saleDate = new Date(created.getTime() - created.getTimezoneOffset() * 60000)
-      .toISOString()
-      .slice(0, 10);
-    const row = grouped.get(saleDate) ?? {
-      sale_date: saleDate,
-      total_sales: 0,
-      bills_count: 0,
-      cash_total: 0,
-      upi_total: 0,
-      card_total: 0,
-      other_total: 0,
-      discount_total: 0,
-      tax_total: 0,
-      cancelled_count: 0,
-    };
-
-    if (bill.status === "cancelled") {
-      row.cancelled_count += 1;
-      grouped.set(saleDate, row);
-      continue;
-    }
-
-    row.bills_count += 1;
-    row.total_sales += Number(bill.total || 0);
-    row.discount_total += Number(bill.discount_amount || 0);
-    row.tax_total += Number(bill.tax_amount || 0);
-
-    const method = String(bill.payment_method || "").toLowerCase();
-    if (method === "cash") row.cash_total += Number(bill.total || 0);
-    if (method === "upi") row.upi_total += Number(bill.total || 0);
-    if (method === "card") row.card_total += Number(bill.total || 0);
-    if (method === "other") row.other_total += Number(bill.total || 0);
-
-    grouped.set(saleDate, row);
-  }
-
-  return Array.from(grouped.values())
-    .sort((a, b) => b.sale_date.localeCompare(a.sale_date))
-    .slice(0, limit);
 }
 
-export async function rollupDailySales(): Promise<DailySalesRow[]> {
-  return fetchDailySales(3650);
-}
-
-export async function fetchSalesByDay(limit = 30): Promise<DailySalesRow[]> {
-  return fetchDailySales(limit);
+export async function fetchDailySales(limit = 3650): Promise<DailySalesRow[]> {
+  const { data, error } = await supabase
+    .from("daily_sales")
+    .select(
+      "sale_date,total_sales,bills_count,cash_total,upi_total,card_total,other_total,discount_total,tax_total,cancelled_count",
+    )
+    .order("sale_date", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(error.message);
+  return (data ?? []) as unknown as DailySalesRow[];
 }

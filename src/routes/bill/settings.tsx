@@ -3,14 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  fetchMenu,
-  fetchSettings,
-  fetchTables,
-  money,
-  type AppSettings,
-  type ReceiptExtraLine,
-} from "@/lib/pos";
+import { fetchMenu, fetchSettings, fetchTables, money, type AppSettings } from "@/lib/pos";
 import { useStaff } from "@/lib/useStaff";
 
 export const Route = createFileRoute("/bill/settings")({ component: SettingsPage });
@@ -52,20 +45,24 @@ function SettingsPage() {
       toast.error("Tax percentage must be between 0 and 100.");
       return;
     }
-    if (form.copies_per_bill < 1 || form.copies_per_bill > 5) {
+    if (form.receipt_copies < 1 || form.receipt_copies > 5) {
       toast.error("Receipt copies must be between 1 and 5.");
       return;
     }
-    if (form.receipt_text_size < 9 || form.receipt_text_size > 20) {
+    if (form.receipt_paper_mm < 50 || form.receipt_paper_mm > 110) {
+      toast.error("Receipt paper width must be between 50mm and 110mm.");
+      return;
+    }
+    if (form.receipt_font_px < 9 || form.receipt_font_px > 20) {
       toast.error("Receipt text size must be between 9px and 20px.");
       return;
     }
+    if (form.receipt_name_font_px < 10 || form.receipt_name_font_px > 32) {
+      toast.error("Restaurant name size must be between 10px and 32px.");
+      return;
+    }
     setSaving(true);
-    const payload = {
-      ...form,
-      extra_receipt_lines: JSON.stringify(form.extra_receipt_lines),
-    };
-    const { error } = await supabase.from("app_settings").update(payload).eq("id", true);
+    const { error } = await supabase.from("app_settings").update(form).eq("id", true);
     setSaving(false);
     if (error) {
       toast.error(error.message);
@@ -138,9 +135,9 @@ function SettingsPage() {
                 <label className="text-sm">
                   <span className="block font-medium text-slate-700">Copies per bill</span>
                   <select
-                    value={form.copies_per_bill}
+                    value={form.receipt_copies}
                     onChange={(e) =>
-                      setForm({ ...form, copies_per_bill: Number(e.target.value) })
+                      setForm({ ...form, receipt_copies: Number(e.target.value) })
                     }
                     className="mt-1 h-10 w-full rounded-md border border-slate-300 px-3"
                   >
@@ -154,13 +151,15 @@ function SettingsPage() {
                 <label className="text-sm">
                   <span className="block font-medium text-slate-700">Paper width</span>
                   <select
-                    value={form.paper_width}
-                    onChange={(e) => setForm({ ...form, paper_width: e.target.value })}
+                    value={form.receipt_paper_mm}
+                    onChange={(e) =>
+                      setForm({ ...form, receipt_paper_mm: Number(e.target.value) })
+                    }
                     className="mt-1 h-10 w-full rounded-md border border-slate-300 px-3"
                   >
-                    <option value="58mm">58mm</option>
-                    <option value="80mm">80mm</option>
-                    <option value="110mm">110mm</option>
+                    <option value={58}>58mm</option>
+                    <option value={80}>80mm</option>
+                    <option value={110}>110mm</option>
                   </select>
                 </label>
                 <label className="text-sm">
@@ -169,9 +168,22 @@ function SettingsPage() {
                     type="number"
                     min={9}
                     max={20}
-                    value={form.receipt_text_size}
+                    value={form.receipt_font_px}
                     onChange={(e) =>
-                      setForm({ ...form, receipt_text_size: Number(e.target.value) })
+                      setForm({ ...form, receipt_font_px: Number(e.target.value) })
+                    }
+                    className="mt-1 h-10 w-full rounded-md border border-slate-300 px-3"
+                  />
+                </label>
+                <label className="text-sm">
+                  <span className="block font-medium text-slate-700">Restaurant name size</span>
+                  <input
+                    type="number"
+                    min={10}
+                    max={32}
+                    value={form.receipt_name_font_px}
+                    onChange={(e) =>
+                      setForm({ ...form, receipt_name_font_px: Number(e.target.value) })
                     }
                     className="mt-1 h-10 w-full rounded-md border border-slate-300 px-3"
                   />
@@ -191,7 +203,10 @@ function SettingsPage() {
                   onClick={() =>
                     setForm({
                       ...form,
-                      extra_receipt_lines: [...form.extra_receipt_lines, { label: "", value: "" }],
+                      receipt_extra_lines: [
+                        ...form.receipt_extra_lines,
+                        { label: "", value: "" },
+                      ],
                     })
                   }
                   className="shrink-0 rounded-md border border-emerald-600 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-50"
@@ -200,16 +215,16 @@ function SettingsPage() {
                 </button>
               </div>
               <div className="mt-3 grid gap-2">
-                {form.extra_receipt_lines.map((line: ReceiptExtraLine, index: number) => (
-                  <div key={`${line.label}-${index}`} className="flex items-center gap-2">
+                {form.receipt_extra_lines.map((line, index) => (
+                  <div key={index} className="flex items-center gap-2">
                     <input
                       value={line.label}
                       onChange={(e) => {
-                        const next = [...form.extra_receipt_lines];
+                        const next = [...form.receipt_extra_lines];
                         const current = next[index];
                         if (!current) return;
                         next[index] = { label: e.target.value, value: current.value };
-                        setForm({ ...form, extra_receipt_lines: next });
+                        setForm({ ...form, receipt_extra_lines: next });
                       }}
                       placeholder="Label"
                       className="h-10 w-28 rounded-md border border-slate-300 px-2 text-sm"
@@ -217,11 +232,11 @@ function SettingsPage() {
                     <input
                       value={line.value}
                       onChange={(e) => {
-                        const next = [...form.extra_receipt_lines];
+                        const next = [...form.receipt_extra_lines];
                         const current = next[index];
                         if (!current) return;
                         next[index] = { label: current.label, value: e.target.value };
-                        setForm({ ...form, extra_receipt_lines: next });
+                        setForm({ ...form, receipt_extra_lines: next });
                       }}
                       placeholder="Value"
                       className="h-10 min-w-0 flex-1 rounded-md border border-slate-300 px-2 text-sm"
@@ -231,8 +246,8 @@ function SettingsPage() {
                       onClick={() =>
                         setForm({
                           ...form,
-                          extra_receipt_lines: form.extra_receipt_lines.filter(
-                            (_: ReceiptExtraLine, lineIndex: number) => lineIndex !== index,
+                          receipt_extra_lines: form.receipt_extra_lines.filter(
+                            (_, lineIndex) => lineIndex !== index,
                           ),
                         })
                       }
@@ -243,7 +258,7 @@ function SettingsPage() {
                     </button>
                   </div>
                 ))}
-                {form.extra_receipt_lines.length === 0 ? (
+                {form.receipt_extra_lines.length === 0 ? (
                   <p className="text-xs text-slate-500">No extra lines added.</p>
                 ) : null}
               </div>

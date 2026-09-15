@@ -10,22 +10,24 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.15"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
       app_settings: {
         Row: {
           address: string
-          copies_per_bill: number
-          extra_receipt_lines: string
           gstin: string
           id: boolean
           max_cashier_discount_percent: number
-          paper_width: string
+          max_reservation_tables: number
           phone: string
+          receipt_copies: number
+          receipt_extra_lines: Json
+          receipt_font_px: number
           receipt_footer: string
-          receipt_text_size: number
+          receipt_name_font_px: number
+          receipt_paper_mm: number
           restaurant_name: string
           tax_label: string
           tax_percent: number
@@ -33,15 +35,17 @@ export type Database = {
         }
         Insert: {
           address?: string
-          copies_per_bill?: number
-          extra_receipt_lines?: string
           gstin?: string
           id?: boolean
           max_cashier_discount_percent?: number
-          paper_width?: string
+          max_reservation_tables?: number
           phone?: string
+          receipt_copies?: number
+          receipt_extra_lines?: Json
+          receipt_font_px?: number
           receipt_footer?: string
-          receipt_text_size?: number
+          receipt_name_font_px?: number
+          receipt_paper_mm?: number
           restaurant_name?: string
           tax_label?: string
           tax_percent?: number
@@ -49,15 +53,17 @@ export type Database = {
         }
         Update: {
           address?: string
-          copies_per_bill?: number
-          extra_receipt_lines?: string
           gstin?: string
           id?: boolean
           max_cashier_discount_percent?: number
-          paper_width?: string
+          max_reservation_tables?: number
           phone?: string
+          receipt_copies?: number
+          receipt_extra_lines?: Json
+          receipt_font_px?: number
           receipt_footer?: string
-          receipt_text_size?: number
+          receipt_name_font_px?: number
+          receipt_paper_mm?: number
           restaurant_name?: string
           tax_label?: string
           tax_percent?: number
@@ -141,6 +147,57 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      daily_sales: {
+        Row: {
+          bills_count: number
+          cancelled_count: number
+          card_total: number
+          cash_total: number
+          closed_at: string
+          created_at: string
+          discount_total: number
+          id: string
+          other_total: number
+          sale_date: string
+          tax_total: number
+          total_sales: number
+          updated_at: string
+          upi_total: number
+        }
+        Insert: {
+          bills_count?: number
+          cancelled_count?: number
+          card_total?: number
+          cash_total?: number
+          closed_at?: string
+          created_at?: string
+          discount_total?: number
+          id?: string
+          other_total?: number
+          sale_date: string
+          tax_total?: number
+          total_sales?: number
+          updated_at?: string
+          upi_total?: number
+        }
+        Update: {
+          bills_count?: number
+          cancelled_count?: number
+          card_total?: number
+          cash_total?: number
+          closed_at?: string
+          created_at?: string
+          discount_total?: number
+          id?: string
+          other_total?: number
+          sale_date?: string
+          tax_total?: number
+          total_sales?: number
+          updated_at?: string
+          upi_total?: number
+        }
+        Relationships: []
       }
       menu_categories: {
         Row: {
@@ -408,7 +465,11 @@ export type Database = {
         Row: {
           admin_message: string | null
           created_at: string
+          customer_email: string
           customer_name: string
+          email_error: string | null
+          email_sent_at: string | null
+          email_status: string | null
           guests: number
           id: string
           notes: string | null
@@ -418,12 +479,17 @@ export type Database = {
           reserve_date: string
           reserve_time: string
           status: string
+          table_number: number
           updated_at: string
         }
         Insert: {
           admin_message?: string | null
           created_at?: string
+          customer_email?: string
           customer_name: string
+          email_error?: string | null
+          email_sent_at?: string | null
+          email_status?: string | null
           guests: number
           id?: string
           notes?: string | null
@@ -433,12 +499,17 @@ export type Database = {
           reserve_date: string
           reserve_time: string
           status?: string
+          table_number: number
           updated_at?: string
         }
         Update: {
           admin_message?: string | null
           created_at?: string
+          customer_email?: string
           customer_name?: string
+          email_error?: string | null
+          email_sent_at?: string | null
+          email_status?: string | null
           guests?: number
           id?: string
           notes?: string | null
@@ -448,6 +519,7 @@ export type Database = {
           reserve_date?: string
           reserve_time?: string
           status?: string
+          table_number?: number
           updated_at?: string
         }
         Relationships: []
@@ -535,6 +607,7 @@ export type Database = {
       create_reservation: {
         Args: {
           p_date: string
+          p_email: string
           p_guests: number
           p_name: string
           p_notes?: string
@@ -543,12 +616,20 @@ export type Database = {
           p_time: string
         }
         Returns: {
+          admin_message: string
+          created_at: string
+          customer_email: string
           customer_name: string
           guests: number
+          id: string
+          notes: string
+          occasion: string
           phone: string
           reference: string
           reserve_date: string
           reserve_time: string
+          status: string
+          table_number: number
         }[]
       }
       has_role: {
@@ -578,19 +659,32 @@ export type Database = {
         }
         Returns: Json
       }
+      pos_rollup_daily_sales: { Args: never; Returns: undefined }
       pos_set_payment_status: {
         Args: { p_bill_id: string; p_paid_amount?: number; p_status: string }
+        Returns: undefined
+      }
+      pos_update_bill_payment: {
+        Args: {
+          p_bill_id: string
+          p_method: string
+          p_paid_amount?: number
+          p_status: string
+        }
         Returns: undefined
       }
       reservation_status: {
         Args: { p_reference: string }
         Returns: {
           admin_message: string
+          created_at: string
+          customer_name: string
           guests: number
           reference: string
           reserve_date: string
           reserve_time: string
           status: string
+          table_number: number
         }[]
       }
     }
@@ -620,12 +714,12 @@ export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -649,11 +743,11 @@ export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -674,11 +768,11 @@ export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
     | { schema: keyof DatabaseWithoutInternals },
-  TableName extends DefaultSchemaTableNameOrOptions extends {
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -699,11 +793,11 @@ export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
     | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never = never,
+    : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
@@ -716,11 +810,11 @@ export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never = never,
+    : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }

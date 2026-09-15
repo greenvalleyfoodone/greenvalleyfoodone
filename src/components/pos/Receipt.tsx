@@ -16,29 +16,33 @@ const METHOD_LABEL: Record<string, string> = {
   other: "Other",
 };
 
-/** 80mm thermal receipt. Rendered on screen as a preview and alone when printing. */
+/** Thermal receipt. Rendered on screen as a preview and alone when printing. */
 export default function Receipt({ data }: { data: ReceiptData }) {
   const { bill, items, settings } = data;
   const { date, time } = fmtDate(bill.created_at);
-  const paperWidth = settings.paper_width || "80mm";
-  const fontSize = settings.receipt_text_size || 12;
-  const extraLines = Array.isArray(settings.extra_receipt_lines) ? settings.extra_receipt_lines : [];
+  const base = settings.receipt_font_px || 12;
+  const nameSize = settings.receipt_name_font_px || 18;
+  const extraLines = Array.isArray(settings.receipt_extra_lines) ? settings.receipt_extra_lines : [];
 
   return (
-    <div
-      className="receipt-80mm"
-      style={{
-        width: paperWidth,
-        fontSize: `${fontSize}px`,
-      }}
-    >
+    <div className="receipt-80mm" style={{ fontSize: `${base}px`, lineHeight: 1.35 }}>
       <div className="text-center">
-        <div className="text-[15px] font-bold uppercase leading-tight">
+        <div
+          className="font-bold uppercase leading-tight"
+          data-receipt-brand="true"
+          style={{ fontSize: `${nameSize}px` }}
+        >
           {settings.restaurant_name}
         </div>
         {settings.address ? <div>{settings.address}</div> : null}
         {settings.phone ? <div>Ph: {settings.phone}</div> : null}
         {settings.gstin ? <div>GSTIN: {settings.gstin}</div> : null}
+        {extraLines.map((l, i) => (
+          <div key={`x-${i}`}>
+            {l.label ? `${l.label}: ` : ""}
+            {l.value}
+          </div>
+        ))}
       </div>
 
       <div className="rc-sep" />
@@ -97,7 +101,7 @@ export default function Receipt({ data }: { data: ReceiptData }) {
 
       <div className="rc-sep" />
 
-      <div className="flex justify-between text-[15px] font-bold">
+      <div className="flex justify-between font-bold" style={{ fontSize: `${base + 3}px` }}>
         <span>TOTAL</span>
         <span>{money(bill.total)}</span>
       </div>
@@ -110,16 +114,6 @@ export default function Receipt({ data }: { data: ReceiptData }) {
 
       <div className="rc-sep" />
 
-      {extraLines.length > 0 ? (
-        <div className="mb-1 text-center">
-          {extraLines.map((line, index) => (
-            <div key={`${line.label}-${line.value}-${index}`}>
-              {line.label ? <span>{line.label}: </span> : null}
-              <span>{line.value}</span>
-            </div>
-          ))}
-        </div>
-      ) : null}
       <div className="whitespace-pre-line text-center">{settings.receipt_footer}</div>
     </div>
   );
