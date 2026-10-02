@@ -1,20 +1,23 @@
+/* globals.css */
+
+/* 1. Import Tailwind v4 */
 @import "tailwindcss";
+
+/* 2. Tell Tailwind where to scan for class names.
+   Adjust this path relative to THIS CSS file. */
+@source "../src";
+
+/* 3. Animations package for Tailwind v4 */
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* 4. Class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /*
  * Design system definition.
  *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * - Put variables in :root / .dark
+ * - Map them in @theme inline so Tailwind creates utilities like bg-primary, text-primary, etc.
  */
 
 @theme inline {
@@ -63,6 +66,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* 5. Base theme variables (light) */
 :root {
   --radius: 0.625rem;
 
@@ -110,6 +114,7 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
+/* 6. Dark theme overrides */
 .dark {
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
@@ -155,15 +160,18 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+/* 7. Custom theme tokens (Green Valley) */
 @theme {
-  /* Green Valley token system — day/night duality */
-  --color-valley-forest: #17302a; /* night / deep primary */
+  --color-valley-forest: #17302a;
   --color-valley-forest-light: #24473d;
-  --color-valley-ivory: #f2ead8; /* day / warm base */
+
+  --color-valley-ivory: #f2ead8;
   --color-valley-paper: #faf6ec;
-  --color-valley-gold: #c9971c; /* filter coffee / turmeric accent */
+
+  --color-valley-gold: #c9971c;
   --color-valley-gold-dim: #a97f1b;
-  --color-valley-clay: #a6472a; /* andhra chili accent */
+
+  --color-valley-clay: #a6472a;
   --color-valley-ink: #201a12;
 
   --font-display: "Fraunces", "Georgia", serif;
@@ -171,6 +179,7 @@
   --font-mono: "IBM Plex Mono", monospace;
 }
 
+/* 8. Base layer */
 @layer base {
   * {
     border-color: var(--color-border);
@@ -182,6 +191,7 @@
   }
 }
 
+/* 9. Global defaults */
 html {
   scroll-behavior: smooth;
 }
@@ -200,7 +210,7 @@ body {
   font-family: var(--font-mono);
 }
 
-/* Signature: a soft day-to-night gradient sweep used on hero + section dividers */
+/* 10. Signature gradient */
 .dusk-sweep {
   background: linear-gradient(
     100deg,
@@ -253,7 +263,6 @@ textarea:focus-visible {
   margin: 4px 0;
 }
 
-/* The printable copies live off-screen until the browser prints. */
 .print-area {
   display: none;
 }
@@ -266,6 +275,7 @@ textarea:focus-visible {
   padding: 0;
 }
 
+/* ---- Print styles ---- */
 @media print {
   html,
   body {
@@ -354,6 +364,26 @@ textarea:focus-visible {
     margin-top: 16px !important;
     text-align: center;
     font-size: 11px;
+  }
+
+  .item-sales-print-area {
+    min-height: 0;
+    padding: 3mm !important;
+  }
+
+  .item-sales-print-area th:first-child {
+    width: 55%;
+    overflow-wrap: anywhere;
+  }
+
+  .item-sales-print-area td,
+  .item-sales-print-area th:not(:first-child) {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .item-sales-print-area tr {
+    break-inside: avoid;
   }
 
   .receipt-break {

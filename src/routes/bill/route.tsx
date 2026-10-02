@@ -135,6 +135,7 @@ const NAV = [
   { to: "/bill/reports", label: "Sales" },
   { to: "/bill/reservations", label: "Reservations" },
   { to: "/bill/menu", label: "Website menu" },
+  { to: "/bill/item-sales", label: "Item Sales" },
   { to: "/bill/settings", label: "Settings" },
 ];
 

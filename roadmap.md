@@ -1,0 +1,9 @@
+- [x] Add receipt settings controls for copies, paper width, fonts, and extra lines
+- [x] Add bill-history payment editing for method, status, and paid amount
+- [x] Add global custom-item billing control with category and price
+- [x] Improve all-date daily sales history and totals
+- [x] Restyle restaurant receipts with an elegant Green Valley font treatment
+- [x] Verify build and the updated billing screens
+- [x] Add printable daily sales summaries with India-local print timestamps
+- [x] Store item-level daily sales when bills are created or cancelled, including existing bills
+- [x] Add Item Sales before Settings with a dated list and thermal print slip

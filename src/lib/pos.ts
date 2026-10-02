@@ -351,3 +351,23 @@ export async function fetchDailySales(limit = 3650): Promise<DailySalesRow[]> {
   if (error) throw new Error(error.message);
   return (data ?? []) as unknown as DailySalesRow[];
 }
+
+export type DailyItemSalesRow = {
+  menu_item_id: string;
+  item_name: string;
+  category: string;
+  quantity_sold: number;
+  sales_total: number;
+};
+
+export async function fetchDailyItemSales(date: string): Promise<DailyItemSalesRow[]> {
+  const { data, error } = await supabase
+    .from("daily_item_sales")
+    .select("menu_item_id,item_name,category,quantity_sold,sales_total")
+    .eq("sale_date", date)
+    .order("category")
+    .order("item_name")
+    .limit(5000);
+  if (error) throw new Error(`Could not load item sales: ${error.message}`);
+  return (data ?? []) as unknown as DailyItemSalesRow[];
+}

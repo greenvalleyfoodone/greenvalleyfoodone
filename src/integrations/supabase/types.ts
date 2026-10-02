@@ -199,6 +199,42 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_item_sales: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          item_name: string
+          menu_item_id: string
+          quantity_sold: number
+          sale_date: string
+          sales_total: number
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          id?: string
+          item_name: string
+          menu_item_id: string
+          quantity_sold?: number
+          sale_date: string
+          sales_total?: number
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          item_name?: string
+          menu_item_id?: string
+          quantity_sold?: number
+          sale_date?: string
+          sales_total?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       menu_categories: {
         Row: {
           created_at: string

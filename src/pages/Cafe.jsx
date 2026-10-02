@@ -699,7 +699,7 @@ export default function CafePage() {
 
           <div className="hero-content">
             <div className="hero-text">
-              <span className="eyebrow">GREEN VALLEY COFFEE</span>
+              <span className="eyebrow">GREEN VALLEY FOODONE</span>
 
               <h1 className="hero-title">Quality Coffee, Crafted Daily</h1>
 
@@ -773,7 +773,7 @@ export default function CafePage() {
           id="gallery"
           className={`floating-gallery ${showGallery ? "show" : ""}`}
         >
-          <h2 className="gallery-title">Inside Green Valley Coffee</h2>
+          <h2 className="gallery-title">Inside Green Valley Food One </h2>
 
           <p className="gallery-sub">
             Explore our space, menu highlights, and the atmosphere that keeps

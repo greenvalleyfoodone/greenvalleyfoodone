@@ -18,9 +18,9 @@ export default function PrintPreview({
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
 
-  const paper = 80;
-  const copies = 1;
-  const printWidth = 72;
+  const paper = Math.min(Math.max(Number(data.settings.receipt_paper_mm) || 80, 50), 110);
+  const copies = Math.min(Math.max(Number(data.settings.receipt_copies) || 1, 1), 5);
+  const printWidth = Math.max(paper - 8, 40);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -86,7 +86,7 @@ export default function PrintPreview({
 
           <div className="flex flex-wrap items-center justify-between gap-2 border-t px-4 py-3">
             <span className="text-xs text-slate-500">
-              1 slip · 80mm paper
+              {copies} slip{copies > 1 ? "s" : ""} · {paper}mm paper
             </span>
             <div className="flex gap-2">
               <button

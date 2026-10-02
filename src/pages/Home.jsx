@@ -322,40 +322,41 @@ export default function Home() {
                   {/* Image overlay */}
                   <div className="absolute inset-0 bg-gradient-to-r from-slate-950/75 via-slate-900/35 to-slate-900/10" />
 
-                  {/* Slide headline content */}
-                  <div className="relative z-10 mx-auto flex h-full w-full max-w-6xl items-center px-5 py-24 md:px-8 md:py-36">
-                    <motion.div
-                      key={`${index}-${activeSlide === index}`}
-                      initial={{
-                        opacity: 0,
-                        y: 24,
-                      }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                      }}
-                      transition={{
-                        duration: 0.7,
-                      }}
-                      className="max-w-xl"
-                    >
-                      <p className="mb-4 font-mono text-xs uppercase tracking-widest text-white/75">
-                        {slide.eyebrow}
-                      </p>
+                  {/* Bottom gradient for text readability */}
+                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-slate-950/85 via-slate-950/40 to-transparent" />
 
-                      <h1 className="mb-6 font-serif text-4xl leading-[1.05] text-white md:text-6xl">
-                        {slide.titleLine1}
-                        <br />
-                        <span className="text-[#F5A947]">
-                          {slide.titleLine2}
-                        </span>
-                      </h1>
+                  {/* Slide headline content — EXACT BOTTOM LEFT CORNER */}
+                  <motion.div
+                    key={`${index}-${activeSlide === index}`}
+                    initial={{
+                      opacity: 0,
+                      y: 24,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    transition={{
+                      duration: 0.7,
+                    }}
+                    className="absolute bottom-8 left-4 z-10 max-w-xl md:bottom-14 md:left-10"
+                  >
+                    <p className="mb-4 font-mono text-xs uppercase tracking-widest text-white/75">
+                      {slide.eyebrow}
+                    </p>
 
-                      <p className="max-w-md leading-relaxed text-white/80">
-                        {slide.description}
-                      </p>
-                    </motion.div>
-                  </div>
+                    <h1 className="mb-6 font-serif text-4xl leading-[1.05] text-white md:text-6xl">
+                      {slide.titleLine1}
+                      <br />
+                      <span className="text-[#F5A947]">
+                        {slide.titleLine2}
+                      </span>
+                    </h1>
+
+                    <p className="max-w-md leading-relaxed text-white/80">
+                      {slide.description}
+                    </p>
+                  </motion.div>
                 </div>
               </SwiperSlide>
             );
